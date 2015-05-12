@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<targets>
+	<target dataFile=".\Target_RTPC\RTPC.lpi" serialNumber=" " configFile=".\Target_RTPC\RTPC.ltc" codeFile=".\ModelData\RTPC.a2l.cod" type="RTPC" name="RTPC"/>
+</targets>

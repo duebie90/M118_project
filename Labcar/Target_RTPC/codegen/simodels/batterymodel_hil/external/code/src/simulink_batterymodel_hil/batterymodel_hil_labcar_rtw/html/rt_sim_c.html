@@ -1,0 +1,649 @@
+<HTML>
+<HEAD>
+<TITLE>RTW Report - rt_sim.c </TITLE>
+<STYLE> .LN { font-style: italic; color: #888888 } </STYLE>
+<STYLE> .CT { font-style: italic; color: #117755 } </STYLE>
+<STYLE> .PP { font-style: bold;   color: #992211 } </STYLE>
+<STYLE> .KW { font-style: bold;   color: #112266 } </STYLE>
+<STYLE> .DT { font-style: bold;   color: #112266 } </STYLE>
+</HEAD>
+<BODY BGCOLOR="#eeeeee" TEXT="#1122aa" ONLOAD="if (top) { if (top.rtwFileOnLoad) top.rtwFileOnLoad(window);} ">
+<P>
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="6" WIDTH="100%" HEIGHT="100%"><TR><TD WIDTH="100%" VALIGN="top" BGCOLOR="#ffffff">
+<H4>File: <A HREF="file:///C:\GR3\lab4_V0.8\Target_RTPC\SimulinkModels\Simulink_Batterymodel_HiL\Batterymodel_HiL_LABCAR_rtw\rt_sim.c" TARGET="rtwreport_document_frame">C:\GR3\lab4_V0.8\Target_RTPC\SimulinkModels\Simulink_Batterymodel_HiL\Batterymodel_HiL_LABCAR_rtw\rt_sim.c</A></H4>
+<PRE id="RTWcode">
+<SPAN><A CLASS="LN" NAME="1">    1   </A><SPAN CLASS="CT">/* Copyright 1994-2009 The MathWorks, Inc.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="2">    2   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="3">    3   </A><SPAN CLASS="CT"> * File    : rt_sim.c     $Revision: 1.19.4.9 $</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="4">    4   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="5">    5   </A><SPAN CLASS="CT"> *   Performs one time step of a real-time single tasking or multitasking</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="6">    6   </A><SPAN CLASS="CT"> *   system for statically or dynamically allocated timing data.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="7">    7   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="8">    8   </A><SPAN CLASS="CT"> *   The tasking mode is controlled by the MULTITASKING #define.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="9">    9   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="10">   10   </A><SPAN CLASS="CT"> *   The data allocation type is controlled by the RT_MALLOC #define.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="11">   11   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="12">   12   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="13">   13   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;string.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="14">   14   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;stdlib.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="15">   15   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;math.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="16">   16   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;stddef.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="17">   17   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;tmwtypes.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="18">   18   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="19">   19   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;simstruc_types.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="20">   20   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="21">   21   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;simstruc.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="22">   22   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="23">   23   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="24">   24   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;rt_sim.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="25">   25   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="26">   26   </A><SPAN CLASS="CT">/*==========*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="27">   27   </A><SPAN CLASS="CT"> * Struct's *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="28">   28   </A><SPAN CLASS="CT"> *==========*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="29">   29   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="30">   30   </A><SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="31">   31   </A><SPAN CLASS="CT"> * TimingData</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="32">   32   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="33">   33   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="34">   34   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="35">   35   </A><SPAN CLASS="CT">/* dynamically allocate data */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="36">   36   </A><SPAN CLASS="KW">typedef</SPAN> <SPAN CLASS="KW">struct</SPAN> TimingData_Tag <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="37">   37   </A>  real_T *period;                      <SPAN CLASS="CT">/* Task periods in seconds                   */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="38">   38   </A>  real_T *offset;                      <SPAN CLASS="CT">/* Task offsets in seconds                   */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="39">   39   </A>  real_T *clockTick;                   <SPAN CLASS="CT">/* Flint task time tick counter              */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="40">   40   </A>  int_T *taskTick;                     <SPAN CLASS="CT">/* Counter for determining task hits         */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="41">   41   </A>  int_T *nTaskTicks;                   <SPAN CLASS="CT">/* Number base rate ticks for a task hit     */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="42">   42   </A>  int_T firstDiscIdx;                  <SPAN CLASS="CT">/* First discrete task index                 */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="43">   43   </A><B>}</B> <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="44">   44   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="45">   45   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="46">   46   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="47">   47   </A><SPAN CLASS="CT">/* statically allocate data */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="48">   48   </A><SPAN CLASS="KW">typedef</SPAN> <SPAN CLASS="KW">struct</SPAN> TimingData_Tag <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="49">   49   </A>  real_T period[NUMST];                <SPAN CLASS="CT">/* Task periods in seconds                   */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="50">   50   </A>  real_T offset[NUMST];                <SPAN CLASS="CT">/* Task offsets in seconds                   */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="51">   51   </A>  real_T clockTick[NUMST];             <SPAN CLASS="CT">/* Flint task time tick counter              */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="52">   52   </A>  int_T taskTick[NUMST];               <SPAN CLASS="CT">/* Counter for determining task hits         */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="53">   53   </A>  int_T nTaskTicks[NUMST];             <SPAN CLASS="CT">/* Number base rate ticks for a task hit     */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="54">   54   </A>  int_T firstDiscIdx;                  <SPAN CLASS="CT">/* First discrete task index                 */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="55">   55   </A><B>}</B> <A NAME="type_TimingData">TimingData</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="56">   56   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="57">   57   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="58">   58   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="59">   59   </A><SPAN CLASS="CT">/*=========================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="60">   60   </A><SPAN CLASS="CT"> * Data local to this file *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="61">   61   </A><SPAN CLASS="CT"> *=========================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="62">   62   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="63">   63   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="64">   64   </A><SPAN CLASS="CT">/* "td" will be a pointer to a dynamically allocated struct */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="65">   65   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="66">   66   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="67">   67   </A><SPAN CLASS="CT">/* statically allocate the struct. "td" will point to this static struct */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="68">   68   </A><SPAN CLASS="DT">static</SPAN> <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> <A NAME="var_td_struct">td_struct</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="69">   69   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="70">   70   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="71">   71   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="72">   72   </A><SPAN CLASS="CT">/*==================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="73">   73   </A><SPAN CLASS="CT"> * Visible routines *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="74">   74   </A><SPAN CLASS="CT"> *==================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="75">   75   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="76">   76   </A><SPAN CLASS="CT">/* Function: rt_SimInitTimingEngine ============================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="77">   77   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="78">   78   </A><SPAN CLASS="CT"> *      This function is for use with single tasking or multitasking</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="79">   79   </A><SPAN CLASS="CT"> *      real-time systems.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="80">   80   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="81">   81   </A><SPAN CLASS="CT"> *      Initializes the timing engine for a fixed-step real-time system.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="82">   82   </A><SPAN CLASS="CT"> *      It is assumed that start time is 0.0.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="83">   83   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="84">   84   </A><SPAN CLASS="CT"> * Returns:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="85">   85   </A><SPAN CLASS="CT"> *      NULL     - success</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="86">   86   </A><SPAN CLASS="CT"> *      non-NULL - error string</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="87">   87   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="88">   88   </A><SPAN CLASS="DT">const</SPAN> <SPAN CLASS="DT">char</SPAN> *<A NAME="fcn_rt_SimInitTimingEngine">rt_SimInitTimingEngine</A>(int_T rtmNumSampTimes,
+</SPAN><SPAN><A CLASS="LN" NAME="89">   89   </A>  real_T rtmStepSize,
+</SPAN><SPAN><A CLASS="LN" NAME="90">   90   </A>  real_T *rtmSampleTimePtr,
+</SPAN><SPAN><A CLASS="LN" NAME="91">   91   </A>  real_T *rtmOffsetTimePtr,
+</SPAN><SPAN><A CLASS="LN" NAME="92">   92   </A>  int_T *rtmSampleHitPtr,
+</SPAN><SPAN><A CLASS="LN" NAME="93">   93   </A>  int_T *rtmSampleTimeTaskIDPtr,
+</SPAN><SPAN><A CLASS="LN" NAME="94">   94   </A>  real_T rtmTStart,
+</SPAN><SPAN><A CLASS="LN" NAME="95">   95   </A>  SimTimeStep *rtmSimTimeStepPtr,
+</SPAN><SPAN><A CLASS="LN" NAME="96">   96   </A>  <SPAN CLASS="DT">void</SPAN> **rtmTimingDataPtr)
+</SPAN><SPAN><A CLASS="LN" NAME="97">   97   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="98">   98   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="99">   99   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="100">  100   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="101">  101   </A>  <SPAN CLASS="CT">/* In the USE_RTMODEL case this function does nothing */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="102">  102   </A>  UNUSED_PARAMETER(rtmNumSampTimes);
+</SPAN><SPAN><A CLASS="LN" NAME="103">  103   </A>  UNUSED_PARAMETER(rtmStepSize);
+</SPAN><SPAN><A CLASS="LN" NAME="104">  104   </A>  UNUSED_PARAMETER(rtmSampleTimePtr);
+</SPAN><SPAN><A CLASS="LN" NAME="105">  105   </A>  UNUSED_PARAMETER(rtmOffsetTimePtr);
+</SPAN><SPAN><A CLASS="LN" NAME="106">  106   </A>  UNUSED_PARAMETER(rtmSampleHitPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="107">  107   </A>  UNUSED_PARAMETER(rtmSampleTimeTaskIDPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="108">  108   </A>  UNUSED_PARAMETER(rtmSimTimeStepPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="109">  109   </A>  UNUSED_PARAMETER(rtmTimingDataPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="110">  110   </A>  <SPAN CLASS="KW">if</SPAN> (rtmTStart != 0.0) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="111">  111   </A>    <SPAN CLASS="KW">return</SPAN>(<FONT COLOR="#1122ff">&quot;Start time must be zero for real-time systems.  For non-zero start times you must use the Simulink solver module&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="112">  112   </A>  <B>}</B> <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="113">  113   </A>    <SPAN CLASS="KW">return</SPAN>(NULL);
+</SPAN><SPAN><A CLASS="LN" NAME="114">  114   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="115">  115   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="116">  116   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* must be !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="117">  117   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="118">  118   </A>  int_T i;
+</SPAN><SPAN><A CLASS="LN" NAME="119">  119   </A>  <SPAN CLASS="DT">int</SPAN> *tsMap = rtmSampleTimeTaskIDPtr;
+</SPAN><SPAN><A CLASS="LN" NAME="120">  120   </A>  real_T *period = rtmSampleTimePtr;
+</SPAN><SPAN><A CLASS="LN" NAME="121">  121   </A>  real_T *offset = rtmOffsetTimePtr;
+</SPAN><SPAN><A CLASS="LN" NAME="122">  122   </A>  int_T *sampleHit = rtmSampleHitPtr;
+</SPAN><SPAN><A CLASS="LN" NAME="123">  123   </A>  real_T stepSize = rtmStepSize;
+</SPAN><SPAN><A CLASS="LN" NAME="124">  124   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="125">  125   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="126">  126   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="127">  127   </A>  int_T numst = rtmNumSampTimes;
+</SPAN><SPAN><A CLASS="LN" NAME="128">  128   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="129">  129   </A>  <SPAN CLASS="CT">/* In the dynamically allocated case, we allocate the data here */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="130">  130   </A>  <SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">const</SPAN> char_T *malloc_error;
+</SPAN><SPAN><A CLASS="LN" NAME="131">  131   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="132">  132   </A>  malloc_error = <FONT COLOR="#1122ff">&quot;Memory allocation error&quot;</FONT>;
+</SPAN><SPAN><A CLASS="LN" NAME="133">  133   </A>  td = (<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *) malloc(<SPAN CLASS="KW">sizeof</SPAN>(<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="134">  134   </A>  <SPAN CLASS="KW">if</SPAN> (!td) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="135">  135   </A>    <SPAN CLASS="KW">return</SPAN>(malloc_error);
+</SPAN><SPAN><A CLASS="LN" NAME="136">  136   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="137">  137   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="138">  138   </A>  td-&gt;period = (real_T *) malloc(numst * <SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="139">  139   </A>  <SPAN CLASS="KW">if</SPAN> (!td-&gt;period) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="140">  140   </A>    <SPAN CLASS="KW">return</SPAN>(malloc_error);
+</SPAN><SPAN><A CLASS="LN" NAME="141">  141   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="142">  142   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="143">  143   </A>  td-&gt;offset = (real_T *) malloc(numst * <SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="144">  144   </A>  <SPAN CLASS="KW">if</SPAN> (!td-&gt;offset) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="145">  145   </A>    <SPAN CLASS="KW">return</SPAN>(malloc_error);
+</SPAN><SPAN><A CLASS="LN" NAME="146">  146   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="147">  147   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="148">  148   </A>  td-&gt;clockTick = (real_T *) malloc(numst * <SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="149">  149   </A>  <SPAN CLASS="KW">if</SPAN> (!td-&gt;clockTick) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="150">  150   </A>    <SPAN CLASS="KW">return</SPAN>(malloc_error);
+</SPAN><SPAN><A CLASS="LN" NAME="151">  151   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="152">  152   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="153">  153   </A>  td-&gt;taskTick = (int_T *) malloc(numst * <SPAN CLASS="KW">sizeof</SPAN>(int_T));
+</SPAN><SPAN><A CLASS="LN" NAME="154">  154   </A>  <SPAN CLASS="KW">if</SPAN> (!td-&gt;taskTick) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="155">  155   </A>    <SPAN CLASS="KW">return</SPAN>(malloc_error);
+</SPAN><SPAN><A CLASS="LN" NAME="156">  156   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="157">  157   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="158">  158   </A>  td-&gt;nTaskTicks = (int_T *) malloc(numst * <SPAN CLASS="KW">sizeof</SPAN>(int_T));
+</SPAN><SPAN><A CLASS="LN" NAME="159">  159   </A>  <SPAN CLASS="KW">if</SPAN> (!td-&gt;nTaskTicks) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="160">  160   </A>    <SPAN CLASS="KW">return</SPAN>(malloc_error);
+</SPAN><SPAN><A CLASS="LN" NAME="161">  161   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="162">  162   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="163">  163   </A>  <SPAN CLASS="KW">if</SPAN> (rtmTStart != 0.0) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="164">  164   </A>    <SPAN CLASS="KW">return</SPAN>(<FONT COLOR="#1122ff">&quot;Start time must be zero for real-time systems.  For non-zero start times you must use the Simulink solver module&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="165">  165   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="166">  166   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="167">  167   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* must be !RT_MALLOC */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="168">  168   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="169">  169   </A>  <SPAN CLASS="CT">/* In the statically allocated case, we point to the static structure */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="170">  170   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="171">  171   </A>  td = &amp;<A HREF="rt_sim_c.html#var_td_struct" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_td_struct');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">td_struct</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="172">  172   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="173">  173   </A>  <SPAN CLASS="CT">/* Also, we use the constant NUMST instead of what was passed in */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="174">  174   </A>  rtmNumSampTimes = NUMST;
+</SPAN><SPAN><A CLASS="LN" NAME="175">  175   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="176">  176   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* !RT_MALLOC */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="177">  177   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="178">  178   </A>  <SPAN CLASS="KW">if</SPAN> (rtmTStart != 0.0) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="179">  179   </A>    <SPAN CLASS="KW">return</SPAN>(<FONT COLOR="#1122ff">&quot;Start time must be zero for real-time systems.  For non-zero start times you must use the Simulink solver module&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="180">  180   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="181">  181   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="182">  182   </A>  *rtmSimTimeStepPtr = MAJOR_TIME_STEP;
+</SPAN><SPAN><A CLASS="LN" NAME="183">  183   </A>  *rtmTimingDataPtr = (<SPAN CLASS="DT">void</SPAN>*)&amp;td;
+</SPAN><SPAN><A CLASS="LN" NAME="184">  184   </A>  <SPAN CLASS="KW">for</SPAN> (i = 0; i &lt; rtmNumSampTimes; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="185">  185   </A>    tsMap[i] = i;
+</SPAN><SPAN><A CLASS="LN" NAME="186">  186   </A>    td-&gt;period[i] = period[i];
+</SPAN><SPAN><A CLASS="LN" NAME="187">  187   </A>    td-&gt;offset[i] = offset[i];
+</SPAN><SPAN><A CLASS="LN" NAME="188">  188   </A>    td-&gt;nTaskTicks[i] = (int_T)floor(period[i]/stepSize + 0.5);
+</SPAN><SPAN><A CLASS="LN" NAME="189">  189   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;period[i] == CONTINUOUS_SAMPLE_TIME ||
+</SPAN><SPAN><A CLASS="LN" NAME="190">  190   </A>        td-&gt;offset[i] == 0.0) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="191">  191   </A>      td-&gt;taskTick[i] = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="192">  192   </A>      td-&gt;clockTick[i] = 0.0;
+</SPAN><SPAN><A CLASS="LN" NAME="193">  193   </A>      sampleHit[i] = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="194">  194   </A>    <B>}</B> <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="195">  195   </A>      td-&gt;taskTick[i] = (int_T)floor((td-&gt;period[i]-td-&gt;offset[i]) /
+</SPAN><SPAN><A CLASS="LN" NAME="196">  196   </A>        stepSize+0.5);
+</SPAN><SPAN><A CLASS="LN" NAME="197">  197   </A>      td-&gt;clockTick[i] = -1.0;
+</SPAN><SPAN><A CLASS="LN" NAME="198">  198   </A>      sampleHit[i] = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="199">  199   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="200">  200   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="201">  201   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="202">  202   </A>  <SPAN CLASS="CT">/* Correct first sample time if continuous task */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="203">  203   </A>  td-&gt;period[0] = stepSize;
+</SPAN><SPAN><A CLASS="LN" NAME="204">  204   </A>  td-&gt;nTaskTicks[0] = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="205">  205   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="206">  206   </A>  <SPAN CLASS="CT">/* Set first discrete task index */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="207">  207   </A>  <SPAN CLASS="KW">if</SPAN> (rtmNumSampTimes == 1)
+</SPAN><SPAN><A CLASS="LN" NAME="208">  208   </A>    td-&gt;firstDiscIdx = (int_T)(period[0] == CONTINUOUS_SAMPLE_TIME);
+</SPAN><SPAN><A CLASS="LN" NAME="209">  209   </A>  <SPAN CLASS="KW">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="210">  210   </A>    td-&gt;firstDiscIdx = ((int_T)(period[0] == CONTINUOUS_SAMPLE_TIME) +
+</SPAN><SPAN><A CLASS="LN" NAME="211">  211   </A>                        (int_T)(period[1] == CONTINUOUS_SAMPLE_TIME));
+</SPAN><SPAN><A CLASS="LN" NAME="212">  212   </A>  <SPAN CLASS="KW">return</SPAN>(NULL);                        <SPAN CLASS="CT">/* success */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="213">  213   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="214">  214   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* ! USE_RTMODEL case */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="215">  215   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="216">  216   </A><B>}</B>                                      <SPAN CLASS="CT">/* end rt_SimInitTimingEngine */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="217">  217   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="218">  218   </A><SPAN CLASS="CT">/* In the statically-allocated case, rt_SimDestroyTimingEngine is not needed. */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="219">  219   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="220">  220   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="221">  221   </A><SPAN CLASS="CT">/* Dynamically allocated data */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="222">  222   </A><SPAN CLASS="CT">/* Function: rt_SimDestroyTimingEngine ===========================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="223">  223   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="224">  224   </A><SPAN CLASS="CT"> *      This function frees the timing engine data.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="225">  225   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="226">  226   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_SimDestroyTimingEngine">rt_SimDestroyTimingEngine</A>(<SPAN CLASS="DT">void</SPAN> *rtmTimingData)
+</SPAN><SPAN><A CLASS="LN" NAME="227">  227   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="228">  228   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="229">  229   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="230">  230   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="231">  231   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="232">  232   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="233">  233   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* must be !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="234">  234   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="235">  235   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="236">  236   </A>  td = (<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *)rtmTimingData;
+</SPAN><SPAN><A CLASS="LN" NAME="237">  237   </A>  <SPAN CLASS="KW">if</SPAN> (td) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="238">  238   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;period) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="239">  239   </A>      free(td-&gt;period);
+</SPAN><SPAN><A CLASS="LN" NAME="240">  240   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="241">  241   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="242">  242   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;offset) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="243">  243   </A>      free(td-&gt;offset);
+</SPAN><SPAN><A CLASS="LN" NAME="244">  244   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="245">  245   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="246">  246   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;clockTick) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="247">  247   </A>      free(td-&gt;clockTick);
+</SPAN><SPAN><A CLASS="LN" NAME="248">  248   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="249">  249   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="250">  250   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;taskTick) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="251">  251   </A>      free(td-&gt;taskTick);
+</SPAN><SPAN><A CLASS="LN" NAME="252">  252   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="253">  253   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="254">  254   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;nTaskTicks) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="255">  255   </A>      free(td-&gt;nTaskTicks);
+</SPAN><SPAN><A CLASS="LN" NAME="256">  256   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="257">  257   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="258">  258   </A>    free(td);
+</SPAN><SPAN><A CLASS="LN" NAME="259">  259   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="260">  260   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="261">  261   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="262">  262   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="263">  263   </A><B>}</B>                                      <SPAN CLASS="CT">/* end rt_SimDestroyTimingEngine */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="264">  264   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="265">  265   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* RT_MALLOC */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="266">  266   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="267">  267   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> !<SPAN CLASS="PP">defined</SPAN>(MULTITASKING)
+</SPAN><SPAN><A CLASS="LN" NAME="268">  268   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="269">  269   </A><SPAN CLASS="CT">/*###########################################################################*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="270">  270   </A><SPAN CLASS="CT">/*########################### SINGLE TASKING ################################*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="271">  271   </A><SPAN CLASS="CT">/*###########################################################################*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="272">  272   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="273">  273   </A><SPAN CLASS="CT">/* Function: rt_SimGetNextSampleHit ============================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="274">  274   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="275">  275   </A><SPAN CLASS="CT"> *      For a single tasking real-time system, return time of next sample hit.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="276">  276   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="277">  277   </A><SPAN CLASS="CT">/* This function has a different signature in the RT_MALLOC case */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="278">  278   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="279">  279   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="280">  280   </A>time_T <A HREF="rt_sim_c.html#fcn_rt_SimGetNextSampleHit" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimGetNextSampleHit');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimGetNextSampleHit</FONT></A>(<SPAN CLASS="DT">void</SPAN> *rtmTimingData,
+</SPAN><SPAN><A CLASS="LN" NAME="281">  281   </A>  int_T rtmNumSampTimes)
+</SPAN><SPAN><A CLASS="LN" NAME="282">  282   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="283">  283   </A>  time_T <A NAME="fcn_rt_SimGetNextSampleHit">rt_SimGetNextSampleHit</A>(<SPAN CLASS="DT">void</SPAN>)
+</SPAN><SPAN><A CLASS="LN" NAME="284">  284   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="285">  285   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="286">  286   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="287">  287   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="288">  288   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="289">  289   </A>  <SPAN CLASS="CT">/* The USE_RTMODEL version of this function does nothing */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="290">  290   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="291">  291   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="292">  292   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="293">  293   </A>  UNUSED_PARAMETER(rtmNumSampTimes);
+</SPAN><SPAN><A CLASS="LN" NAME="294">  294   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="295">  295   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="296">  296   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="297">  297   </A>  <SPAN CLASS="KW">return</SPAN> -1;
+</SPAN><SPAN><A CLASS="LN" NAME="298">  298   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="299">  299   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* must be !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="300">  300   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="301">  301   </A>  time_T timeOfNextHit;
+</SPAN><SPAN><A CLASS="LN" NAME="302">  302   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="303">  303   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="304">  304   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="305">  305   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="306">  306   </A>  td = (<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *)rtmTimingData;
+</SPAN><SPAN><A CLASS="LN" NAME="307">  307   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="308">  308   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="309">  309   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="310">  310   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="311">  311   </A>  int_T rtmNumSampTimes;
+</SPAN><SPAN><A CLASS="LN" NAME="312">  312   </A>  td = &amp;<A HREF="rt_sim_c.html#var_td_struct" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_td_struct');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">td_struct</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="313">  313   </A>  rtmNumSampTimes = NUMST;             <SPAN CLASS="CT">/* it's not passed in, in this case */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="314">  314   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="315">  315   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="316">  316   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="317">  317   </A>  td-&gt;clockTick[0] += 1;
+</SPAN><SPAN><A CLASS="LN" NAME="318">  318   </A>  timeOfNextHit = td-&gt;clockTick[0] * td-&gt;period[0];
+</SPAN><SPAN><A CLASS="LN" NAME="319">  319   </A>  <SPAN CLASS="KW">if</SPAN> (rtmNumSampTimes &gt; 1) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="320">  320   </A>    <SPAN CLASS="DT">int</SPAN> i;
+</SPAN><SPAN><A CLASS="LN" NAME="321">  321   </A>    <SPAN CLASS="KW">for</SPAN> (i = 1; i &lt; rtmNumSampTimes; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="322">  322   </A>      <SPAN CLASS="KW">if</SPAN> (++td-&gt;taskTick[i] == td-&gt;nTaskTicks[i]) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="323">  323   </A>        td-&gt;taskTick[i] = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="324">  324   </A>        td-&gt;clockTick[i]++;
+</SPAN><SPAN><A CLASS="LN" NAME="325">  325   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="326">  326   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="327">  327   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="328">  328   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="329">  329   </A>  <SPAN CLASS="KW">return</SPAN>(timeOfNextHit);
+</SPAN><SPAN><A CLASS="LN" NAME="330">  330   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="331">  331   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="332">  332   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="333">  333   </A><B>}</B>                                      <SPAN CLASS="CT">/* end rt_SimGetNextSampleHit */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="334">  334   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="335">  335   </A><SPAN CLASS="CT">/* Function: rt_SimUpdateDiscreteTaskSampleHits ================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="336">  336   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="337">  337   </A><SPAN CLASS="CT"> *      This function is for use with single tasking real-time systems.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="338">  338   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="339">  339   </A><SPAN CLASS="CT"> *      If the number of sample times is greater than one, then we need to</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="340">  340   </A><SPAN CLASS="CT"> *      update the discrete task sample hits for the next time step. Note,</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="341">  341   </A><SPAN CLASS="CT"> *      task 0 always has a hit since it's sample time is the fundamental</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="342">  342   </A><SPAN CLASS="CT"> *      sample time.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="343">  343   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="344">  344   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_SimUpdateDiscreteTaskSampleHits">rt_SimUpdateDiscreteTaskSampleHits</A>(int_T rtmNumSampTimes,
+</SPAN><SPAN><A CLASS="LN" NAME="345">  345   </A>  <SPAN CLASS="DT">void</SPAN> *rtmTimingData,
+</SPAN><SPAN><A CLASS="LN" NAME="346">  346   </A>  int_T *rtmSampleHitPtr,
+</SPAN><SPAN><A CLASS="LN" NAME="347">  347   </A>  real_T *rtmTPtr)
+</SPAN><SPAN><A CLASS="LN" NAME="348">  348   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="349">  349   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="350">  350   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="351">  351   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="352">  352   </A>  <SPAN CLASS="CT">/* The USE_RTMODEL version of this function does nothing */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="353">  353   </A>  UNUSED_PARAMETER(rtmNumSampTimes);
+</SPAN><SPAN><A CLASS="LN" NAME="354">  354   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="355">  355   </A>  UNUSED_PARAMETER(rtmSampleHitPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="356">  356   </A>  UNUSED_PARAMETER(rtmTPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="357">  357   </A>  <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="358">  358   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="359">  359   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* must be !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="360">  360   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="361">  361   </A>  <SPAN CLASS="DT">int</SPAN> i;
+</SPAN><SPAN><A CLASS="LN" NAME="362">  362   </A>  int_T *sampleHit;
+</SPAN><SPAN><A CLASS="LN" NAME="363">  363   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="364">  364   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="365">  365   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="366">  366   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="367">  367   </A>  td = (<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *)rtmTimingData;
+</SPAN><SPAN><A CLASS="LN" NAME="368">  368   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="369">  369   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="370">  370   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="371">  371   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="372">  372   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="373">  373   </A>  td = &amp;<A HREF="rt_sim_c.html#var_td_struct" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_td_struct');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">td_struct</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="374">  374   </A>  rtmNumSampTimes = NUMST;
+</SPAN><SPAN><A CLASS="LN" NAME="375">  375   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="376">  376   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="377">  377   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="378">  378   </A>  sampleHit = rtmSampleHitPtr;
+</SPAN><SPAN><A CLASS="LN" NAME="379">  379   </A>  <SPAN CLASS="KW">for</SPAN> (i = td-&gt;firstDiscIdx; i &lt; rtmNumSampTimes; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="380">  380   </A>    int_T hit = (td-&gt;taskTick[i] == 0);
+</SPAN><SPAN><A CLASS="LN" NAME="381">  381   </A>    <SPAN CLASS="KW">if</SPAN> (hit) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="382">  382   </A>      rttiSetTaskTime(rtmTPtr, i,
+</SPAN><SPAN><A CLASS="LN" NAME="383">  383   </A>                      td-&gt;clockTick[i]*td-&gt;period[i] + td-&gt;offset[i]);
+</SPAN><SPAN><A CLASS="LN" NAME="384">  384   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="385">  385   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="386">  386   </A>    sampleHit[i] = hit;
+</SPAN><SPAN><A CLASS="LN" NAME="387">  387   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="388">  388   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="389">  389   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="390">  390   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="391">  391   </A><B>}</B>                                      <SPAN CLASS="CT">/* rt_SimUpdateDiscreteTaskSampleHits */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="392">  392   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="393">  393   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* defined(MULTITASKING) */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="394">  394   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="395">  395   </A><SPAN CLASS="CT">/*###########################################################################*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="396">  396   </A><SPAN CLASS="CT">/*############################## MULTITASKING ###############################*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="397">  397   </A><SPAN CLASS="CT">/*###########################################################################*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="398">  398   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="399">  399   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="400">  400   </A><SPAN CLASS="CT">/* This function is not defined here if USE_RTMODEL is set */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="401">  401   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="402">  402   </A><SPAN CLASS="CT">/* Function: rt_SimUpdateDiscreteEvents ========================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="403">  403   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="404">  404   </A><SPAN CLASS="CT"> *      This function is for use with multitasking real-time systems.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="405">  405   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="406">  406   </A><SPAN CLASS="CT"> *      This function updates the status of the RT_MODEL sampleHits</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="407">  407   </A><SPAN CLASS="CT"> *      flags and the perTaskSampleHits matrix which is used to determine</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="408">  408   </A><SPAN CLASS="CT"> *      when special sample hits occur.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="409">  409   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="410">  410   </A><SPAN CLASS="CT"> *      The RT_MODEL contains a matrix, called perTaskSampleHits.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="411">  411   </A><SPAN CLASS="CT"> *      This matrix is used by the ssIsSpecialSampleHit macro. The row and</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="412">  412   </A><SPAN CLASS="CT"> *      column indices are both task id's (equivalent to the root RT_MODEL</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="413">  413   </A><SPAN CLASS="CT"> *      sample time indices). This is a upper triangle matrix. This routine</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="414">  414   </A><SPAN CLASS="CT"> *      only updates the slower task hits (kept in column j) for row</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="415">  415   </A><SPAN CLASS="CT"> *      i if we have a sample hit in row i.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="416">  416   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="417">  417   </A><SPAN CLASS="CT"> *                       column j</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="418">  418   </A><SPAN CLASS="CT"> *           tid   0   1   2   3   4   5</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="419">  419   </A><SPAN CLASS="CT"> *               -------------------------</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="420">  420   </A><SPAN CLASS="CT"> *             0 |   | X | X | X | X | X |</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="421">  421   </A><SPAN CLASS="CT"> *         r     -------------------------</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="422">  422   </A><SPAN CLASS="CT"> *         o   1 |   |   | X | X | X | X |      This matrix(i,j) answers:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="423">  423   </A><SPAN CLASS="CT"> *         w     -------------------------      If we are in task i, does</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="424">  424   </A><SPAN CLASS="CT"> *             2 |   |   |   | X | X | X |      slower task j have a hit now?</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="425">  425   </A><SPAN CLASS="CT"> *         i     -------------------------</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="426">  426   </A><SPAN CLASS="CT"> *             3 |   |   |   |   | X | X |</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="427">  427   </A><SPAN CLASS="CT"> *               -------------------------</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="428">  428   </A><SPAN CLASS="CT"> *             4 |   |   |   |   |   | X |      X = 0 or 1</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="429">  429   </A><SPAN CLASS="CT"> *               -------------------------</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="430">  430   </A><SPAN CLASS="CT"> *             5 |   |   |   |   |   |   |</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="431">  431   </A><SPAN CLASS="CT"> *               -------------------------</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="432">  432   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="433">  433   </A><SPAN CLASS="CT"> *      How macros index this matrix:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="434">  434   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="435">  435   </A><SPAN CLASS="CT"> *          ssSetSampleHitInTask(S, j, i, X)   =&gt; matrix(i,j) = X</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="436">  436   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="437">  437   </A><SPAN CLASS="CT"> *          ssIsSpecialSampleHit(S, my_sti, promoted_sti, tid) =&gt;</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="438">  438   </A><SPAN CLASS="CT"> *              (tid_for(promoted_sti) == tid && !minor_time_step &&</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="439">  439   </A><SPAN CLASS="CT"> *               matrix(tid,tid_for(my_sti))</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="440">  440   </A><SPAN CLASS="CT"> *              )</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="441">  441   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="442">  442   </A><SPAN CLASS="CT"> *            my_sti       = My (the block's) original sample time index.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="443">  443   </A><SPAN CLASS="CT"> *            promoted_sti = The block's promoted sample time index resulting</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="444">  444   </A><SPAN CLASS="CT"> *                           from a transition via a ZOH from a fast to a</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="445">  445   </A><SPAN CLASS="CT"> *                           slow block or a transition via a unit delay from</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="446">  446   </A><SPAN CLASS="CT"> *                           a slow to a fast block.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="447">  447   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="448">  448   </A><SPAN CLASS="CT"> *      The perTaskSampleHits array, of dimension n*n, is accessed using</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="449">  449   </A><SPAN CLASS="CT"> *      perTaskSampleHits[j + i*n] where n is the total number of sample</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="450">  450   </A><SPAN CLASS="CT"> *      times, 0 &lt;= i &lt; n, and 0 &lt;= j &lt; n.  The C language stores arrays in</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="451">  451   </A><SPAN CLASS="CT"> *      row-major order, that is, row 0 followed by row 1, etc.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="452">  452   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="453">  453   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="454">  454   </A>time_T <A NAME="fcn_rt_SimUpdateDiscreteEvents">rt_SimUpdateDiscreteEvents</A>(int_T rtmNumSampTimes,
+</SPAN><SPAN><A CLASS="LN" NAME="455">  455   </A>  <SPAN CLASS="DT">void</SPAN> *rtmTimingData,
+</SPAN><SPAN><A CLASS="LN" NAME="456">  456   </A>  int_T *rtmSampleHitPtr,
+</SPAN><SPAN><A CLASS="LN" NAME="457">  457   </A>  int_T *rtmPerTaskSampleHits)
+</SPAN><SPAN><A CLASS="LN" NAME="458">  458   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="459">  459   </A>  <SPAN CLASS="DT">int</SPAN> i, j;
+</SPAN><SPAN><A CLASS="LN" NAME="460">  460   </A>  int_T *sampleHit;
+</SPAN><SPAN><A CLASS="LN" NAME="461">  461   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="462">  462   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="463">  463   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="464">  464   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="465">  465   </A>  td = (<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *)rtmTimingData;
+</SPAN><SPAN><A CLASS="LN" NAME="466">  466   </A>  rtmNumSampTimes = NUMST;
+</SPAN><SPAN><A CLASS="LN" NAME="467">  467   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="468">  468   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="469">  469   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="470">  470   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="471">  471   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="472">  472   </A>  td = &amp;<A HREF="rt_sim_c.html#var_td_struct" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_td_struct');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">td_struct</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="473">  473   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="474">  474   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="475">  475   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="476">  476   </A>  sampleHit = rtmSampleHitPtr;
+</SPAN><SPAN><A CLASS="LN" NAME="477">  477   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="478">  478   </A>  <SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="479">  479   </A><SPAN CLASS="CT">   * Run this loop in reverse so that we do lower priority events first.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="480">  480   </A><SPAN CLASS="CT">   */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="481">  481   </A>  i = rtmNumSampTimes;
+</SPAN><SPAN><A CLASS="LN" NAME="482">  482   </A>  <SPAN CLASS="KW">while</SPAN> (--i &gt;= 0) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="483">  483   </A>    <SPAN CLASS="KW">if</SPAN> (td-&gt;taskTick[i] == 0) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="484">  484   </A>      <SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="485">  485   </A><SPAN CLASS="CT">       * Got a sample hit, reset the counter, and update the clock</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="486">  486   </A><SPAN CLASS="CT">       * tick counter.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="487">  487   </A><SPAN CLASS="CT">       */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="488">  488   </A>      sampleHit[i] = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="489">  489   </A>      td-&gt;clockTick[i]++;
+</SPAN><SPAN><A CLASS="LN" NAME="490">  490   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="491">  491   </A>      <SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="492">  492   </A><SPAN CLASS="CT">       * Record the state of all "slower" events</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="493">  493   </A><SPAN CLASS="CT">       */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="494">  494   </A>      <SPAN CLASS="KW">for</SPAN> (j = i + 1; j &lt; rtmNumSampTimes; j++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="495">  495   </A>        rttiSetSampleHitInTask(rtmPerTaskSampleHits, rtmNumSampTimes,
+</SPAN><SPAN><A CLASS="LN" NAME="496">  496   </A>          j, i, sampleHit[j]);
+</SPAN><SPAN><A CLASS="LN" NAME="497">  497   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="498">  498   </A>    <B>}</B> <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="499">  499   </A>      <SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="500">  500   </A><SPAN CLASS="CT">       * no sample hit, increment the counter</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="501">  501   </A><SPAN CLASS="CT">       */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="502">  502   </A>      sampleHit[i] = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="503">  503   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="504">  504   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="505">  505   </A>    <SPAN CLASS="KW">if</SPAN> (++td-&gt;taskTick[i] == td-&gt;nTaskTicks[i]) <B>{</B><SPAN CLASS="CT">/* update for next time */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="506">  506   </A>      td-&gt;taskTick[i] = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="507">  507   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="508">  508   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="509">  509   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="510">  510   </A>  <SPAN CLASS="KW">return</SPAN>(td-&gt;clockTick[0]*td-&gt;period[0]);
+</SPAN><SPAN><A CLASS="LN" NAME="511">  511   </A><B>}</B>                                      <SPAN CLASS="CT">/* rt_SimUpdateDiscreteEvents */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="512">  512   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="513">  513   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="514">  514   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="515">  515   </A><SPAN CLASS="CT">/* Function: rt_SimUpdateDiscreteTaskTime ======================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="516">  516   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="517">  517   </A><SPAN CLASS="CT"> *      This function is for use with multitasking systems.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="518">  518   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="519">  519   </A><SPAN CLASS="CT"> *      After a discrete task output and update has been performed, this</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="520">  520   </A><SPAN CLASS="CT"> *      function must be called to update the discrete task time for next</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="521">  521   </A><SPAN CLASS="CT"> *      time around.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="522">  522   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="523">  523   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_SimUpdateDiscreteTaskTime">rt_SimUpdateDiscreteTaskTime</A>(real_T *rtmTPtr,
+</SPAN><SPAN><A CLASS="LN" NAME="524">  524   </A>  <SPAN CLASS="DT">void</SPAN> *rtmTimingData,
+</SPAN><SPAN><A CLASS="LN" NAME="525">  525   </A>  <SPAN CLASS="DT">int</SPAN> tid)
+</SPAN><SPAN><A CLASS="LN" NAME="526">  526   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="527">  527   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="528">  528   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="529">  529   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="530">  530   </A>  <SPAN CLASS="CT">/* This function is a no-op in USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="531">  531   </A>  UNUSED_PARAMETER(rtmTPtr);
+</SPAN><SPAN><A CLASS="LN" NAME="532">  532   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="533">  533   </A>  UNUSED_PARAMETER(tid);
+</SPAN><SPAN><A CLASS="LN" NAME="534">  534   </A>  <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="535">  535   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="536">  536   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* must be !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="537">  537   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="538">  538   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="539">  539   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="540">  540   </A>  td = (<A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *)rtmTimingData;
+</SPAN><SPAN><A CLASS="LN" NAME="541">  541   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="542">  542   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="543">  543   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="544">  544   </A>  <A HREF="rt_sim_c.html#type_TimingData" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_TimingData');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">TimingData</FONT></A> *td;
+</SPAN><SPAN><A CLASS="LN" NAME="545">  545   </A>  UNUSED_PARAMETER(rtmTimingData);
+</SPAN><SPAN><A CLASS="LN" NAME="546">  546   </A>  td = &amp;<A HREF="rt_sim_c.html#var_td_struct" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_td_struct');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">td_struct</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="547">  547   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="548">  548   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="549">  549   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="550">  550   </A>  rttiSetTaskTime(rtmTPtr, tid,
+</SPAN><SPAN><A CLASS="LN" NAME="551">  551   </A>                  td-&gt;clockTick[tid]*td-&gt;period[tid] + td-&gt;offset[tid]);
+</SPAN><SPAN><A CLASS="LN" NAME="552">  552   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="553">  553   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* !USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="554">  554   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="555">  555   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="556">  556   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="557">  557   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* MULTITASKING */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="558">  558   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="559">  559   </A><SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="560">  560   </A><SPAN CLASS="CT"> *******************************************************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="561">  561   </A><SPAN CLASS="CT"> * FUNCTIONS MAINTAINED FOR BACKWARDS COMPATIBILITY WITH THE SimStruct</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="562">  562   </A><SPAN CLASS="CT"> *******************************************************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="563">  563   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="564">  564   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> USE_RTMODEL
+</SPAN><SPAN><A CLASS="LN" NAME="565">  565   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="566">  566   </A><SPAN CLASS="DT">const</SPAN> <SPAN CLASS="DT">char</SPAN> *<A NAME="fcn_rt_InitTimingEngine">rt_InitTimingEngine</A>(SimStruct *S)
+</SPAN><SPAN><A CLASS="LN" NAME="567">  567   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="568">  568   </A>  <SPAN CLASS="DT">const</SPAN> char_T *retVal = <A HREF="rt_sim_c.html#fcn_rt_SimInitTimingEngine" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimInitTimingEngine');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimInitTimingEngine</FONT></A>(
+</SPAN><SPAN><A CLASS="LN" NAME="569">  569   </A>    ssGetNumSampleTimes(S),
+</SPAN><SPAN><A CLASS="LN" NAME="570">  570   </A>    ssGetStepSize(S),
+</SPAN><SPAN><A CLASS="LN" NAME="571">  571   </A>    ssGetSampleTimePtr(S),
+</SPAN><SPAN><A CLASS="LN" NAME="572">  572   </A>    ssGetOffsetTimePtr(S),
+</SPAN><SPAN><A CLASS="LN" NAME="573">  573   </A>    ssGetSampleHitPtr(S),
+</SPAN><SPAN><A CLASS="LN" NAME="574">  574   </A>    ssGetSampleTimeTaskIDPtr(S),
+</SPAN><SPAN><A CLASS="LN" NAME="575">  575   </A>    ssGetTStart(S),
+</SPAN><SPAN><A CLASS="LN" NAME="576">  576   </A>    &amp;ssGetSimTimeStep(S),
+</SPAN><SPAN><A CLASS="LN" NAME="577">  577   </A>    &amp;ssGetTimingData(S));
+</SPAN><SPAN><A CLASS="LN" NAME="578">  578   </A>  <SPAN CLASS="KW">return</SPAN>(retVal);
+</SPAN><SPAN><A CLASS="LN" NAME="579">  579   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="580">  580   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="581">  581   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">if</SPAN> !<SPAN CLASS="PP">defined</SPAN>(MULTITASKING)
+</SPAN><SPAN><A CLASS="LN" NAME="582">  582   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="583">  583   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_UpdateDiscreteTaskSampleHits">rt_UpdateDiscreteTaskSampleHits</A>(SimStruct *S)
+</SPAN><SPAN><A CLASS="LN" NAME="584">  584   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="585">  585   </A>  <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteTaskSampleHits" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteTaskSampleHits');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteTaskSampleHits</FONT></A>(
+</SPAN><SPAN><A CLASS="LN" NAME="586">  586   </A>    ssGetNumSampleTimes(S),
+</SPAN><SPAN><A CLASS="LN" NAME="587">  587   </A>    ssGetTimingData(S),
+</SPAN><SPAN><A CLASS="LN" NAME="588">  588   </A>    ssGetSampleHitPtr(S),
+</SPAN><SPAN><A CLASS="LN" NAME="589">  589   </A>    ssGetTPtr(S));
+</SPAN><SPAN><A CLASS="LN" NAME="590">  590   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="591">  591   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="592">  592   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> RT_MALLOC
+</SPAN><SPAN><A CLASS="LN" NAME="593">  593   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="594">  594   </A>time_T <A NAME="fcn_rt_GetNextSampleHit">rt_GetNextSampleHit</A>(SimStruct *S)
+</SPAN><SPAN><A CLASS="LN" NAME="595">  595   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="596">  596   </A>  <SPAN CLASS="KW">return</SPAN>(<A HREF="rt_sim_c.html#fcn_rt_SimGetNextSampleHit" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimGetNextSampleHit');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimGetNextSampleHit</FONT></A>(
+</SPAN><SPAN><A CLASS="LN" NAME="597">  597   </A>          ssGetTimingData(S),
+</SPAN><SPAN><A CLASS="LN" NAME="598">  598   </A>          ssGetNumSampleTimes(S)));
+</SPAN><SPAN><A CLASS="LN" NAME="599">  599   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="600">  600   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="601">  601   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="602">  602   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="603">  603   </A>time_T <A HREF="rt_sim_c.html#fcn_rt_GetNextSampleHit" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_GetNextSampleHit');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_GetNextSampleHit</FONT></A>(<SPAN CLASS="DT">void</SPAN>)
+</SPAN><SPAN><A CLASS="LN" NAME="604">  604   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="605">  605   </A>  <SPAN CLASS="KW">return</SPAN>(<A HREF="rt_sim_c.html#fcn_rt_SimGetNextSampleHit" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimGetNextSampleHit');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimGetNextSampleHit</FONT></A>());
+</SPAN><SPAN><A CLASS="LN" NAME="606">  606   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="607">  607   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="608">  608   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="609">  609   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="610">  610   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">else</SPAN>                                 <SPAN CLASS="CT">/* MULTITASKING */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="611">  611   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="612">  612   </A>time_T <A NAME="fcn_rt_UpdateDiscreteEvents">rt_UpdateDiscreteEvents</A>(SimStruct *S)
+</SPAN><SPAN><A CLASS="LN" NAME="613">  613   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="614">  614   </A>  <SPAN CLASS="KW">return</SPAN>(<A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteEvents" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteEvents');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteEvents</FONT></A>(
+</SPAN><SPAN><A CLASS="LN" NAME="615">  615   </A>          ssGetNumSampleTimes(S),
+</SPAN><SPAN><A CLASS="LN" NAME="616">  616   </A>          ssGetTimingData(S),
+</SPAN><SPAN><A CLASS="LN" NAME="617">  617   </A>          ssGetSampleHitPtr(S),
+</SPAN><SPAN><A CLASS="LN" NAME="618">  618   </A>          ssGetPerTaskSampleHitsPtr(S)));
+</SPAN><SPAN><A CLASS="LN" NAME="619">  619   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="620">  620   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="621">  621   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_UpdateDiscreteTaskTime">rt_UpdateDiscreteTaskTime</A>(SimStruct *S, <SPAN CLASS="DT">int</SPAN> tid)
+</SPAN><SPAN><A CLASS="LN" NAME="622">  622   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="623">  623   </A>  <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteTaskTime" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteTaskTime');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteTaskTime</FONT></A>(ssGetTPtr(S), ssGetTimingData(S), tid);
+</SPAN><SPAN><A CLASS="LN" NAME="624">  624   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="625">  625   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="626">  626   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* MULTITASKING */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="627">  627   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* USE_RTMODEL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="628">  628   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="629">  629   </A><SPAN CLASS="CT">/* EOF: rt_sim.c */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="630">  630   </A>
+</SPAN></PRE>
+</TD></TR></TABLE>
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file[<!ELEMENT file (HierarchyTree, MappingList, ToolLabelList, ToolObjectList)>
+<!ATTLIST file
+    extension (.smf) #REQUIRED
+    version (3.2.0) #REQUIRED
+>
+<!--A hierarchy node used to structure the mappgings-->
+<!ELEMENT Hierarchy (Hierarchy*)>
+<!ATTLIST Hierarchy
+    HID ID #REQUIRED
+    Name CDATA #REQUIRED
+>
+<!--A mapping element. Label -&gt; ToolLabel-->
+<!ELEMENT Mapping (Comment?)>
+<!ATTLIST Mapping
+    MID ID #REQUIRED
+    HID IDREF #IMPLIED
+    Label CDATA #REQUIRED
+    LID IDREF #IMPLIED
+>
+<!--A tool specific object description. A meta data description for a tool label type, e.g. Scalar, Curve, etc...-->
+<!ELEMENT ToolObject (Comment?, Attributes)>
+<!ATTLIST ToolObject
+    TID ID #REQUIRED
+    Name CDATA #REQUIRED
+>
+<!--A abstract tool object attribute-->
+<!ELEMENT ToolObjectAttribute EMPTY>
+<!ATTLIST ToolObjectAttribute
+    AID ID #REQUIRED
+    Name CDATA #REQUIRED
+    Category CDATA #REQUIRED
+>
+<!--A simple string attribute (single line)-->
+<!ELEMENT StringAttribute EMPTY>
+<!ATTLIST StringAttribute
+    AID ID #REQUIRED
+    Name CDATA #REQUIRED
+    Category CDATA #REQUIRED
+>
+<!--A large string attribute (multiple lines)-->
+<!ELEMENT TextAttribute EMPTY>
+<!ATTLIST TextAttribute
+    AID ID #REQUIRED
+    Name CDATA #REQUIRED
+    Category CDATA #REQUIRED
+>
+<!--A range attribute defined by min and max. Builds an interval [min .. max]-->
+<!ELEMENT RangeAttribute EMPTY>
+<!ATTLIST RangeAttribute
+    AID ID #REQUIRED
+    Name CDATA #REQUIRED
+    Category CDATA #REQUIRED
+>
+<!--A enumeration defining a list of values of type string-->
+<!ELEMENT EnumerationAttribute (Elements)>
+<!ATTLIST EnumerationAttribute
+    AID ID #REQUIRED
+    Name CDATA #REQUIRED
+    Category CDATA #REQUIRED
+>
+<!--A switch attribute-->
+<!ELEMENT SwitchAttribute EMPTY>
+<!ATTLIST SwitchAttribute
+    AID ID #REQUIRED
+    Name CDATA #REQUIRED
+    Category CDATA #REQUIRED
+>
+<!--A tool specific object with its values. Defined by tool object description-->
+<!ELEMENT ToolLabel (Comment?, Values)>
+<!ATTLIST ToolLabel
+    LID ID #REQUIRED
+    Name CDATA #REQUIRED
+    TID IDREF #IMPLIED
+>
+<!--A abstract tool object value-->
+<!ELEMENT ToolLabelValue EMPTY>
+<!ATTLIST ToolLabelValue
+    VID ID #REQUIRED
+    AID IDREF #REQUIRED
+>
+<!--A simple string value (single line)-->
+<!ELEMENT StringValue (#PCDATA)>
+<!ATTLIST StringValue
+    VID ID #REQUIRED
+    AID IDREF #REQUIRED
+>
+<!--A large string value (multiple lines)-->
+<!ELEMENT TextValue (#PCDATA)>
+<!ATTLIST TextValue
+    VID ID #REQUIRED
+    AID IDREF #REQUIRED
+>
+<!--A range value defining a min and a max value building the interval [min .. max]-->
+<!ELEMENT RangeValue (Min, Max)>
+<!ATTLIST RangeValue
+    VID ID #REQUIRED
+    AID IDREF #REQUIRED
+>
+<!--A enumeration value from the list of values defined by the enumeration attribute description-->
+<!ELEMENT EnumerationValue (#PCDATA)>
+<!ATTLIST EnumerationValue
+    VID ID #REQUIRED
+    AID IDREF #REQUIRED
+>
+<!--A switch value defining the switch position to tool value mappings-->
+<!ELEMENT SwitchValue (Positions)>
+<!ATTLIST SwitchValue
+    VID ID #REQUIRED
+    AID IDREF #REQUIRED
+    SwitchType CDATA #IMPLIED
+>
+<!ELEMENT HierarchyTree (Hierarchy*)>
+<!ELEMENT MappingList (Mapping*)>
+<!ELEMENT ToolLabelList (ToolLabel*)>
+<!ELEMENT ToolObjectList (ToolObject*)>
+<!ELEMENT Attributes ((ToolObjectAttribute | EnumerationAttribute | StringAttribute | RangeAttribute | SwitchAttribute | TextAttribute)*)>
+<!ELEMENT Elements (Element*)>
+<!ELEMENT Element (#PCDATA)>
+<!ELEMENT Values ((ToolLabelValue | SwitchValue | StringValue | EnumerationValue | TextValue | RangeValue)*)>
+<!ELEMENT Min (#PCDATA)>
+<!ELEMENT Max (#PCDATA)>
+<!ELEMENT Positions (Position*)>
+<!ELEMENT Position (#PCDATA)>
+<!ATTLIST Position
+    PID ID #REQUIRED
+    Position CDATA #REQUIRED
+>
+<!ELEMENT Comment (#PCDATA)>
+]>
+<file extension=".smf" version="3.2.0">
+  <HierarchyTree>
+    <Hierarchy HID="_0b0b5a0f-be52-4678-81b9-701890e26ca1" Name="FF_BEV_Mule_1_Prerelease_1">
+      <Hierarchy HID="_6275576c-0e76-4f8a-a3f4-e550462ad62e" Name="SendMessages">
+        <Hierarchy HID="_94487b8f-15d1-4243-8665-e5d9c3cfa902" Name="20ca040ext_High_Volt_Contactor_Control" />
+      </Hierarchy>
+    </Hierarchy>
+  </HierarchyTree>
+  <MappingList>
+    <Mapping MID="_058b3034-c2ca-44e1-a349-801af60b6969" Label="FF_BEV_Mule_1_Prerelease_1\SendMessages\20ca040ext_High_Volt_Contactor_Control\MainHighVltCntctrCmd_Phys_Manip" HID="_94487b8f-15d1-4243-8665-e5d9c3cfa902" LID="_9be0f8a5-1229-4391-8dac-d926900c3d9d" />
+    <Mapping MID="_5120ea1a-adba-408e-99bd-116c4312e8b7" Label="FF_BEV_Mule_1_Prerelease_1\SendMessages\20ca040ext_High_Volt_Contactor_Control\MainHighVltCntctrCmd_Phys" HID="_94487b8f-15d1-4243-8665-e5d9c3cfa902" LID="_49dd34ab-d418-489b-95ac-a896a1b7b5f6" />
+    <Mapping MID="_871cc0ba-d981-4a7c-83a3-5bcc31fe3f1b" Label="FF_BEV_Mule_1_Prerelease_1\SendMessages\20ca040ext_High_Volt_Contactor_Control\MainHighVltCntctrCmd_Mode" HID="_94487b8f-15d1-4243-8665-e5d9c3cfa902" LID="_ede722ef-9336-46ae-99e9-c96e33a53dbf" />
+  </MappingList>
+  <ToolLabelList>
+    <ToolLabel LID="_9be0f8a5-1229-4391-8dac-d926900c3d9d" Name="FF_BEV_Mule_1_Prerelease_1/SendMessages/20ca040ext_High_Volt_Contactor_Control/MainHighVltCntctrCmd_Phys_Manip" TID="_e3f5c9ea-ea85-4c96-8d1a-59aeedb37067">
+      <Comment>No comment.</Comment>
+      <Values>
+        <EnumerationValue VID="_be2aff3a-77fb-44d4-9632-68090677877f" AID="_25e2d8c9-1eb2-4553-875f-f417702400d6">Parameter</EnumerationValue>
+        <RangeValue VID="_cda946cd-78ef-4a47-9ea0-22f5c577e0c9" AID="_8cddd8ff-08f7-408b-a818-f8fa5d08c43a">
+          <Min>-1.79769313486232E+308</Min>
+          <Max>1.79769313486232E+308</Max>
+        </RangeValue>
+        <StringValue VID="_0508103d-2413-4169-a470-d3e7a735a315" AID="_d4f2fbfe-90ab-43ed-b5f1-06a26334fad1"><![CDATA[]]></StringValue>
+        <EnumerationValue VID="_ef3ed5f6-f420-4a8f-a346-db3005104445" AID="_ed4cebd2-db94-4d9d-842b-088d18a313bd">Float</EnumerationValue>
+      </Values>
+    </ToolLabel>
+    <ToolLabel LID="_49dd34ab-d418-489b-95ac-a896a1b7b5f6" Name="FF_BEV_Mule_1_Prerelease_1/SendMessages/20ca040ext_High_Volt_Contactor_Control/MainHighVltCntctrCmd_Phys" TID="_e3f5c9ea-ea85-4c96-8d1a-59aeedb37067">
+      <Comment>No comment.</Comment>
+      <Values>
+        <EnumerationValue VID="_4d1e0736-f52a-437c-aeaf-817fea39ff20" AID="_25e2d8c9-1eb2-4553-875f-f417702400d6">Measurement</EnumerationValue>
+        <RangeValue VID="_4e85c1fb-9abc-47a0-b2e1-67411aeb0a16" AID="_8cddd8ff-08f7-408b-a818-f8fa5d08c43a">
+          <Min>-1.79769313486232E+308</Min>
+          <Max>1.79769313486232E+308</Max>
+        </RangeValue>
+        <StringValue VID="_4fa66bcf-a504-4c41-880d-cfdf1a667e36" AID="_d4f2fbfe-90ab-43ed-b5f1-06a26334fad1"><![CDATA[]]></StringValue>
+        <EnumerationValue VID="_1a63ceac-84dc-4436-83ef-eab239fa2941" AID="_ed4cebd2-db94-4d9d-842b-088d18a313bd">Float</EnumerationValue>
+      </Values>
+    </ToolLabel>
+    <ToolLabel LID="_ede722ef-9336-46ae-99e9-c96e33a53dbf" Name="FF_BEV_Mule_1_Prerelease_1/SendMessages/20ca040ext_High_Volt_Contactor_Control/MainHighVltCntctrCmd_Mode" TID="_e3f5c9ea-ea85-4c96-8d1a-59aeedb37067">
+      <Comment>No comment.</Comment>
+      <Values>
+        <EnumerationValue VID="_24d20cc5-cf0b-4e3a-9f06-6545e3d3204f" AID="_25e2d8c9-1eb2-4553-875f-f417702400d6">Parameter</EnumerationValue>
+        <RangeValue VID="_0fea05f1-89f3-489d-bad5-2f73348b080a" AID="_8cddd8ff-08f7-408b-a818-f8fa5d08c43a">
+          <Min>-2147483648</Min>
+          <Max>2147483647</Max>
+        </RangeValue>
+        <StringValue VID="_983843ba-82aa-4f65-b032-d85680d1c391" AID="_d4f2fbfe-90ab-43ed-b5f1-06a26334fad1"><![CDATA[]]></StringValue>
+        <EnumerationValue VID="_ebb73cfd-3d60-4a13-b5a1-842d2739cf1a" AID="_ed4cebd2-db94-4d9d-842b-088d18a313bd">Integer</EnumerationValue>
+      </Values>
+    </ToolLabel>
+  </ToolLabelList>
+  <ToolObjectList>
+    <ToolObject TID="_e3f5c9ea-ea85-4c96-8d1a-59aeedb37067" Name="Scalar">
+      <Comment>Simple scalar object</Comment>
+      <Attributes>
+        <EnumerationAttribute AID="_25e2d8c9-1eb2-4553-875f-f417702400d6" Name="SUTType" Category="Default SuT Type">
+          <Elements>
+            <Element>Parameter</Element>
+            <Element>Measurement</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_8cddd8ff-08f7-408b-a818-f8fa5d08c43a" Name="Range" Category="Default SuT Type" />
+        <StringAttribute AID="_d4f2fbfe-90ab-43ed-b5f1-06a26334fad1" Name="Unit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_ed4cebd2-db94-4d9d-842b-088d18a313bd" Name="DataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+      </Attributes>
+    </ToolObject>
+    <ToolObject TID="_73a47318-80ce-4825-8813-28dbccc343bd" Name="Array">
+      <Comment>Simple array object</Comment>
+      <Attributes>
+        <EnumerationAttribute AID="_03849987-d88c-4d03-9921-b25b1fa837b3" Name="SUTType" Category="Default SuT Type">
+          <Elements>
+            <Element>Parameter</Element>
+            <Element>Measurement</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_f463c618-875c-4ea3-a3cd-786bd69169e3" Name="Range" Category="Default SuT Type" />
+        <StringAttribute AID="_ad07cc18-c627-464c-8e29-5778e94b5c6d" Name="Unit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_6b12c41f-c449-4d54-b1c8-ecad586a274e" Name="DataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+      </Attributes>
+    </ToolObject>
+    <ToolObject TID="_e717e612-eaf2-4c29-9449-bc51aad5e2b2" Name="Curve">
+      <Comment>1D lookup table</Comment>
+      <Attributes>
+        <EnumerationAttribute AID="_10926797-a146-40ec-810a-c82ce59d302e" Name="SUTType" Category="Default SuT Type">
+          <Elements>
+            <Element>Parameter</Element>
+            <Element>Measurement</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_5c82b805-2afc-4a90-aa43-99f53f8d51d5" Name="Range" Category="Default SuT Type" />
+        <StringAttribute AID="_88b11a40-4620-412d-87c1-fe41c8b4384f" Name="Unit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_e9cdfa61-52aa-4717-92ec-42c59380912c" Name="DataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_ea43ca25-eaaf-476f-ad5f-fe4c80042f58" Name="XRange" Category="Default SuT Type" />
+        <StringAttribute AID="_451e82f1-eeab-4dc1-a4da-89f12ea5fedf" Name="XUnit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_c031c7ca-c8ad-4dd6-b466-4be84ed4995b" Name="XDataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+      </Attributes>
+    </ToolObject>
+    <ToolObject TID="_5506814f-4e8c-4764-adcc-8794eb66d66b" Name="Map">
+      <Comment>2D lookup table</Comment>
+      <Attributes>
+        <EnumerationAttribute AID="_66bd0a09-5634-41e5-87b9-dc54b9ed5b5c" Name="SUTType" Category="Default SuT Type">
+          <Elements>
+            <Element>Parameter</Element>
+            <Element>Measurement</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_c31bf3da-1035-4b75-88b7-66a1edeefce4" Name="Range" Category="Default SuT Type" />
+        <StringAttribute AID="_1fe768fc-e52d-41aa-ba5a-0b1fdd30e8bc" Name="Unit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_d105bcf4-bf95-4f28-beb9-f807dd3eb109" Name="DataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_913c9947-ec99-482b-ba6d-9e1fb249b2d7" Name="XRange" Category="Default SuT Type" />
+        <StringAttribute AID="_6bce374b-1037-45eb-80da-c50a5332e91c" Name="XUnit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_4303b465-d1b3-42e9-91c0-23977314882d" Name="XDataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <RangeAttribute AID="_c8558a97-7fcc-4337-a61c-f2ac46e81964" Name="YRange" Category="Default SuT Type" />
+        <StringAttribute AID="_77b6af36-e569-42c8-afe0-3e7023a3c762" Name="YUnit" Category="Default SuT Type" />
+        <EnumerationAttribute AID="_c349f908-1b84-4ce7-8008-5c24f0e68256" Name="YDataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+      </Attributes>
+    </ToolObject>
+    <ToolObject TID="_59d9661d-dcdd-4f14-bfe0-2a8d63d848ac" Name="Switch">
+      <Comment>Simple switch object</Comment>
+      <Attributes>
+        <EnumerationAttribute AID="_863f553e-f2ea-4533-b879-37dc17570506" Name="SUTType" Category="Default SuT Type">
+          <Elements>
+            <Element>Parameter</Element>
+            <Element>Measurement</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <EnumerationAttribute AID="_a9f10708-3a05-40aa-81d8-bf34f8e1cacd" Name="DataType" Category="Default SuT Type">
+          <Elements>
+            <Element>BitString</Element>
+            <Element>Boolean</Element>
+            <Element>Char</Element>
+            <Element>Float</Element>
+            <Element>HexString</Element>
+            <Element>Integer</Element>
+            <Element>OctString</Element>
+            <Element>String</Element>
+          </Elements>
+        </EnumerationAttribute>
+        <SwitchAttribute AID="_613da59b-c2a1-4df0-8fbc-3046fee7f84f" Name="Switch" Category="Default SuT Type" />
+      </Attributes>
+    </ToolObject>
+  </ToolObjectList>
+</file>

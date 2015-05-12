@@ -1,0 +1,3 @@
+LabcarIP: Aufsetzen eines HiL-Prüfstandes auf der Signalebene
+
+Autor: Dr. Christoph Weber

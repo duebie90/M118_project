@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Model
+  Name=""
+  Version=""
+  DocuGeneralPath="">
+  <Block
+    Name="BatteryMoreCells_Beta002_RTPC/Init SOC Individually [%]"
+    ModelHierarchy="BatteryMoreCells_Beta002_RTPC/Init SOC Individually [%]"
+    ModelFunctionality=""
+    BlockID=""
+    ClassName="Init SOC Individually [%]"
+    BlockComment="">
+    <CalibrationElement
+      Name="Value"
+      Dimension="Array"
+      Unit=""
+      MinValue="-1,79769313486232E+308"
+      MaxValue="1,79769313486232E+308"
+      Type="cont"
+      CaElID=""
+      WorkspaceName=""
+      Scope="local"
+      ModificationStatus="unchanged"
+      ProcessStatus="coarse"
+      ModelPath="BatteryMoreCells_Beta002_RTPC/Init SOC Individually [%]/Value"
+      ModelOption=""
+      Comment=""
+      UserGroup=""
+      History=""
+      Docu="">
+      <Array
+        Size="12">
+        <Yaxis>
+          <Value
+            OrderNumber="1"
+            Value="90" />
+          <Value
+            OrderNumber="2"
+            Value="90" />
+          <Value
+            OrderNumber="3"
+            Value="90" />
+          <Value
+            OrderNumber="4"
+            Value="90" />
+          <Value
+            OrderNumber="5"
+            Value="90" />
+          <Value
+            OrderNumber="6"
+            Value="60" />
+          <Value
+            OrderNumber="7"
+            Value="90" />
+          <Value
+            OrderNumber="8"
+            Value="90" />
+          <Value
+            OrderNumber="9"
+            Value="90" />
+          <Value
+            OrderNumber="10"
+            Value="90" />
+          <Value
+            OrderNumber="11"
+            Value="90" />
+          <Value
+            OrderNumber="12"
+            Value="90" />
+        </Yaxis>
+      </Array>
+    </CalibrationElement>
+  </Block>
+</Model>

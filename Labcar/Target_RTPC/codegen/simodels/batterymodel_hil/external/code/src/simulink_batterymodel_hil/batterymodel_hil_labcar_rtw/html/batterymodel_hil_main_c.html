@@ -1,0 +1,666 @@
+<HTML>
+<HEAD>
+<TITLE>RTW Report - Batterymodel_HiL_main.c </TITLE>
+<STYLE> .LN { font-style: italic; color: #888888 } </STYLE>
+<STYLE> .CT { font-style: italic; color: #117755 } </STYLE>
+<STYLE> .PP { font-style: bold;   color: #992211 } </STYLE>
+<STYLE> .KW { font-style: bold;   color: #112266 } </STYLE>
+<STYLE> .DT { font-style: bold;   color: #112266 } </STYLE>
+</HEAD>
+<BODY BGCOLOR="#eeeeee" TEXT="#1122aa" ONLOAD="if (top) { if (top.rtwFileOnLoad) top.rtwFileOnLoad(window);} ">
+<P>
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="6" WIDTH="100%" HEIGHT="100%"><TR><TD WIDTH="100%" VALIGN="top" BGCOLOR="#ffffff">
+<H4>File: <A HREF="file:///C:\GR3\lab4_V0.8\Target_RTPC\SimulinkModels\Simulink_Batterymodel_HiL\Batterymodel_HiL_LABCAR_rtw\Batterymodel_HiL_main.c" TARGET="rtwreport_document_frame">C:\GR3\lab4_V0.8\Target_RTPC\SimulinkModels\Simulink_Batterymodel_HiL\Batterymodel_HiL_LABCAR_rtw\Batterymodel_HiL_main.c</A></H4>
+<PRE id="RTWcode">
+<SPAN><A CLASS="LN" NAME="1">    1   </A><SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="2">    2   </A><SPAN CLASS="CT"> * File    : Batterymodel_HiL_main.c</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="3">    3   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="4">    4   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="5">    5   </A><SPAN CLASS="CT"> *      This file provides the main functionality for integration in the</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="6">    6   </A><SPAN CLASS="CT"> *      LABCAR experiment environment, consisting of several void/void C</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="7">    7   </A><SPAN CLASS="CT"> *      functions being mapped onto the underlying ERCOSEK as processes.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="8">    8   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="9">    9   </A><SPAN CLASS="CT"> * Compiler specified defines:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="10">   10   </A><SPAN CLASS="CT"> *      RT              - Required.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="11">   11   </A><SPAN CLASS="CT"> *      NUMST=#         - Required. Number of sample times.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="12">   12   </A><SPAN CLASS="CT"> *      NCSTATES=#      - Required. Number of continuous states.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="13">   13   </A><SPAN CLASS="CT"> *      TID01EQ=1 or 0  - Optional. Only define to 1 if sample time task</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="14">   14   </A><SPAN CLASS="CT"> *                        id's 0 and 1 have equal rates.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="15">   15   </A><SPAN CLASS="CT"> *      MULTITASKING    - Optional. (use MT for a synonym).</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="16">   16   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="17">   17   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="18">   18   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> TWO_STEPS
+</SPAN><SPAN><A CLASS="LN" NAME="19">   19   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> MODEL                          <A HREF="Batterymodel_HiL_c.html#fcn_Batterymodel_HiL" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_Batterymodel_HiL');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">Batterymodel_HiL</FONT></A>
+</SPAN><SPAN><A CLASS="LN" NAME="20">   20   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;float.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="21">   21   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;stdio.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="22">   22   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;stdlib.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="23">   23   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;string.h&gt;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="24">   24   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;tmwtypes.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="25">   25   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;rtmodel.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="26">   26   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;rt_sim.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="27">   27   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;rt_nonfinite.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="28">   28   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="29">   29   </A><SPAN CLASS="CT">// Inter-Module-Communication:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="30">   30   </A><SPAN CLASS="CT">//#include "ComLayer.h"</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="31">   31   </A><SPAN CLASS="CT">//#include "ComLayerDef.h"</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="32">   32   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;..\t_connec.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="33">   33   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;PortNumbers.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="34">   34   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;PortAddresses.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="35">   35   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;modComm.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="36">   36   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="37">   37   </A><SPAN CLASS="CT">//THandle inputArrayHandles[noInputs];</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="38">   38   </A><SPAN CLASS="CT">//THandle outputArrayHandles[noOutputs];</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="39">   39   </A><SPAN CLASS="CT">//double d_null = 0;</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="40">   40   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">double</SPAN> localInputArray_Batterymodel_HiL[<A NAME="var_noInputs">noInputs</A>];
+</SPAN><SPAN><A CLASS="LN" NAME="41">   41   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">double</SPAN> localOutputArray_Batterymodel_HiL[<A NAME="var_noOutputs">noOutputs</A>];
+</SPAN><SPAN><A CLASS="LN" NAME="42">   42   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="43">   43   </A><SPAN CLASS="CT">//double localInputArray[noInputs];</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="44">   44   </A><SPAN CLASS="CT">//double localOutputArray[noOutputs];</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="45">   45   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;ext_work.h&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="46">   46   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="47">   47   </A><SPAN CLASS="CT">/*=========*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="48">   48   </A><SPAN CLASS="CT"> * Defines *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="49">   49   </A><SPAN CLASS="CT"> *=========*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="50">   50   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> TRUE
+</SPAN><SPAN><A CLASS="LN" NAME="51">   51   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> FALSE                         (0)
+</SPAN><SPAN><A CLASS="LN" NAME="52">   52   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> TRUE                          (1)
+</SPAN><SPAN><A CLASS="LN" NAME="53">   53   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="54">   54   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="55">   55   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> EXIT_FAILURE
+</SPAN><SPAN><A CLASS="LN" NAME="56">   56   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> EXIT_FAILURE                  1
+</SPAN><SPAN><A CLASS="LN" NAME="57">   57   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="58">   58   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="59">   59   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> EXIT_SUCCESS
+</SPAN><SPAN><A CLASS="LN" NAME="60">   60   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> EXIT_SUCCESS                  0
+</SPAN><SPAN><A CLASS="LN" NAME="61">   61   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="62">   62   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="63">   63   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> QUOTE1(name)                   #name
+</SPAN><SPAN><A CLASS="LN" NAME="64">   64   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> QUOTE(name)                    QUOTE1(name)              <SPAN CLASS="CT">/* need to expand name    */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="65">   65   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> RT
+</SPAN><SPAN><A CLASS="LN" NAME="66">   66   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">error</SPAN> &quot;must define RT&quot;
+</SPAN><SPAN><A CLASS="LN" NAME="67">   67   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="68">   68   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="69">   69   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> MODEL
+</SPAN><SPAN><A CLASS="LN" NAME="70">   70   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">error</SPAN> &quot;must define MODEL&quot;
+</SPAN><SPAN><A CLASS="LN" NAME="71">   71   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="72">   72   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="73">   73   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> <A HREF="Batterymodel_HiL_main_c.html#var_NUMST" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_NUMST');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">NUMST</FONT></A>
+</SPAN><SPAN><A CLASS="LN" NAME="74">   74   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">error</SPAN> &quot;must define number of sample times, NUMST&quot;
+</SPAN><SPAN><A CLASS="LN" NAME="75">   75   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="76">   76   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="77">   77   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> NCSTATES
+</SPAN><SPAN><A CLASS="LN" NAME="78">   78   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">error</SPAN> &quot;must define NCSTATES&quot;
+</SPAN><SPAN><A CLASS="LN" NAME="79">   79   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="80">   80   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="81">   81   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> RUN_FOREVER                    -1.0
+</SPAN><SPAN><A CLASS="LN" NAME="82">   82   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> EXPAND_CONCAT(name1,name2)     name1 ## name2
+</SPAN><SPAN><A CLASS="LN" NAME="83">   83   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> CONCAT(name1,name2)            EXPAND_CONCAT(name1,name2)
+</SPAN><SPAN><A CLASS="LN" NAME="84">   84   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> RT_MODEL                       CONCAT(MODEL,_rtModel)
+</SPAN><SPAN><A CLASS="LN" NAME="85">   85   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="86">   86   </A><SPAN CLASS="CT">/*=======================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="87">   87   </A><SPAN CLASS="CT"> * External declarations *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="88">   88   </A><SPAN CLASS="CT"> *=======================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="89">   89   </A><SPAN CLASS="DT">extern</SPAN> RT_MODEL *MODEL(<SPAN CLASS="DT">void</SPAN>);
+</SPAN><SPAN><A CLASS="LN" NAME="90">   90   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_c.html#fcn_MdlInitializeSizes" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlInitializeSizes');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlInitializeSizes</FONT></A>(<SPAN CLASS="DT">void</SPAN>);
+</SPAN><SPAN><A CLASS="LN" NAME="91">   91   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_c.html#fcn_MdlInitializeSampleTimes" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlInitializeSampleTimes');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlInitializeSampleTimes</FONT></A>(<SPAN CLASS="DT">void</SPAN>);
+</SPAN><SPAN><A CLASS="LN" NAME="92">   92   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_c.html#fcn_MdlStart" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlStart');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlStart</FONT></A>(<SPAN CLASS="DT">void</SPAN>);
+</SPAN><SPAN><A CLASS="LN" NAME="93">   93   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_c.html#fcn_MdlOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlOutputs</FONT></A>(int_T tid);
+</SPAN><SPAN><A CLASS="LN" NAME="94">   94   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_c.html#fcn_MdlUpdate" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlUpdate');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlUpdate</FONT></A>(int_T tid);
+</SPAN><SPAN><A CLASS="LN" NAME="95">   95   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_c.html#fcn_MdlTerminate" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlTerminate');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlTerminate</FONT></A>(<SPAN CLASS="DT">void</SPAN>);
+</SPAN><SPAN><A CLASS="LN" NAME="96">   96   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="97">   97   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> NCSTATES &gt; 0
+</SPAN><SPAN><A CLASS="LN" NAME="98">   98   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="99">   99   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> rt_ODECreateIntegrationData(RTWSolverInfo *si);
+</SPAN><SPAN><A CLASS="LN" NAME="100">  100   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> rt_ODEUpdateContinuousStates(RTWSolverInfo *si);
+</SPAN><SPAN><A CLASS="LN" NAME="101">  101   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="102">  102   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> rt_CreateIntegrationData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)   rt_ODECreateIntegrationData(rtmGetRTWSolverInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="103">  103   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> rt_UpdateContinuousStates(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)  rt_ODEUpdateContinuousStates(rtmGetRTWSolverInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="104">  104   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="105">  105   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> rt_CreateIntegrationData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)   rtsiSetSolverName(rtmGetRTWSolverInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),<FONT COLOR="#1122ff">&quot;FixedStepDiscrete&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="106">  106   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> rt_UpdateContinuousStates(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)  rtmSetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>, rtsiGetSolverStopTime(rtmGetRTWSolverInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)));
+</SPAN><SPAN><A CLASS="LN" NAME="107">  107   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="108">  108   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="109">  109   </A><SPAN CLASS="CT">/* Prototypes from ...\common\protocol\l1\p_sysdef.h.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="110">  110   </A><SPAN CLASS="CT"> * Used for debug and error output via L1 communication channel</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="111">  111   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="112">  112   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> asdWriteUserDebug(<SPAN CLASS="DT">char</SPAN> *s, ...);
+</SPAN><SPAN><A CLASS="LN" NAME="113">  113   </A><SPAN CLASS="DT">extern</SPAN> <SPAN CLASS="DT">void</SPAN> asdWriteUserError(<SPAN CLASS="DT">char</SPAN> *s, ...);
+</SPAN><SPAN><A CLASS="LN" NAME="114">  114   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="115">  115   </A><SPAN CLASS="CT">/*==================================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="116">  116   </A><SPAN CLASS="CT"> * Global data local to this module *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="117">  117   </A><SPAN CLASS="CT"> *==================================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="118">  118   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="KW">struct</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="119">  119   </A>  int_T <A NAME="var_stopExecutionFlag">stopExecutionFlag</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="120">  120   </A>  int_T isrOverrun;
+</SPAN><SPAN><A CLASS="LN" NAME="121">  121   </A>  int_T overrunFlags[NUMST];
+</SPAN><SPAN><A CLASS="LN" NAME="122">  122   </A>  <SPAN CLASS="DT">const</SPAN> char_T *errmsg;
+</SPAN><SPAN><A CLASS="LN" NAME="123">  123   </A><B>}</B> GBLbuf;
+</SPAN><SPAN><A CLASS="LN" NAME="124">  124   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="125">  125   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> EXT_MODE
+</SPAN><SPAN><A CLASS="LN" NAME="126">  126   </A><FONT COLOR="#992211">#</FONT>  <SPAN CLASS="PP">define</SPAN> rtExtModeSingleTaskUpload(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) <B>{</B> int stIdx; rtExtModeUploadCheckTrigger(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)); for (stIdx=0; stIdx&lt;<A HREF="Batterymodel_HiL_main_c.html#var_NUMST" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_NUMST');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">NUMST</FONT></A>; stIdx++) <B>{</B> <SPAN CLASS="PP">if</SPAN> (rtmIsSampleHit(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>, stIdx, 0 <SPAN CLASS="CT">/*unused*/</SPAN>)) <B>{</B> rtExtModeUpload(stIdx,rtmGetTaskTime(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>,stIdx)); <B>}</B> <B>}</B> <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="127">  127   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="128">  128   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> rtExtModeSingleTaskUpload(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)                            <SPAN CLASS="CT">/* Do nothing */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="129">  129   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="130">  130   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="131">  131   </A><SPAN CLASS="DT">static</SPAN> RT_MODEL *<A NAME="var_S">S</A> = NULL;
+</SPAN><SPAN><A CLASS="LN" NAME="132">  132   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="133">  133   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> EXT_MODE
+</SPAN><SPAN><A CLASS="LN" NAME="134">  134   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="135">  135   </A>RT_MODEL ** <A NAME="var_p_S">p_S</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="136">  136   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="137">  137   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="138">  138   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="139">  139   </A><SPAN CLASS="DT">static</SPAN> int_T <A NAME="var_errorFlag">errorFlag</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="140">  140   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="141">  141   </A><SPAN CLASS="CT">/*=================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="142">  142   </A><SPAN CLASS="CT"> * Local functions *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="143">  143   </A><SPAN CLASS="CT"> *=================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="144">  144   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> !<SPAN CLASS="PP">defined</SPAN>(MULTITASKING)             <SPAN CLASS="CT">/* SINGLETASKING */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="145">  145   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="146">  146   </A><SPAN CLASS="CT">/* Function: rtOneStep ========================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="147">  147   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="148">  148   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="149">  149   </A><SPAN CLASS="CT"> *      Perform one step of the model. This function is modeled such that</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="150">  150   </A><SPAN CLASS="CT"> *      it could be called from an interrupt service routine (ISR) with minor</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="151">  151   </A><SPAN CLASS="CT"> *      modifications.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="152">  152   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="153">  153   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> TWO_STEPS
+</SPAN><SPAN><A CLASS="LN" NAME="154">  154   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="155">  155   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_main_c.html#fcn_rt_OneStep1" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_OneStep1');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_OneStep1</FONT></A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="156">  156   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="157">  157   </A>  <SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_OneStep">rt_OneStep</A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="158">  158   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="159">  159   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="160">  160   </A>  real_T tnext;
+</SPAN><SPAN><A CLASS="LN" NAME="161">  161   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="162">  162   </A>  <SPAN CLASS="CT">/***********************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="163">  163   </A><SPAN CLASS="CT">   * Check and see if base step time is too fast *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="164">  164   </A><SPAN CLASS="CT">   ***********************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="165">  165   </A>  <SPAN CLASS="KW">if</SPAN> (GBLbuf.isrOverrun++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="166">  166   </A>    GBLbuf.stopExecutionFlag = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="167">  167   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="168">  168   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="169">  169   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="170">  170   </A>  <SPAN CLASS="CT">/***********************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="171">  171   </A><SPAN CLASS="CT">   * Check and see if error status has been set  *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="172">  172   </A><SPAN CLASS="CT">   ***********************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="173">  173   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="174">  174   </A>    GBLbuf.stopExecutionFlag = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="175">  175   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="176">  176   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="177">  177   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="178">  178   </A>  <SPAN CLASS="CT">/* enable interrupts here */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="179">  179   </A>  tnext = <A HREF="rt_sim_c.html#fcn_rt_SimGetNextSampleHit" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimGetNextSampleHit');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimGetNextSampleHit</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="180">  180   </A>  rtsiSetSolverStopTime(rtmGetRTWSolverInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),tnext);
+</SPAN><SPAN><A CLASS="LN" NAME="181">  181   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlOutputs</FONT></A>(0);
+</SPAN><SPAN><A CLASS="LN" NAME="182">  182   </A>  rtExtModeSingleTaskUpload(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="183">  183   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="184">  184   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> TWO_STEPS
+</SPAN><SPAN><A CLASS="LN" NAME="185">  185   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="186">  186   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="187">  187   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="188">  188   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_OneStep2">rt_OneStep2</A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="189">  189   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="190">  190   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="191">  191   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="192">  192   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="193">  193   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlUpdate" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlUpdate');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlUpdate</FONT></A>(0);
+</SPAN><SPAN><A CLASS="LN" NAME="194">  194   </A>  <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteTaskSampleHits" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteTaskSampleHits');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteTaskSampleHits</FONT></A>(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="195">  195   </A>    rtmGetTimingData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="196">  196   </A>    rtmGetSampleHitPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="197">  197   </A>    rtmGetTPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="198">  198   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetSampleTime(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>,0) == CONTINUOUS_SAMPLE_TIME) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="199">  199   </A>    rt_UpdateContinuousStates(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="200">  200   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="201">  201   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="202">  202   </A>  GBLbuf.isrOverrun--;
+</SPAN><SPAN><A CLASS="LN" NAME="203">  203   </A>  rtExtModeCheckEndTrigger();
+</SPAN><SPAN><A CLASS="LN" NAME="204">  204   </A><B>}</B>                                      <SPAN CLASS="CT">/* end rtOneStep */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="205">  205   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="206">  206   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>                                  <SPAN CLASS="CT">/* MULTITASKING */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="207">  207   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">if</SPAN> TID01EQ == 1
+</SPAN><SPAN><A CLASS="LN" NAME="208">  208   </A><FONT COLOR="#992211">#</FONT>  <SPAN CLASS="PP">define</SPAN> FIRST_TID                    1
+</SPAN><SPAN><A CLASS="LN" NAME="209">  209   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="210">  210   </A><FONT COLOR="#992211">#</FONT>  <SPAN CLASS="PP">define</SPAN> FIRST_TID                    0
+</SPAN><SPAN><A CLASS="LN" NAME="211">  211   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="212">  212   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="213">  213   </A><SPAN CLASS="CT">/* Function: rtOneStep ========================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="214">  214   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="215">  215   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="216">  216   </A><SPAN CLASS="CT"> *      Perform one step of the model. This function is modeled such that</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="217">  217   </A><SPAN CLASS="CT"> *      it could be called from an interrupt service routine (ISR) with minor</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="218">  218   </A><SPAN CLASS="CT"> *      modifications.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="219">  219   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="220">  220   </A><SPAN CLASS="CT"> *      This routine is modeled for use in a multitasking environment and</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="221">  221   </A><SPAN CLASS="CT"> *      therefore needs to be fully re-entrant when it is called from an</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="222">  222   </A><SPAN CLASS="CT"> *      interrupt service routine.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="223">  223   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="224">  224   </A><SPAN CLASS="CT"> * Note:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="225">  225   </A><SPAN CLASS="CT"> *      Error checking is provided which will only be used if this routine</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="226">  226   </A><SPAN CLASS="CT"> *      is attached to an interrupt.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="227">  227   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="228">  228   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="229">  229   </A><SPAN CLASS="DT">static</SPAN> int_T eventFlags[<A NAME="var_NUMST">NUMST</A>];
+</SPAN><SPAN><A CLASS="LN" NAME="230">  230   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="231">  231   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> TWO_STEPS
+</SPAN><SPAN><A CLASS="LN" NAME="232">  232   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="233">  233   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">void</SPAN> <A NAME="fcn_rt_OneStep1">rt_OneStep1</A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="234">  234   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="235">  235   </A>  <SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_main_c.html#fcn_rt_OneStep" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_OneStep');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_OneStep</FONT></A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="236">  236   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="237">  237   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="238">  238   </A>  int_T i;
+</SPAN><SPAN><A CLASS="LN" NAME="239">  239   </A>  real_T tnext;
+</SPAN><SPAN><A CLASS="LN" NAME="240">  240   </A>  int_T *sampleHit = rtmGetSampleHitPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="241">  241   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="242">  242   </A>  <SPAN CLASS="CT">/***********************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="243">  243   </A><SPAN CLASS="CT">   * Check and see if base step time is too fast *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="244">  244   </A><SPAN CLASS="CT">   ***********************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="245">  245   </A>  <SPAN CLASS="KW">if</SPAN> (GBLbuf.isrOverrun++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="246">  246   </A>    GBLbuf.stopExecutionFlag = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="247">  247   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="248">  248   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="249">  249   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="250">  250   </A>  <SPAN CLASS="CT">/***********************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="251">  251   </A><SPAN CLASS="CT">   * Check and see if error status has been set  *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="252">  252   </A><SPAN CLASS="CT">   ***********************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="253">  253   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="254">  254   </A>    GBLbuf.stopExecutionFlag = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="255">  255   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="256">  256   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="257">  257   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="258">  258   </A>  <SPAN CLASS="CT">/* enable interrupts here */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="259">  259   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="260">  260   </A>  <SPAN CLASS="CT">/************************************************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="261">  261   </A><SPAN CLASS="CT">   * Update discrete events and buffer event flags locally so that ISR is *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="262">  262   </A><SPAN CLASS="CT">   * re-entrant.                                                          *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="263">  263   </A><SPAN CLASS="CT">   ************************************************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="264">  264   </A>  tnext = <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteEvents" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteEvents');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteEvents</FONT></A>(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="265">  265   </A>    rtmGetTimingData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="266">  266   </A>    rtmGetSampleHitPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="267">  267   </A>    rtmGetPerTaskSampleHitsPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="268">  268   </A>  rtsiSetSolverStopTime(rtmGetRTWSolverInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),tnext);
+</SPAN><SPAN><A CLASS="LN" NAME="269">  269   </A>  <SPAN CLASS="KW">for</SPAN> (i=FIRST_TID+1; i &lt; <A HREF="Batterymodel_HiL_main_c.html#var_NUMST" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_NUMST');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">NUMST</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="270">  270   </A>    eventFlags[i] = sampleHit[i];
+</SPAN><SPAN><A CLASS="LN" NAME="271">  271   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="272">  272   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="273">  273   </A>  <SPAN CLASS="CT">/*******************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="274">  274   </A><SPAN CLASS="CT">   * Step the model for the base sample time *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="275">  275   </A><SPAN CLASS="CT">   *******************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="276">  276   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlOutputs</FONT></A>(FIRST_TID);
+</SPAN><SPAN><A CLASS="LN" NAME="277">  277   </A>  rtExtModeUploadCheckTrigger(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="278">  278   </A>  rtExtModeUpload(FIRST_TID,rtmGetTaskTime(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>, FIRST_TID));
+</SPAN><SPAN><A CLASS="LN" NAME="279">  279   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="280">  280   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> TWO_STEPS
+</SPAN><SPAN><A CLASS="LN" NAME="281">  281   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="282">  282   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="283">  283   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="284">  284   </A><SPAN CLASS="DT">static</SPAN> <SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_main_c.html#fcn_rt_OneStep2" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_OneStep2');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_OneStep2</FONT></A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="285">  285   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="286">  286   </A>  int_T i;
+</SPAN><SPAN><A CLASS="LN" NAME="287">  287   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="288">  288   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="289">  289   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="290">  290   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlUpdate" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlUpdate');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlUpdate</FONT></A>(FIRST_TID);
+</SPAN><SPAN><A CLASS="LN" NAME="291">  291   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetSampleTime(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>,0) == CONTINUOUS_SAMPLE_TIME) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="292">  292   </A>    rt_UpdateContinuousStates(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="293">  293   </A>  <B>}</B> <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="294">  294   </A>    <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteTaskTime" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteTaskTime');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteTaskTime</FONT></A>(rtmGetTPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="295">  295   </A>      rtmGetTimingData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>), 0);
+</SPAN><SPAN><A CLASS="LN" NAME="296">  296   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="297">  297   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="298">  298   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> FIRST_TID == 1
+</SPAN><SPAN><A CLASS="LN" NAME="299">  299   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="300">  300   </A>  <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteTaskTime" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteTaskTime');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteTaskTime</FONT></A>(rtmGetTPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="301">  301   </A>    rtmGetTimingData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),1);
+</SPAN><SPAN><A CLASS="LN" NAME="302">  302   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="303">  303   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="304">  304   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="305">  305   </A>  <SPAN CLASS="CT">/************************************************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="306">  306   </A><SPAN CLASS="CT">   * Model step complete for base sample time, now it is okay to          *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="307">  307   </A><SPAN CLASS="CT">   * re-interrupt this ISR.                                               *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="308">  308   </A><SPAN CLASS="CT">   ************************************************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="309">  309   </A>  GBLbuf.isrOverrun--;
+</SPAN><SPAN><A CLASS="LN" NAME="310">  310   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="311">  311   </A>  <SPAN CLASS="CT">/*********************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="312">  312   </A><SPAN CLASS="CT">   * Step the model for any other sample times *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="313">  313   </A><SPAN CLASS="CT">   *********************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="314">  314   </A>  <SPAN CLASS="KW">for</SPAN> (i=FIRST_TID+1; i&lt;<A HREF="Batterymodel_HiL_main_c.html#var_NUMST" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_NUMST');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">NUMST</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="315">  315   </A>    <SPAN CLASS="KW">if</SPAN> (eventFlags[i]) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="316">  316   </A>      <SPAN CLASS="KW">if</SPAN> (GBLbuf.overrunFlags[i]++) <B>{</B>  <SPAN CLASS="CT">/* Are we sampling too fast for */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="317">  317   </A>        GBLbuf.stopExecutionFlag= 1;   <SPAN CLASS="CT">/*   sample time "i"?           */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="318">  318   </A>        <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="319">  319   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="320">  320   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="321">  321   </A>      <A HREF="Batterymodel_HiL_c.html#fcn_MdlOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlOutputs</FONT></A>(i);
+</SPAN><SPAN><A CLASS="LN" NAME="322">  322   </A>      rtExtModeUpload(i, rtmGetTaskTime(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>,i));
+</SPAN><SPAN><A CLASS="LN" NAME="323">  323   </A>      <A HREF="Batterymodel_HiL_c.html#fcn_MdlUpdate" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlUpdate');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlUpdate</FONT></A>(i);
+</SPAN><SPAN><A CLASS="LN" NAME="324">  324   </A>      <A HREF="rt_sim_c.html#fcn_rt_SimUpdateDiscreteTaskTime" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimUpdateDiscreteTaskTime');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimUpdateDiscreteTaskTime</FONT></A>(rtmGetTPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="325">  325   </A>        rtmGetTimingData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),i);
+</SPAN><SPAN><A CLASS="LN" NAME="326">  326   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="327">  327   </A>      <SPAN CLASS="CT">/* Indicate task complete for sample time "i" */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="328">  328   </A>      GBLbuf.overrunFlags[i]--;
+</SPAN><SPAN><A CLASS="LN" NAME="329">  329   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="330">  330   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="331">  331   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="332">  332   </A>  rtExtModeCheckEndTrigger();
+</SPAN><SPAN><A CLASS="LN" NAME="333">  333   </A><B>}</B>                                      <SPAN CLASS="CT">/* end rtOneStep */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="334">  334   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="335">  335   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>                                 <SPAN CLASS="CT">/* MULTITASKING */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="336">  336   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="337">  337   </A><SPAN CLASS="CT">/* Function: checkForErrors ===================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="338">  338   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="339">  339   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="340">  340   </A><SPAN CLASS="CT"> *      Check for errors and produce appropriate output if applicable.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="341">  341   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="342">  342   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="343">  343   </A><SPAN CLASS="DT">static</SPAN> int_T <A NAME="fcn_checkForErrors">checkForErrors</A>(RT_MODEL *<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="344">  344   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="345">  345   </A>  <SPAN CLASS="KW">if</SPAN> (GBLbuf.errmsg) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="346">  346   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: %s\n&quot;</FONT>,GBLbuf.errmsg);
+</SPAN><SPAN><A CLASS="LN" NAME="347">  347   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="348">  348   </A>    <SPAN CLASS="KW">return</SPAN> 1;
+</SPAN><SPAN><A CLASS="LN" NAME="349">  349   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="350">  350   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="351">  351   </A>  <SPAN CLASS="KW">if</SPAN> (GBLbuf.isrOverrun) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="352">  352   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: %s: ISR overrun - base sampling rate is &quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="353">  353   </A>                      <FONT COLOR="#1122ff">&quot;too fast\n&quot;</FONT>, QUOTE(MODEL));
+</SPAN><SPAN><A CLASS="LN" NAME="354">  354   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="355">  355   </A>    <SPAN CLASS="KW">return</SPAN> 1;
+</SPAN><SPAN><A CLASS="LN" NAME="356">  356   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="357">  357   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="358">  358   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="359">  359   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: %s\n&quot;</FONT>, rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="360">  360   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="361">  361   </A>    <SPAN CLASS="KW">return</SPAN> 1;
+</SPAN><SPAN><A CLASS="LN" NAME="362">  362   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="363">  363   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="364">  364   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> MULTITASKING
+</SPAN><SPAN><A CLASS="LN" NAME="365">  365   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="366">  366   </A>  <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="367">  367   </A>    int_T i;
+</SPAN><SPAN><A CLASS="LN" NAME="368">  368   </A>    <SPAN CLASS="KW">for</SPAN> (i=1; i&lt;<A HREF="Batterymodel_HiL_main_c.html#var_NUMST" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_NUMST');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">NUMST</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="369">  369   </A>      <SPAN CLASS="KW">if</SPAN> (GBLbuf.overrunFlags[i]) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="370">  370   </A>        asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: %s ISR overrun - sampling rate is &quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="371">  371   </A>                          <FONT COLOR="#1122ff">&quot;too fast for sample time index %d\n&quot;</FONT>,
+</SPAN><SPAN><A CLASS="LN" NAME="372">  372   </A>                          QUOTE(MODEL), i);
+</SPAN><SPAN><A CLASS="LN" NAME="373">  373   </A>        <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="374">  374   </A>        <SPAN CLASS="KW">return</SPAN> 1;
+</SPAN><SPAN><A CLASS="LN" NAME="375">  375   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="376">  376   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="377">  377   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="378">  378   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="379">  379   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="380">  380   </A>  <SPAN CLASS="KW">return</SPAN> 0;
+</SPAN><SPAN><A CLASS="LN" NAME="381">  381   </A><B>}</B>                                      <SPAN CLASS="CT">/* end checkForErrors */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="382">  382   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="383">  383   </A><SPAN CLASS="CT">/*===================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="384">  384   </A><SPAN CLASS="CT"> * Visible functions *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="385">  385   </A><SPAN CLASS="CT"> *===================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="386">  386   </A><SPAN CLASS="DT">void</SPAN> <A HREF="Batterymodel_HiL_main_c.html#fcn_lcrt_Terminate_Batterymodel_HiL" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_lcrt_Terminate_Batterymodel_HiL');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">lcrt_Terminate_Batterymodel_HiL</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="387">  387   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="388">  388   </A><SPAN CLASS="CT">/* Function: lcrt_Start_Batterymodel_HiL ========================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="389">  389   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="390">  390   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="391">  391   </A><SPAN CLASS="CT"> *   Initialize model on the LABCAR experimental target.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="392">  392   </A><SPAN CLASS="CT"> *   This void/void function is a process being mapped onto an init task of</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="393">  393   </A><SPAN CLASS="CT"> *   the underlying ERCOSEK operating system.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="394">  394   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="395">  395   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="396">  396   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_lcrt_Start_Batterymodel_HiL">lcrt_Start_Batterymodel_HiL</A>()
+</SPAN><SPAN><A CLASS="LN" NAME="397">  397   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="398">  398   </A>  <SPAN CLASS="DT">const</SPAN> <SPAN CLASS="DT">char</SPAN> *status;
+</SPAN><SPAN><A CLASS="LN" NAME="399">  399   </A>  real_T finaltime = -2.0;
+</SPAN><SPAN><A CLASS="LN" NAME="400">  400   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="401">  401   </A>  <SPAN CLASS="CT">//begin hktest</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="402">  402   </A>  <SPAN CLASS="CT">// Simulate arguments, to be removed</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="403">  403   </A>  int_T argc = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="404">  404   </A>  <SPAN CLASS="DT">const</SPAN> char_T *argv[] = <B>{</B> <FONT COLOR="#1122ff">&quot;&quot;</FONT> <B>}</B>;
+</SPAN><SPAN><A CLASS="LN" NAME="405">  405   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="406">  406   </A>  <SPAN CLASS="CT">//end hktest</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="407">  407   </A>  <SPAN CLASS="CT">/*****************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="408">  408   </A><SPAN CLASS="CT">   * Terminate simulation if still running *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="409">  409   </A><SPAN CLASS="CT">   *****************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="410">  410   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A> != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="411">  411   </A>    <A HREF="Batterymodel_HiL_main_c.html#fcn_lcrt_Terminate_Batterymodel_HiL" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_lcrt_Terminate_Batterymodel_HiL');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">lcrt_Terminate_Batterymodel_HiL</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="412">  412   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="413">  413   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="414">  414   </A>  <SPAN CLASS="CT">//begin hktest</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="415">  415   </A>  <SPAN CLASS="CT">// parse arguments and create user data</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="416">  416   </A>  rtExtModeParseArgs(argc, argv, NULL);
+</SPAN><SPAN><A CLASS="LN" NAME="417">  417   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="418">  418   </A>  <SPAN CLASS="CT">//end hktest</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="419">  419   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="420">  420   </A>  <SPAN CLASS="CT">/****************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="421">  421   </A><SPAN CLASS="CT">   * Initialize global memory *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="422">  422   </A><SPAN CLASS="CT">   ****************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="423">  423   </A>  (<SPAN CLASS="DT">void</SPAN>)memset(&amp;GBLbuf, 0, <SPAN CLASS="KW">sizeof</SPAN>(GBLbuf));
+</SPAN><SPAN><A CLASS="LN" NAME="424">  424   </A>  <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="425">  425   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="426">  426   </A>  <SPAN CLASS="CT">/************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="427">  427   </A><SPAN CLASS="CT">   * Initialize the model *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="428">  428   </A><SPAN CLASS="CT">   ************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="429">  429   </A>  <A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#fcn_rt_InitInfAndNaN" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_InitInfAndNaN');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_InitInfAndNaN</FONT></A>(<SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="430">  430   </A>  <A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A> = MODEL();
+</SPAN><SPAN><A CLASS="LN" NAME="431">  431   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="432">  432   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: Error during model registration: %s\n&quot;</FONT>,
+</SPAN><SPAN><A CLASS="LN" NAME="433">  433   </A>                      rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="434">  434   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="435">  435   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="436">  436   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="437">  437   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="438">  438   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> EXT_MODE
+</SPAN><SPAN><A CLASS="LN" NAME="439">  439   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="440">  440   </A>  <A HREF="Batterymodel_HiL_main_c.html#var_p_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_p_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">p_S</FONT></A> = &amp;<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>;                            <SPAN CLASS="CT">// export S to ext_work.c</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="441">  441   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="442">  442   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="443">  443   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="444">  444   </A>  <SPAN CLASS="CT">/* final time: set to forever; overwrite setting of model */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="445">  445   </A>  finaltime = (real_T) RUN_FOREVER;
+</SPAN><SPAN><A CLASS="LN" NAME="446">  446   </A>  <SPAN CLASS="KW">if</SPAN> (finaltime &gt;= 0.0 || finaltime == RUN_FOREVER)
+</SPAN><SPAN><A CLASS="LN" NAME="447">  447   </A>    rtmSetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>,finaltime);
+</SPAN><SPAN><A CLASS="LN" NAME="448">  448   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlInitializeSizes" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlInitializeSizes');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlInitializeSizes</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="449">  449   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlInitializeSampleTimes" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlInitializeSampleTimes');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlInitializeSampleTimes</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="450">  450   </A>  status = <A HREF="rt_sim_c.html#fcn_rt_SimInitTimingEngine" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_SimInitTimingEngine');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_SimInitTimingEngine</FONT></A>(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="451">  451   </A>    rtmGetStepSize(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="452">  452   </A>    rtmGetSampleTimePtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="453">  453   </A>    rtmGetOffsetTimePtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="454">  454   </A>    rtmGetSampleHitPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="455">  455   </A>    rtmGetSampleTimeTaskIDPtr(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="456">  456   </A>    rtmGetTStart(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="457">  457   </A>    &amp;rtmGetSimTimeStep(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="458">  458   </A>    &amp;rtmGetTimingData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="459">  459   </A>  <SPAN CLASS="KW">if</SPAN> (status != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="460">  460   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: Failed to initialize sample time &quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="461">  461   </A>                      <FONT COLOR="#1122ff">&quot;engine: %s\n&quot;</FONT>, status);
+</SPAN><SPAN><A CLASS="LN" NAME="462">  462   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="463">  463   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="464">  464   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="465">  465   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="466">  466   </A>  rt_CreateIntegrationData(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="467">  467   </A>  rtExtModeCheckInit(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="468">  468   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="469">  469   </A>  <SPAN CLASS="CT">/* actually disabled, revise later</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="470">  470   </A><SPAN CLASS="CT">     rtExtModeWaitForStartPkt(rtmGetRTWExtModeInfo(S),</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="471">  471   </A><SPAN CLASS="CT">     rtmGetNumSampleTimes(S),</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="472">  472   </A><SPAN CLASS="CT">     (boolean_T *)&rtmGetStopRequested(S));</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="473">  473   </A><SPAN CLASS="CT">   */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="474">  474   </A>  asdWriteUserDebug(<FONT COLOR="#1122ff">&quot;LCRT RTI: ** starting the model **\n&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="475">  475   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="476">  476   </A>  <SPAN CLASS="CT">// Inter-Module-Communication: Initialization</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="477">  477   </A>  LC_registerModule(<FONT COLOR="#1122ff">&quot;Batterymodel_HiL&quot;</FONT>, <A HREF="Batterymodel_HiL_main_c.html#var_noInputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_noInputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">noInputs</FONT></A>,
+</SPAN><SPAN><A CLASS="LN" NAME="478">  478   </A>                    localInputArray_Batterymodel_HiL, <A HREF="Batterymodel_HiL_main_c.html#var_noOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_noOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">noOutputs</FONT></A>,
+</SPAN><SPAN><A CLASS="LN" NAME="479">  479   </A>                    localOutputArray_Batterymodel_HiL);
+</SPAN><SPAN><A CLASS="LN" NAME="480">  480   </A>  <A HREF="Batterymodel_HiL_c.html#fcn_MdlStart" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlStart');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlStart</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="481">  481   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetErrorStatus(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="482">  482   </A>    GBLbuf.stopExecutionFlag = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="483">  483   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="484">  484   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="485">  485   </A>  <SPAN CLASS="CT">/*************************************************************************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="486">  486   </A><SPAN CLASS="CT">   * Execute the model.  You may attach rtOneStep to an ISR, if so replace *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="487">  487   </A><SPAN CLASS="CT">   * the call to rtOneStep (below) with a call to a background task        *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="488">  488   </A><SPAN CLASS="CT">   * application.                                                          *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="489">  489   </A><SPAN CLASS="CT">   *************************************************************************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="490">  490   </A>  <SPAN CLASS="KW">if</SPAN> (rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) == RUN_FOREVER) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="491">  491   </A>    asdWriteUserDebug(<FONT COLOR="#1122ff">&quot;LCRT RTI: ** May run forever. Model stop time set &quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="492">  492   </A>                      <FONT COLOR="#1122ff">&quot;to infinity. **\n&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="493">  493   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="494">  494   </A><B>}</B>                                      <SPAN CLASS="CT">/* end lcrt_Start_Batterymodel_HiL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="495">  495   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="496">  496   </A><SPAN CLASS="CT">/* Function: lcrt_OneStep_Batterymodel_HiL ======================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="497">  497   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="498">  498   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="499">  499   </A><SPAN CLASS="CT"> *   Perform one step of the model.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="500">  500   </A><SPAN CLASS="CT"> *   This void/void function is a process being mapped onto an alarm task of</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="501">  501   </A><SPAN CLASS="CT"> *   the underlying ERCOSEK operating system.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="502">  502   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="503">  503   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="504">  504   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> TWO_STEPS
+</SPAN><SPAN><A CLASS="LN" NAME="505">  505   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="506">  506   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_lcrt_OneStep_Outputs_Batterymodel_HiL">lcrt_OneStep_Outputs_Batterymodel_HiL</A>()
+</SPAN><SPAN><A CLASS="LN" NAME="507">  507   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="508">  508   </A>  <SPAN CLASS="DT">int</SPAN> i;
+</SPAN><SPAN><A CLASS="LN" NAME="509">  509   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A>) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="510">  510   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="511">  511   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="512">  512   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="513">  513   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A> == NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="514">  514   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: Error during model execution: &quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="515">  515   </A>                      <FONT COLOR="#1122ff">&quot;simulation structure not initialized\n&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="516">  516   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="517">  517   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="518">  518   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="519">  519   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="520">  520   </A>  <SPAN CLASS="KW">if</SPAN> (!GBLbuf.stopExecutionFlag &amp;&amp;
+</SPAN><SPAN><A CLASS="LN" NAME="521">  521   </A>      (rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) == RUN_FOREVER ||
+</SPAN><SPAN><A CLASS="LN" NAME="522">  522   </A>       rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)-rtmGetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) &gt; rtmGetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)*DBL_EPSILON)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="523">  523   </A>    rtExtModePauseIfNeeded(rtmGetRTWExtModeInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="524">  524   </A>      rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="525">  525   </A>                           (boolean_T *)&amp;rtmGetStopRequested(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="526">  526   </A>    <SPAN CLASS="KW">if</SPAN> (!rtmGetStopRequested(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="527">  527   </A>      <SPAN CLASS="CT">// Inter-Module-Communication: get external inputs for inports:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="528">  528   </A>      <SPAN CLASS="KW">for</SPAN> (i=0; i&lt;<A HREF="Batterymodel_HiL_main_c.html#var_noInputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_noInputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">noInputs</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="529">  529   </A>        localInputArray_Batterymodel_HiL[i] = getInPortValue
+</SPAN><SPAN><A CLASS="LN" NAME="530">  530   </A>          (inportAddressList_Batterymodel_HiL[i]);
+</SPAN><SPAN><A CLASS="LN" NAME="531">  531   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="532">  532   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="533">  533   </A>      <A HREF="Batterymodel_HiL_main_c.html#fcn_rt_OneStep1" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_OneStep1');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_OneStep1</FONT></A>(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="534">  534   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="535">  535   </A>      <SPAN CLASS="CT">// Inter-Module-Communication: set external outputs for outports:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="536">  536   </A>      <SPAN CLASS="KW">for</SPAN> (i=0; i&lt;<A HREF="Batterymodel_HiL_main_c.html#var_noOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_noOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">noOutputs</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="537">  537   </A>        setOutPortValue(outportAddressList_Batterymodel_HiL[i],
+</SPAN><SPAN><A CLASS="LN" NAME="538">  538   </A>                        localOutputArray_Batterymodel_HiL[i]);
+</SPAN><SPAN><A CLASS="LN" NAME="539">  539   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="540">  540   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="541">  541   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="542">  542   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="543">  543   </A>  <SPAN CLASS="CT">/* checkForErrors(S); */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="544">  544   </A><B>}</B>                                      <SPAN CLASS="CT">/* end lcrt_OneStep_Outputs_Batterymodel_HiL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="545">  545   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="546">  546   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_lcrt_OneStep_States_Batterymodel_HiL">lcrt_OneStep_States_Batterymodel_HiL</A>()
+</SPAN><SPAN><A CLASS="LN" NAME="547">  547   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="548">  548   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A>) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="549">  549   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="550">  550   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="551">  551   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="552">  552   </A>  <SPAN CLASS="KW">if</SPAN> (!GBLbuf.stopExecutionFlag &amp;&amp;
+</SPAN><SPAN><A CLASS="LN" NAME="553">  553   </A>      (rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) == RUN_FOREVER ||
+</SPAN><SPAN><A CLASS="LN" NAME="554">  554   </A>       rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)-rtmGetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) &gt; rtmGetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)*DBL_EPSILON)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="555">  555   </A>    <SPAN CLASS="KW">if</SPAN> (!rtmGetStopRequested(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="556">  556   </A>      <A HREF="Batterymodel_HiL_main_c.html#fcn_rt_OneStep2" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_OneStep2');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_OneStep2</FONT></A>(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="557">  557   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="558">  558   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="559">  559   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="560">  560   </A>  <A HREF="Batterymodel_HiL_main_c.html#fcn_checkForErrors" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_checkForErrors');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">checkForErrors</FONT></A>(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="561">  561   </A><B>}</B>                                      <SPAN CLASS="CT">/* end lcrt_OneStep_States_Batterymodel_HiL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="562">  562   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="563">  563   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="564">  564   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="565">  565   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_lcrt_OneStep_Batterymodel_HiL">lcrt_OneStep_Batterymodel_HiL</A>()
+</SPAN><SPAN><A CLASS="LN" NAME="566">  566   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="567">  567   </A>  <SPAN CLASS="DT">int</SPAN> i;
+</SPAN><SPAN><A CLASS="LN" NAME="568">  568   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A>) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="569">  569   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="570">  570   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="571">  571   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="572">  572   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A> == NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="573">  573   </A>    asdWriteUserError(<FONT COLOR="#1122ff">&quot;LCRT RTI: Error during model execution: &quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="574">  574   </A>                      <FONT COLOR="#1122ff">&quot;simulation structure not initialized\n&quot;</FONT>);
+</SPAN><SPAN><A CLASS="LN" NAME="575">  575   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A> = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="576">  576   </A>    <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="577">  577   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="578">  578   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="579">  579   </A>  <SPAN CLASS="KW">if</SPAN> (!GBLbuf.stopExecutionFlag &amp;&amp;
+</SPAN><SPAN><A CLASS="LN" NAME="580">  580   </A>      (rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) == RUN_FOREVER ||
+</SPAN><SPAN><A CLASS="LN" NAME="581">  581   </A>       rtmGetTFinal(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)-rtmGetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>) &gt; rtmGetT(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)*DBL_EPSILON)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="582">  582   </A>    rtExtModePauseIfNeeded(rtmGetRTWExtModeInfo(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="583">  583   </A>      rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>),
+</SPAN><SPAN><A CLASS="LN" NAME="584">  584   </A>                           (boolean_T *)&amp;rtmGetStopRequested(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="585">  585   </A>    <SPAN CLASS="KW">if</SPAN> (!rtmGetStopRequested(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="586">  586   </A>      <SPAN CLASS="CT">// Inter-Module-Communication: get external inputs for inports:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="587">  587   </A>      <SPAN CLASS="KW">for</SPAN> (i=0; i&lt;<A HREF="Batterymodel_HiL_main_c.html#var_noInputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_noInputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">noInputs</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="588">  588   </A>        localInputArray_Batterymodel_HiL[i] = getInPortValue
+</SPAN><SPAN><A CLASS="LN" NAME="589">  589   </A>          (inportAddressList_Batterymodel_HiL[i]);
+</SPAN><SPAN><A CLASS="LN" NAME="590">  590   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="591">  591   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="592">  592   </A>      <A HREF="Batterymodel_HiL_main_c.html#fcn_rt_OneStep" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_OneStep');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_OneStep</FONT></A>(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="593">  593   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="594">  594   </A>      <SPAN CLASS="CT">// Inter-Module-Communication: set external outputs for outports:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="595">  595   </A>      <SPAN CLASS="KW">for</SPAN> (i=0; i&lt;<A HREF="Batterymodel_HiL_main_c.html#var_noOutputs" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_noOutputs');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">noOutputs</FONT></A>; i++) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="596">  596   </A>        setOutPortValue(outportAddressList_Batterymodel_HiL[i],
+</SPAN><SPAN><A CLASS="LN" NAME="597">  597   </A>                        localOutputArray_Batterymodel_HiL[i]);
+</SPAN><SPAN><A CLASS="LN" NAME="598">  598   </A>      <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="599">  599   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="600">  600   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="601">  601   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="602">  602   </A>  <A HREF="Batterymodel_HiL_main_c.html#fcn_checkForErrors" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_checkForErrors');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">checkForErrors</FONT></A>(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>);
+</SPAN><SPAN><A CLASS="LN" NAME="603">  603   </A><B>}</B>                                      <SPAN CLASS="CT">/* end lcrt_OneStep_Batterymodel_HiL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="604">  604   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="605">  605   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="606">  606   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="607">  607   </A><SPAN CLASS="CT">/* Function: lcrt_Terminate_Batterymodel_HiL ====================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="608">  608   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="609">  609   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="610">  610   </A><SPAN CLASS="CT"> *   Shutdown the model on the LABCAR experimental target.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="611">  611   </A><SPAN CLASS="CT"> *   This void/void function is a process being mapped onto an init or</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="612">  612   </A><SPAN CLASS="CT"> *   software task of the underlying ERCOSEK operating system, which is</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="613">  613   </A><SPAN CLASS="CT"> *   called upon termination of the experiment.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="614">  614   </A><SPAN CLASS="CT"> *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="615">  615   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="616">  616   </A><SPAN CLASS="DT">void</SPAN> <A NAME="fcn_lcrt_Terminate_Batterymodel_HiL">lcrt_Terminate_Batterymodel_HiL</A>()
+</SPAN><SPAN><A CLASS="LN" NAME="617">  617   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="618">  618   </A>  <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A> != NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="619">  619   </A>    <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#var_errorFlag" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_errorFlag');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">errorFlag</FONT></A>) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="620">  620   </A>      <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="621">  621   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="622">  622   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="623">  623   </A>    <SPAN CLASS="CT">/*        if (!GBLbuf.stopExecutionFlag && !rtmGetStopRequested(S)) {</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="624">  624   </A><SPAN CLASS="CT">     // Execute model last time step</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="625">  625   </A><SPAN CLASS="CT">       #ifdef TWO_STEPS</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="626">  626   </A><SPAN CLASS="CT">       rt_OneStep1(S);</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="627">  627   </A><SPAN CLASS="CT">       rt_OneStep2(S);</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="628">  628   </A><SPAN CLASS="CT">       #else</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="629">  629   </A><SPAN CLASS="CT">       rt_OneStep(S);</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="630">  630   </A><SPAN CLASS="CT">       #endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="631">  631   </A><SPAN CLASS="CT">       }*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="632">  632   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="633">  633   </A>    <SPAN CLASS="CT">/********************</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="634">  634   </A><SPAN CLASS="CT">     * Cleanup and exit *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="635">  635   </A><SPAN CLASS="CT">     ********************/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="636">  636   </A>    rtExtModeShutdown(rtmGetNumSampleTimes(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>));
+</SPAN><SPAN><A CLASS="LN" NAME="637">  637   </A>    <SPAN CLASS="KW">if</SPAN> (<A HREF="Batterymodel_HiL_main_c.html#fcn_checkForErrors" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_checkForErrors');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">checkForErrors</FONT></A>(<A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A>)) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="638">  638   </A>      <SPAN CLASS="KW">return</SPAN>;
+</SPAN><SPAN><A CLASS="LN" NAME="639">  639   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="640">  640   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="641">  641   </A>    <A HREF="Batterymodel_HiL_c.html#fcn_MdlTerminate" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_MdlTerminate');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">MdlTerminate</FONT></A>();
+</SPAN><SPAN><A CLASS="LN" NAME="642">  642   </A>    <A HREF="Batterymodel_HiL_main_c.html#var_S" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_S');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">S</FONT></A> = NULL;
+</SPAN><SPAN><A CLASS="LN" NAME="643">  643   </A>  <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="644">  644   </A><B>}</B>                                      <SPAN CLASS="CT">/* end lcrt_Terminate_Batterymodel_HiL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="645">  645   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="646">  646   </A><SPAN CLASS="CT">/* EOF: Batterymodel_HiL_main.c */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="647">  647   </A>
+</SPAN></PRE>
+</TD></TR></TABLE>
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,4 @@
+<?SCHEMA schemaVersion="1.0"?>
+<IncaSignalSourceData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///C:/Programme/ETAS/Experiment%20Environment3.3/EE/Schemas/EE.Data.SignalSource.Inca.xsd" xsi:type="ETAS.EE.Data.IncaSignalSourceDataType">
+  <Configuration xsi:type="ETAS.EE.Data.IncaConfigurationType" enableinca="false" databasepath="" workspacefolder="" workspace="" experimentfolder="" experiment="" />
+</IncaSignalSourceData>

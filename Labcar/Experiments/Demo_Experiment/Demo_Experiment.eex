@@ -1,0 +1,73 @@
+<?SCHEMA schemaVersion="1.0"?>
+<Experiment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Program%20Files/ETAS/Experiment%20Environment3.3/EE/Schemas/EE.Data.Experiment.xsd" xsi:type="ETAS.EE.Data.ExperimentType">
+  <PluginData xsi:type="ETAS.EE.Data.PluginDataListType">
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="ID4f4a6e70-eb16-416c-8838-380d5da973d6" pluginID="Options" rootFolder="Options_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="ID52043f32-d680-42f2-b582-11db88b6e5e0" type="" name="Options" file="Options.opt" />
+      </Documents>
+    </Item>
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="IDb6b04ae1-5295-428f-a7c7-e1ab529bbdc6" pluginID="FilterDataPlugin" rootFolder="FilterDataPlugin_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="ID748bccdb-cb62-40c8-8187-edc7b6bdfb95" type="" name="FilterConfigurations" file="FilterConfigurations.xml" />
+      </Documents>
+    </Item>
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="IDed532fb3-52e1-4a77-ae96-e17bf05de1a9" pluginID="InstrumentationPlugin" rootFolder="InstrumentationPlugin_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="IDd0ba9d67-7afd-4911-93f2-48c50381b949" type="" name="WidgetsUIData" file="WidgetsUI.xml" />
+      </Documents>
+    </Item>
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="IDc89aa3a7-f879-4c96-80da-26ca5e6578c4" pluginID="DataloggerPlugin" rootFolder="DataloggerPlugin_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="IDc3b9d350-81a8-4227-8778-577424171e17" type="" name="DataloggerData" file="Datalogger.xml" />
+      </Documents>
+    </Item>
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="IDe6260b22-2b0b-4909-b4cb-474ccc387a41" pluginID="IncaSignalSourcePlugin" rootFolder="IncaSignalSourcePlugin_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="ID92c797f3-4efa-4bb9-ab12-95d9ee4611c5" type="" name="IncaSignalSourceData" file="IncaSignalSource.xml" />
+      </Documents>
+    </Item>
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="ID37aa0d85-6001-4b44-8f76-20cf999593f5" pluginID="CommonSignalGeneratorPlugin" rootFolder="CommonSignalGeneratorPlugin_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="IDc7a49d75-8228-4a6e-b05a-0c9fa90f152e" type="" name="SGConfiguration" file="SignalGenerator.xml" />
+      </Documents>
+    </Item>
+  </PluginData>
+  <ExperimentFiles xsi:type="ETAS.EE.Data.ExperimentFilesType">
+    <mappingFiles xsi:type="ETAS.EE.Data.MappingFileListType">
+      <item xsi:type="ETAS.EE.Data.MappingFileType" filePath=".\mapping_files\MappingFile.txt" active="true" />
+      <item xsi:type="ETAS.EE.Data.MappingFileType" filePath=".\Mapping_Files\MappingFile4.smf" active="true" />
+      <item xsi:type="ETAS.EE.Data.MappingFileType" filePath=".\Mapping_Files\MappingFile4.txt" active="true" />
+    </mappingFiles>
+    <dataloggerCfgFiles xsi:type="ETAS.EE.Data.DataloggerCfgFileListType">
+    </dataloggerCfgFiles>
+    <parameterFiles xsi:type="ETAS.EE.Data.ParameterFileListType">
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\CellInitialisation.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="1" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\TempInit.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="2" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\IntrlckCrashSgnlT30.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="3" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\T15Ein.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="4" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\SignalConversion.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="5" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\voltage_sample.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="6" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\control_manual_on.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="7" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\AllCells90.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="8" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\OneCell60SoC.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="9" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\AllCells100SoC.mpa" active="false" parameterFileHierarchy="" downloadOrderNumber="10" />
+      <item xsi:type="ETAS.EE.Data.ParameterFileType" filePath=".\Parameter_Files\OneCell60SoC.mpa" active="false" parameterFileHierarchy="one_cel_30_other_60SoCl" downloadOrderNumber="11" />
+    </parameterFiles>
+    <rtPluginFiles xsi:type="ETAS.EE.Data.RTPluginFileListType" />
+    <scriptRecorderFiles xsi:type="ETAS.EE.Data.ScriptRecorderFileListType" />
+  </ExperimentFiles>
+  <ExperimentInfo xsi:type="ETAS.EE.Data.ExperimentInfoType">
+    <DateTime xsi:type="ETAS.EE.Data.DateTimeInfoType" id="ID8560b414-2862-4da4-bac1-507f71e5afb8" Created="2010-10-04T09:04:21.371Z" LastOpened="2015-05-12T17:11:13.530Z" LastSaved="2015-05-12T17:31:00.109Z" />
+    <Version xsi:type="ETAS.EE.Data.VersionInfoType" id="ID48391cf6-49c6-46ed-9af6-e9f30f2cfe00" Created="3.2.1.9" LastSaved="3.3.1.5" MinRequired="3.3.1" />
+  </ExperimentInfo>
+  <ExperimentEventHooks xsi:type="ETAS.EE.Data.EventHooksListType">
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPreCloseExperiment" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPostCloseExperiment" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPreDownloadExperiment" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPostDownloadExperiment" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPreStartSimulation" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPostStartSimulation" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPreStopSimulation" externalFunction="" enabled="false" />
+    <item xsi:type="ETAS.EE.Data.EventHooksType" hookName="OnPostStopSimulation" externalFunction="" enabled="false" />
+  </ExperimentEventHooks>
+</Experiment>

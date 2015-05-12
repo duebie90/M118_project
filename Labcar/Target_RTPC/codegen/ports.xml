@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Ports>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_01" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_6126770687954aa5a70afb59f2aa9d34" InitValue="0.0" Index="0">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_02" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_695989ac0da944f0be1c98924295fab7" InitValue="0.0" Index="1">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_03" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_946cb1c84fce453ba9b400c149710358" InitValue="0.0" Index="2">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_04" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_1118bb50198b4ae693ed4687be47bea8" InitValue="0.0" Index="3">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_05" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_2c5e56cbca574c8b8273d4d76894f539" InitValue="0.0" Index="4">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_06" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_5a2c054392d04eb39ccb8cbdbfecf1fb" InitValue="0.0" Index="5">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_07" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_188ae718e49c4e0dbc49a5cd8e0f35af" InitValue="0.0" Index="6">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_08" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_8c9c4457072c4282be1e7847c25220aa" InitValue="0.0" Index="7">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_09" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_14363d19c36e42168c1b403d55425331" InitValue="0.0" Index="8">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_10" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_d03f4c1d33db4315ad156ff49e7184b9" InitValue="0.0" Index="9">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_11" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_266265ff7b2f44ac8220a9480fe1df3d" InitValue="0.0" Index="10">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports_Balance /bala_12" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_0f9973d46f7d4ff4a0ee9ff964ead501" InitValue="0.0" Index="11">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/displays/Batteriestrom/bat_mode_system" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_cbc74688ca1a40d89030d05db9f2b746" InitValue="0.0" Index="12">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/displays/Batteriestrom/current_system" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_ae811898dbd649e1ac99b1a2b2724afb" InitValue="0.0" Index="13">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_fdadb9c4865a4c179bc171b8939a2139" InitValue="0.0" Index="14">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_7144f1c02211475b98f173c76f3cb89e" InitValue="0.0" Index="15">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT01" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_976a3735ee5541328a41c9f82471a2ee" InitValue="0.0" Index="16">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT02" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_f5f8caef45174e7380e3c4a8fe4cb757" InitValue="0.0" Index="17">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT03" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_a343931cb6834a59a9aeefb7a9b36044" InitValue="0.0" Index="18">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT04" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_3054af4cfc024ebbb72155eba4a47508" InitValue="0.0" Index="19">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT05" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_44f08e9fb15044538506afc7ffbe6d27" InitValue="0.0" Index="20">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT06" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_79d35aea949846dfa9d2557c64a91b2f" InitValue="0.0" Index="21">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT07" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_ab97d1ed503949b081408b8a18369fa2" InitValue="0.0" Index="22">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT08" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_b25bb4ba734e4d6ab0ffa1670d1b599b" InitValue="0.0" Index="23">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT09" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_47f90dee885a41c786df767beaa429cb" InitValue="0.0" Index="24">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT10" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_d8a432276c3f499bbd322a2b88d901c9" InitValue="0.0" Index="25">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT11" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_01b71de1fefc4006ae33108f491154bd" InitValue="0.0" Index="26">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT12" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_1aa81392a06543e28f7f115ca11f0e21" InitValue="0.0" Index="27">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV01" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_9f6a1b34aa6b477ca54b826eed14b6f5" InitValue="0.0" Index="28">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV02" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_605629666db743b9b94e5009f2cf2abc" InitValue="0.0" Index="29">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV03" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_e8de47bb14a644cfa0bcc3dd4039efe2" InitValue="0.0" Index="30">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV04" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_9af8b79728884e05ba8da73c37d34ec8" InitValue="0.0" Index="31">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV05" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_dda68b3d7b7a4491b651efc3b9e5dd52" InitValue="0.0" Index="32">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV06" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_ab2d6f365c0e49369ca0c3885b39adcc" InitValue="0.0" Index="33">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV07" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_0ee6a729fe4f429485190cc1ed0243a7" InitValue="0.0" Index="34">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV08" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_2bd5bb092a164b689900b6026787b392" InitValue="0.0" Index="35">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV09" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_afface7cf99645a0b61bd18f6b6e9044" InitValue="0.0" Index="36">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV10" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_03d24b9d95f2420bbd7d85e6d9aa22a3" InitValue="0.0" Index="37">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV11" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_9165a05cd22c411f9b7472144e5ff8c0" InitValue="0.0" Index="38">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Cell_Voltage/CellV12" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_0537325e5c8045ae83bb616b0feb5df6" InitValue="0.0" Index="39">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Error/Error_CellNo" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_ed52b6c96a7b42b98372ec744c0fdb9d" InitValue="0.0" Index="40">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Error/Error_Event" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_937f454ae9c54de59b73d96e8011375e" InitValue="0.0" Index="41">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inports Error/Error_Indication" SCVisible="true" Direction="Inport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Inport_3fb57075b1184ce49f3616e85012bc84" InitValue="0.0" Index="42">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_01" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_1ec134f7f6be4844bcf6588eae2bd279" Index="43">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_02" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_e934439adb7f4525bc4696d3377f0720" Index="44">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_03" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_788f35ea1f6a4722bda603f6c6239181" Index="45">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_04" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_f5f570c92f794b98968ad36d5d75546b" Index="46">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_05" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_056c85024ebb40d68e5fe458d95b2bc4" Index="47">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_06" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_44b1983a22e4461a9d75e60d233e5ba6" Index="48">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_07" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_a6c7e50e4d664fe19ccdebbbcdf797f2" Index="49">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_08" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_2743a9a446a648b7bfdfe23bcbf4fa22" Index="50">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_09" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_592bd8adcb6744019cadee1ed411b7a4" Index="51">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_10" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_424c74e30cbe4f7cb2c505e82fca4f6e" Index="52">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_11" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_063e4e37e4774b7784f8f3f9eb7d8c69" Index="53">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_12" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_bae6af9f6c5445aca6138b5c9321d505" Index="54">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_01" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_2292d362d7de4d718ce81dc766f7120d" Index="55">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_02" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_ecc00f425c9e4277870ae36abca1afd6" Index="56">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_03" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_0a9a9183894945539cf19593f12489db" Index="57">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_04" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_7318ac6ebc5240239f29ce290844899c" Index="58">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_05" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_77a5a00c8c7f41a39501c14aa0fdbb90" Index="59">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_06" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_832bf1c9bc1448de873929ed42036fea" Index="60">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_07" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_f09425878ac34f87bc2763d25b89183b" Index="61">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_08" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_e4b2e806ed3c4162a3e69194141d9e63" Index="62">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_09" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_03a2c34504ce45f989ca0fda864543e3" Index="63">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_10" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_cf39ca3eb9e34f49a63a2b448cdf80d1" Index="64">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_11" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_e90304c6c8ab41d3bd6e01af2a0cfe07" Index="65">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellströme/Curr_12" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_e9cf76bb77d84008b43099e08985965a" Index="66">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/bat_modus" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_54e24052440345229ff6bc616aecbe55" Index="67">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/current [mA]" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_488d865ae47b4048b2aa03bef812b5c4" Index="68">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_01" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_63e30c28632d4ec99550fc802c3c62e1" Index="69">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_02" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_446ce2602d3b4e1881378e07ef73b01d" Index="70">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_03" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_ceeee4bbd54947a4ae5657cda7eccf48" Index="71">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_04" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_ae56536c014e4335aa010fbb6a849fda" Index="72">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_05" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_0864124e9b404c27be6ab600cdc6337f" Index="73">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_06" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_2197db0b81ca4969a25926e73f1b5bc5" Index="74">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_07" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_758dc213d8a341e69760ad164e0630ca" Index="75">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_08" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_eae8e275063e4acfade5c35004781555" Index="76">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_09" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_2ddcadef8a5f436290478a04bc7c1055" Index="77">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_10" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_540821b06db447c5bcb1bea73d46478e" Index="78">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_11" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_25bc52cc904e413aac7a9fd0d0da0374" Index="79">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_12" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_b0d833b9157c4029a2c5a806846c3395" Index="80">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Outports/voltage [mV]" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_afa7a667771a4ec8b929af91988f9c22" Index="81">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="Batterymodel_HiL/Inputs/Betriebsmodus/Mod_CAN_RS232_Com" SCVisible="true" Direction="Outport" Type="SL" Module="Batterymodel_HiL" Name="Batterymodel_HiL_Outport_e9f3213b679d49b5a809192b5ffd1354" Index="82">
+		<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_101std_rtpc_bms_volt_1_4" InitValue="1.1" Index="83">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_101std_rtpc_bms_volt_1_4" InitValue="0" Index="84">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_101std_rtpc_bms_volt_1_4" InitValue="0" Index="85">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/Cell_V1" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V1" InitValue="0.0000000000000000e+000" Index="86">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/Cell_V2" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V2" InitValue="0.0000000000000000e+000" Index="87">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/Cell_V3" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V3" InitValue="0.0000000000000000e+000" Index="88">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/Cell_V4" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V4" InitValue="0.0000000000000000e+000" Index="89">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_102std_rtpc_bms_volt_5_8" InitValue="1.1" Index="90">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_102std_rtpc_bms_volt_5_8" InitValue="0" Index="91">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_102std_rtpc_bms_volt_5_8" InitValue="0" Index="92">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/Cell_V5" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V5" InitValue="0.0000000000000000e+000" Index="93">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/Cell_V6" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V6" InitValue="0.0000000000000000e+000" Index="94">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/Cell_V7" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V7" InitValue="0.0000000000000000e+000" Index="95">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/Cell_V8" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V8" InitValue="0.0000000000000000e+000" Index="96">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_103std_rtpc_bms_volt_9_12" InitValue="1.1" Index="97">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_103std_rtpc_bms_volt_9_12" InitValue="0" Index="98">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_103std_rtpc_bms_volt_9_12" InitValue="0" Index="99">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/Cell_V10" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V10" InitValue="0.0000000000000000e+000" Index="100">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/Cell_V11" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V11" InitValue="0.0000000000000000e+000" Index="101">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/Cell_V12" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V12" InitValue="0.0000000000000000e+000" Index="102">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/Cell_V9" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V9" InitValue="0.0000000000000000e+000" Index="103">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_111std_rtpc_bms_temp_1_4" InitValue="1.1" Index="104">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_111std_rtpc_bms_temp_1_4" InitValue="0" Index="105">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_111std_rtpc_bms_temp_1_4" InitValue="0" Index="106">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/Cell_T1" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T1" InitValue="0.0000000000000000e+000" Index="107">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/Cell_T2" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T2" InitValue="0.0000000000000000e+000" Index="108">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/Cell_T3" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T3" InitValue="0.0000000000000000e+000" Index="109">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/Cell_T4" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T4" InitValue="0.0000000000000000e+000" Index="110">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_112std_rtpc_bms_temp_5_8" InitValue="1.1" Index="111">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_112std_rtpc_bms_temp_5_8" InitValue="0" Index="112">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_112std_rtpc_bms_temp_5_8" InitValue="0" Index="113">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/Cell_T5" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_T5" InitValue="0.0000000000000000e+000" Index="114">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/Cell_T6" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_T6" InitValue="0.0000000000000000e+000" Index="115">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/Cell_T7" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_T7" InitValue="0.0000000000000000e+000" Index="116">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/Cell_V8" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_V8" InitValue="0.0000000000000000e+000" Index="117">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_113std_rtpc_bms_temp_9_12" InitValue="1.1" Index="118">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_113std_rtpc_bms_temp_9_12" InitValue="0" Index="119">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_113std_rtpc_bms_temp_9_12" InitValue="0" Index="120">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/Cell_T10" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T10" InitValue="0.0000000000000000e+000" Index="121">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/Cell_T11" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T11" InitValue="0.0000000000000000e+000" Index="122">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/Cell_T12" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T12" InitValue="0.0000000000000000e+000" Index="123">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/Cell_T9" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T9" InitValue="0.0000000000000000e+000" Index="124">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/inTrigger" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_inTrigger_bo0_co0_131std_rtpc_bms_sammeln" InitValue="1.1" Index="125">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/SingleShot" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_singleShot_bo0_co0_131std_rtpc_bms_sammeln" InitValue="0" Index="126">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/CycleTime" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_cycleTime_bo0_co0_131std_rtpc_bms_sammeln" InitValue="0" Index="127">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/Absolute_Amp" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Absolute_Amp" InitValue="0.0000000000000000e+000" Index="128">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/Laden" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Laden" InitValue="0.0000000000000000e+000" Index="129">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/Mode" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Mode" InitValue="0.0000000000000000e+000" Index="130">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/Total_volt" SCVisible="true" Direction="Inport" Type="RTIO" Module="CANModule" Name="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Total_volt" InitValue="0.0000000000000000e+000" Index="131">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_101std_rtpc_bms_volt_1_4_timeStamp" Index="132">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/101std_rtpc_bms_volt_1_4/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_101std_rtpc_bms_volt_1_4_remoteTrigger" Index="133">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_102std_rtpc_bms_volt_5_8_timeStamp" Index="134">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/102std_rtpc_bms_volt_5_8/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_102std_rtpc_bms_volt_5_8_remoteTrigger" Index="135">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_103std_rtpc_bms_volt_9_12_timeStamp" Index="136">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/103std_rtpc_bms_volt_9_12/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_103std_rtpc_bms_volt_9_12_remoteTrigger" Index="137">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_111std_rtpc_bms_temp_1_4_timeStamp" Index="138">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/111std_rtpc_bms_temp_1_4/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_111std_rtpc_bms_temp_1_4_remoteTrigger" Index="139">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_112std_rtpc_bms_temp_5_8_timeStamp" Index="140">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/112std_rtpc_bms_temp_5_8/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_112std_rtpc_bms_temp_5_8_remoteTrigger" Index="141">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_113std_rtpc_bms_temp_9_12_timeStamp" Index="142">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/113std_rtpc_bms_temp_9_12/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_113std_rtpc_bms_temp_9_12_remoteTrigger" Index="143">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_131std_rtpc_bms_sammeln_timeStamp" Index="144">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/SendMessages/Board_0/Controller_0/131std_rtpc_bms_sammeln/RemoteTrigger" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_131std_rtpc_bms_sammeln_remoteTrigger" Index="145">
+		<Process Name="CAN_Send_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/201std_bms_rtcp_volt_1_4/Cell_V1" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_201std_bms_rtcp_volt_1_4_Signal_Cell_V1" Index="146">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/201std_bms_rtcp_volt_1_4/Cell_V2" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_201std_bms_rtcp_volt_1_4_Signal_Cell_V2" Index="147">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/201std_bms_rtcp_volt_1_4/Cell_V3" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_201std_bms_rtcp_volt_1_4_Signal_Cell_V3" Index="148">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/201std_bms_rtcp_volt_1_4/Cell_V4" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_201std_bms_rtcp_volt_1_4_Signal_Cell_V4" Index="149">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/201std_bms_rtcp_volt_1_4/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_201std_bms_rtcp_volt_1_4_timeStamp" Index="150">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/202std_bms_rctp_volt_5_8/Cell_V5" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_202std_bms_rctp_volt_5_8_Signal_Cell_V5" Index="151">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/202std_bms_rctp_volt_5_8/Cell_V6" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_202std_bms_rctp_volt_5_8_Signal_Cell_V6" Index="152">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/202std_bms_rctp_volt_5_8/Cell_V7" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_202std_bms_rctp_volt_5_8_Signal_Cell_V7" Index="153">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/202std_bms_rctp_volt_5_8/Cell_V8" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_202std_bms_rctp_volt_5_8_Signal_Cell_V8" Index="154">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/202std_bms_rctp_volt_5_8/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_202std_bms_rctp_volt_5_8_timeStamp" Index="155">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/203std_bms_rctp_volt_9_12/Cell_V10" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_203std_bms_rctp_volt_9_12_Signal_Cell_V10" Index="156">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/203std_bms_rctp_volt_9_12/Cell_V11" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_203std_bms_rctp_volt_9_12_Signal_Cell_V11" Index="157">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/203std_bms_rctp_volt_9_12/Cell_V12" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_203std_bms_rctp_volt_9_12_Signal_Cell_V12" Index="158">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/203std_bms_rctp_volt_9_12/Cell_V9" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_203std_bms_rctp_volt_9_12_Signal_Cell_V9" Index="159">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/203std_bms_rctp_volt_9_12/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_203std_bms_rctp_volt_9_12_timeStamp" Index="160">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/211std_bms_rctp_temp_1_4/Cell_T1" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_211std_bms_rctp_temp_1_4_Signal_Cell_T1" Index="161">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/211std_bms_rctp_temp_1_4/Cell_T2" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_211std_bms_rctp_temp_1_4_Signal_Cell_T2" Index="162">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/211std_bms_rctp_temp_1_4/Cell_T3" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_211std_bms_rctp_temp_1_4_Signal_Cell_T3" Index="163">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/211std_bms_rctp_temp_1_4/Cell_T4" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_211std_bms_rctp_temp_1_4_Signal_Cell_T4" Index="164">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/211std_bms_rctp_temp_1_4/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_211std_bms_rctp_temp_1_4_timeStamp" Index="165">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/212std_bms_rctp_temp_5_8/Cell_T5" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_212std_bms_rctp_temp_5_8_Signal_Cell_T5" Index="166">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/212std_bms_rctp_temp_5_8/Cell_T6" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_212std_bms_rctp_temp_5_8_Signal_Cell_T6" Index="167">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/212std_bms_rctp_temp_5_8/Cell_T7" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_212std_bms_rctp_temp_5_8_Signal_Cell_T7" Index="168">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/212std_bms_rctp_temp_5_8/Cell_T8" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_212std_bms_rctp_temp_5_8_Signal_Cell_T8" Index="169">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/212std_bms_rctp_temp_5_8/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_212std_bms_rctp_temp_5_8_timeStamp" Index="170">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/213std_bms_rctp_temp_9_12/Cell_T10" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_213std_bms_rctp_temp_9_12_Signal_Cell_T10" Index="171">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/213std_bms_rctp_temp_9_12/Cell_T11" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_213std_bms_rctp_temp_9_12_Signal_Cell_T11" Index="172">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/213std_bms_rctp_temp_9_12/Cell_T12" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_213std_bms_rctp_temp_9_12_Signal_Cell_T12" Index="173">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/213std_bms_rctp_temp_9_12/Cell_T9" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_213std_bms_rctp_temp_9_12_Signal_Cell_T9" Index="174">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/213std_bms_rctp_temp_9_12/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_213std_bms_rctp_temp_9_12_timeStamp" Index="175">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_1" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_1" Index="176">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_10" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_10" Index="177">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_11" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_11" Index="178">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_12" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_12" Index="179">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_2" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_2" Index="180">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_3" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_3" Index="181">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_4" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_4" Index="182">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_5" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_5" Index="183">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_6" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_6" Index="184">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_7" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_7" Index="185">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_8" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_8" Index="186">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Cell_9" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Cell_9" Index="187">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Reserviert_1" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Reserviert_1" Index="188">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Reserviert_2" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Reserviert_2" Index="189">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/Reserviert_3" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_Signal_Reserviert_3" Index="190">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/221std_bms_rtcp_bal/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_221std_bms_rtcp_bal_timeStamp" Index="191">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/231std_bms_rtcp_sammeln/Absolut_Amp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_231std_bms_rtcp_sammeln_Signal_Absolut_Amp" Index="192">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/231std_bms_rtcp_sammeln/Laden" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_231std_bms_rtcp_sammeln_Signal_Laden" Index="193">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/231std_bms_rtcp_sammeln/SoC" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_231std_bms_rtcp_sammeln_Signal_SoC" Index="194">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/231std_bms_rtcp_sammeln/Total_Volt" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_231std_bms_rtcp_sammeln_Signal_Total_Volt" Index="195">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+	<Port Target="RTPC" Path="CANModule/ReceiveMessages/Board_0/Controller_0/231std_bms_rtcp_sammeln/TimeStamp" SCVisible="true" Direction="Outport" Type="RTIO" Module="CANModule" Name="outport_bo0_co0_231std_bms_rtcp_sammeln_timeStamp" Index="196">
+		<Process Name="CAN_Receive_board0_controller0"/>
+	</Port>
+</Ports>

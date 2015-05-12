@@ -1,0 +1,12 @@
+[HiL_Model/UI_control/ETAS_VoltageTargetAllValues]
+HiL_Model\UI_control\ETAS_VoltageTargetAllValues\Value=HiL_Model/UI_control/ETAS_VoltageTargetAllValues/Value
+[HiL_Model/UI_control/ETAS_RampTimeFactor]
+HiL_Model\UI_control\ETAS_RampTimeFactor\Value=HiL_Model/UI_control/ETAS_RampTimeFactor/Value
+[HiL_Model/UI_control/ETAS_RampStartVoltage]
+HiL_Model\UI_control\ETAS_RampStartVoltage\Value=HiL_Model/UI_control/ETAS_RampStartVoltage/Value
+[HiL_Model/UI_control/ETAS_RampEndtVoltage]
+HiL_Model\UI_control\ETAS_RampEndtVoltage\Value=HiL_Model/UI_control/ETAS_RampEndtVoltage/Value
+[HiL_Model/UI_control/ETAS_Mode_Input]
+HiL_Model\UI_control\ETAS_Mode_Input\Value=HiL_Model/UI_control/ETAS_Mode_Input/Value
+[HiL_Model/UI_control/ETAS_CurrentTargetAllValues]
+HiL_Model\UI_control\ETAS_CurrentTargetAllValues\Value=HiL_Model/UI_control/ETAS_CurrentTargetAllValues/Value

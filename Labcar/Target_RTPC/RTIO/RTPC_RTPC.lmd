@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<Modules>
+<Module Name='Hardware'>
+<Info>
+<Tool Name='RTIO' Version='LABCAR-RTCV5.1.1.7596' Complete='Yes'>
+</Tool>
+</Info>
+<Build>
+<Files>
+<File Kind='body' Name='hwcident.c' Path='$(CodeDir)'>
+</File>
+<File Kind='header' Name='Es113x_rt.h' Path='$(CodeDir)'>
+</File>
+<File Kind='body' Name='Es113x_ext.c' Path='$(CodeDir)'>
+</File>
+<File Kind='body' Name='Es113x_rt.c' Path='$(CodeDir)'>
+</File>
+</Files>
+</Build>
+<Interface>
+<CalibrationVariables>
+<CalibrationVariable Visible='true' Name='hwcStructID' StructureType='Scalar' Path='Hardware' Dimension='1' Label='hwcStructID' DataType='uint32'>
+</CalibrationVariable>
+<CalibrationVariable Visible='true' Name='hwcParaID' StructureType='Scalar' Path='Hardware' Dimension='1' Label='hwcParaID' DataType='uint32'>
+</CalibrationVariable>
+</CalibrationVariables>
+<MeasureVariables>
+</MeasureVariables>
+<Inports>
+</Inports>
+<Outports>
+</Outports>
+<Processes>
+<Process Name='Es113x_InitCode_Init_HWCF'>
+<Task Position='1' Name='Init' Section='Begin'>
+</Task>
+</Process>
+<Process Name='Es113x_SyncReceiveCode_TaskDVEModel_HWCF'>
+<Task Position='1' Name='TaskDVEModel' Section='Receive'>
+</Task>
+</Process>
+<Process Name='Es113x_SyncSendCode_TaskDVEModel_HWCF'>
+<Task Position='1' Name='TaskDVEModel' Section='Send'>
+</Task>
+</Process>
+<Process Name='Es113x_ExitCode_Exit_HWCL'>
+<Task Position='1' Name='Exit' Section='Begin'>
+</Task>
+</Process>
+</Processes>
+</Interface>
+</Module>
+</Modules>

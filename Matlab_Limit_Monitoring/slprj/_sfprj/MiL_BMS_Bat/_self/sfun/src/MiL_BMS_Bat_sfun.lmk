@@ -1,0 +1,45 @@
+CC     = "C:\Program Files\MATLAB\R2011b\sys\lcc\bin\lcc.exe"
+LD     = "C:\Program Files\MATLAB\R2011b\sys\lcc\bin\lcclnk.exe"
+LIBCMD = "C:\Program Files\MATLAB\R2011b\sys\lcc\bin\lcclib.exe"
+CFLAGS = -c -Zp8 -DMATLAB_MEX_FILE -noregistrylookup
+LDFLAGS = -s -dll -L"C:\Program Files\MATLAB\R2011b\sys\lcc\lib"
+LIBFLAGS = 
+
+OBJECTS = \
+	"MiL_BMS_Bat_sfun.obj"\
+	"MiL_BMS_Bat_sfun_registry.obj"\
+	"c1_MiL_BMS_Bat.obj"\
+	"c2_MiL_BMS_Bat.obj"\
+	"c4_MiL_BMS_Bat.obj"\
+	"c12_MiL_BMS_Bat.obj"\
+	"lccstub.obj"\
+	"C:\Program Files\MATLAB\R2011b\sys\lcc\mex\lccdef.def"\
+	"C:\Program Files\MATLAB\R2011b\stateflow\c\debugger\lib\win32\sfc_debuglcc.lib"\
+	"C:\Program Files\MATLAB\R2011b\stateflow\c\mex\lib\win32\sfc_mexlcc.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libmex.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libmx.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libfixedpoint.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libut.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libmwmathutil.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libemlrt.lib"\
+	"C:\Program Files\MATLAB\R2011b\extern\lib\win32\lcc\libmwblascompat32.lib"\
+
+INCLUDE_PATH= -I"C:\Program Files\MATLAB\R2011b\sys\lcc\include"  -I"C:\Program Files\MATLAB\R2011b\extern\include"  -I"C:\Program Files\MATLAB\R2011b\simulink\include"  -I"C:\Program Files\MATLAB\R2011b\stateflow\c\mex\include"  -I"C:\Program Files\MATLAB\R2011b\stateflow\c\debugger\include" 
+ 
+
+MiL_BMS_Bat_sfun.mexw32 : $(MAKEFILE) $(OBJECTS)
+	$(LD) $(LDFLAGS) -o MiL_BMS_Bat_sfun.mexw32 @MiL_BMS_Bat_sfun.lmko
+MiL_BMS_Bat_sfun.obj :	"MiL_BMS_Bat_sfun.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "MiL_BMS_Bat_sfun.c"
+MiL_BMS_Bat_sfun_registry.obj :	"MiL_BMS_Bat_sfun_registry.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "MiL_BMS_Bat_sfun_registry.c"
+c1_MiL_BMS_Bat.obj :	"c1_MiL_BMS_Bat.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c1_MiL_BMS_Bat.c"
+c2_MiL_BMS_Bat.obj :	"c2_MiL_BMS_Bat.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c2_MiL_BMS_Bat.c"
+c4_MiL_BMS_Bat.obj :	"c4_MiL_BMS_Bat.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c4_MiL_BMS_Bat.c"
+c12_MiL_BMS_Bat.obj :	"c12_MiL_BMS_Bat.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c12_MiL_BMS_Bat.c"
+lccstub.obj :	"C:\Program Files\MATLAB\R2011b\sys\lcc\mex\lccstub.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "C:\Program Files\MATLAB\R2011b\sys\lcc\mex\lccstub.c"

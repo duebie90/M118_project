@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<can version="3" name="CANModule" ignoreMinMax="false" protocol="CAN" displayName="">
+  <input>
+    <dbcfile name="BAT_MAN_MATRIX.DBC" />
+    <dbcfile name="NEWDB.DBC" />
+  </input>
+  <canboard name="Board_0" type="IXXAT" instancenumber="0">
+    <cancontroller name="Controller_0" port="0" baudrate="500000" btr0="0" btr1="28" usesmask="false" stdmask="0" stdcode="0" extmask="0" extcode="0" speed="high" supportedUnknownMsgs="10" useForXcp="false" SST="true" CheckInterval="5.0000000000000000e-001" initCheck="4" spreadSendFrames="false" baserateManual="5.0000000000000000e+002" baserateAutomatic="1.0000000000000000e+003" baserateCalcMode="1" btrManual="false" />
+    <cancontroller name="Controller_1" port="1" baudrate="500000" btr0="0" btr1="28" usesmask="false" stdmask="0" stdcode="0" extmask="0" extcode="0" speed="high" supportedUnknownMsgs="10" useForXcp="false" SST="true" CheckInterval="5.0000000000000000e-001" initCheck="4" spreadSendFrames="false" baserateManual="5.0000000000000000e+002" baserateAutomatic="5.0000000000000000e+002" baserateCalcMode="1" btrManual="false" />
+  </canboard>
+  <can_part name="NewDB" fileName="NewDB.lcp" />
+</can>

@@ -1,0 +1,6 @@
+[INCA/CCP:1]
+ASW_Sub_State=INCA/CCP:1/BSC_stSub
+ASW_Main_State=INCA/CCP:1/BSC_st
+PreRlyLo_State=INCA/CCP:1/AAb_stPreRlyLo_mp
+PosRlyLo_State=INCA/CCP:1/AAb_stPosRlyLo_mp
+NegRlyLo_State=INCA/CCP:1/AAb_stNegRlyLo_mp

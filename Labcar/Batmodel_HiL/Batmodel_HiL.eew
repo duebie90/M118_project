@@ -1,0 +1,23 @@
+<?SCHEMA schemaVersion="1.0"?>
+<Workspace xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Program%20Files/ETAS/Experiment%20Environment3.3/EE/Schemas/EE.Data.Workspace.xsd" xsi:type="ETAS.EE.Data.WorkspaceType">
+  <PluginData xsi:type="ETAS.EE.Data.PluginDataListType">
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="ID61d30ab0-b245-4e3e-b093-ab304e6b6cc0" pluginID="Options" rootFolder="Options_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="ID8416d05c-8a69-4a34-ac63-4add4fb4533e" type="" name="Options" file="Options.opt" />
+      </Documents>
+    </Item>
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="ID5005e987-71e7-4093-adfe-30d7b092d6bf" pluginID="SignalSourceManager" rootFolder="SignalSourceManager_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="ID1e09b309-2eea-431f-b86e-69e2c6f5b283" type="" name="SignalSourcesData" file="SignalSources.xml" />
+      </Documents>
+    </Item>
+  </PluginData>
+  <RecentExperiments xsi:type="ETAS.EE.Data.FileReferenceListType">
+    <Item xsi:type="ETAS.EE.Data.FileReferenceType" id="IDb688f913-0c30-45ab-a998-53228dd8bf57" path="C:\GR3\lab4_V0.8\Experiments\Demo_Experiment\Demo_Experiment.eex" hintPath="..\Experiments\Demo_Experiment\Demo_Experiment.eex" />
+    <Item xsi:type="ETAS.EE.Data.FileReferenceType" id="IDf8bc272c-8285-4894-a11c-d2ab583d4714" path="C:\BMS_v4\Experiments\DefaultExp\DefaultExp.eex" hintPath="..\Experiments\DefaultExp\DefaultExp.eex" />
+  </RecentExperiments>
+  <WorkspaceInfo xsi:type="ETAS.EE.Data.WorkspaceInfoType">
+    <DateTime xsi:type="ETAS.EE.Data.DateTimeInfoType" id="ID652f4de7-c24f-48a1-a9fb-3b50f0196a6f" Created="2012-11-22T18:00:51.796Z" LastOpened="2015-05-12T17:11:07.127Z" LastSaved="2015-05-12T17:31:04.972Z" />
+    <Version xsi:type="ETAS.EE.Data.VersionInfoType" id="IDa31b172f-75be-4361-92d9-8a6797e3b656" Created="3.3.1.5" LastSaved="3.3.1.5" MinRequired="3.3.1" />
+  </WorkspaceInfo>
+</Workspace>

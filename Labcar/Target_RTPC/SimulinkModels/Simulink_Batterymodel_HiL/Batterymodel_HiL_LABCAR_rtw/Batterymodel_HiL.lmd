@@ -1,0 +1,3072 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Modules>
+<Module Name="Batterymodel_HiL">
+	<Info>
+		<Tool Name = "Matlab" Version = "R2011b" Complete = "True" />
+	</Info>
+
+	<Build>
+
+		<Compiler>
+			<Options>
+				<!-- RTW specific defines -->
+				<Option Kind="macroDefine" Value="USE_RTMODEL" />
+				<Option Kind="macroDefine" Value="RT" />
+				<Option Kind="macroDefine" Value="NUMST=2" />
+				<Option Kind="macroDefine" Value="TID01EQ=1" />
+				<Option Kind="macroDefine" Value="NCSTATES=0" />
+				<Option Kind="macroDefine" Value="MT=0" />
+				<Option Kind="macroDefine" Value="HAVESTDIO" />
+				<!-- RTW specific include directories -->
+				<Option Kind="includeDirectory" Value="$(CodeDir)" />
+				<Option Kind="includeDirectory" Value="$(MatlabDir)\simulink\include" />
+				<Option Kind="includeDirectory" Value="$(MatlabDir)\extern\include" />
+				<Option Kind="includeDirectory" Value="$(MatlabDir)\rtw\c\src" />
+				<Option Kind="includeDirectory" Value="$(MatlabDir)\rtw\c\src\ext_mode\common" />
+				<Option Kind="includeDirectory" Value="$(MatlabDir)\rtw\c\libsrc" />
+				<!-- Files from the following directory are only used if not found in the previous MatlabDir folders. This happens especially if Matlab is not installed and thus the previous folders do not exist -->
+				<Option Kind="includeDirectory" Value="$(MatlabCopyDir)\include" />
+			</Options>
+		</Compiler>
+
+		<!-- Model specific files -->
+		<Files>
+			<!-- Model specific C-files -->
+			<File Name="Batterymodel_HiL.c" Path="$(CodeDir)" Kind="body" />
+			<File Name="Batterymodel_HiL_private.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="Batterymodel_HiL.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="Batterymodel_HiL_types.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="rtwtypes.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="rt_nonfinite.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="rt_nonfinite.c" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="body" />
+			<File Name="rtGetInf.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="rtGetInf.c" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="body" />
+			<File Name="rtGetNaN.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="rtGetNaN.c" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="body" />
+			<File Name="rtmodel.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="Batterymodel_HiL_data.c" Path="$(CodeDir)" Kind="body" />
+			<File Name="rt_defines.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="rtw_shared_utils.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="portNumbers.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="portAddresses.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="modComm.h" Path="$(LCOInstDir)\SiCo" Kind="header" />
+			<File Name="modComm.c" Path="$(LCOInstDir)\SiCo" Kind="body" />
+			<File Name="Batterymodel_HiL_main.c" Path="$(CodeDir)" Kind="body" />
+			<File Name="Batterymodel_HiL_lcrtmacros.h" Path="$(CodeDir)" Kind="header" />
+			<File Name="rt_sim.c" Path="$(CodeDir)" Kind="body" />
+			<File Name="rtw_shared_utils.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<File Name="rtwtypes.h" Path="$(ModelDir)\slprj\lcrt\_sharedutils\" Kind="header" />
+			<!-- non-fully-inlined S-Function specific files -->
+			<File Name="LCOutport.c" Path="$(LCOInstDir)\SiCo" Kind="body" />
+			<File Name="LCInport.c" Path="$(LCOInstDir)\SiCo" Kind="body" />
+		</Files>
+
+	</Build>
+
+	<Interface>
+		<CalibrationVariables>
+			<!-- rtP Parameters -->
+			<CalibrationVariable Name="Batterymodel_HiL_P.ChargeSwitch_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Charge Profile/ChargeSwitch"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.ChargeCurrentA1_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Charge Profile/ChargeCurrent[A]1"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.ChargeCurrentA_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Charge Profile/ChargeCurrent[A]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Constant1_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Charge Profile/Constant1"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Gain1_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/Outports/Gain1"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Constant_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Outports/Constant"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.C_diff_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/1.//C_diff"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Vektorize_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/Vektorize"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Vektorize_Gain_o" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Vektorize"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.UnitDelay_X0" 
+				Visible = "True" 
+				Label="X0" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Unit Delay"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.R_balance_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/R_balance"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_01_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_01"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_01_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_01"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_02_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_02"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_02_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_02"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_03_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_03"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_03_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_03"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_04_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_04"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_04_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_04"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_05_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_05"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_05_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_05"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_06_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_06"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_06_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_06"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_07_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_07"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_07_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_07"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_08_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_08"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_08_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_08"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_09_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_09"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_09_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_09"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_10_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_10"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_10_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_10"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_11_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_11"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_11_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_11"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_12_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_12"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bala_12_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports_Balance /bala_12"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Gain_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Gain"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.C_diffR_diff_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/1//C_diff*R_diff)"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.UnitDelay1_X0" 
+				Visible = "True" 
+				Label="X0" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Unit Delay1"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Gain1_Gain_a" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Gain1"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.UnitDelay_X0_n" 
+				Visible = "True" 
+				Label="X0" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Unit Delay"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.R_ctR_i_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/R_ct+R_i"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.UnitDelay_X0_k" 
+				Visible = "True" 
+				Label="X0" 
+				Path="Batterymodel_HiL/battery/Unit Delay"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Gain_Gain_e" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Gain"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.poles_soc_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/ poles_soc"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="5" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Gain_Gain_f" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/Outports/Gain"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Q_0_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell/1//Q_0"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.DiscreteTimeIntegrator_gainval" 
+				Visible = "True" 
+				Label="gainval" 
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell/Discrete-Time Integrator"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.DiscreteTimeIntegrator_IC" 
+				Visible = "True" 
+				Label="InitialCondition" 
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell/Discrete-Time Integrator"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.InitSoC_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Init SoC [%]"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.u11_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/battery/0.01-&gt;1%"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.charge_currentA_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/charge_current [A]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.charge_currentmA_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/charge_current [mA]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bat_mode_system_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/bat_mode_system"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bat_mode_system_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/bat_mode_system"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.current_system_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/current_system"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.current_system_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/current_system"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.current_systemA_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Batteriestrom/current_system [A]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Cellno_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/displays/Vergleich SoC/Cellno"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.SoC_Kalman_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.SoC_Kalman_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.bat_voltagemV_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Batteirespannung/bat_voltage [mV]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.voltage_system_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.voltage_system_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.voltage_systemmV_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system [mV]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.voltage_systemV_Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system [V]"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.InitAmbientTemperatureK_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Init Ambient Temperature [K]"
+				DataType="real64" 
+				StructureType="Array" 
+				Dimension="12" />
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Mod_CAN_RS232_Value" 
+				Visible = "True" 
+				Label="Value" 
+				Path="Batterymodel_HiL/Inputs/Betriebsmodus/Mod_CAN_RS232"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT01_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT01"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT01_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT01"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT02_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT02"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT02_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT02"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT03_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT03"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT03_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT03"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT04_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT04"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT04_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT04"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT05_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT05"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT05_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT05"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT06_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT06"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT06_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT06"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT07_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT07"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT07_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT07"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT08_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT08"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT08_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT08"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT09_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT09"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT09_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT09"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT10_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT10"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT10_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT10"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT11_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT11"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT11_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT11"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT12_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT12"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellT12_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT12"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV01_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV01"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV01_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV01"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV02_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV02"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV02_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV02"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV03_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV03"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV03_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV03"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV04_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV04"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV04_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV04"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV05_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV05"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV05_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV05"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV06_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV06"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV06_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV06"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV07_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV07"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV07_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV07"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV08_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV08"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV08_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV08"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV09_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV09"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV09_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV09"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV10_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV10"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV10_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV10"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV11_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV11"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV11_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV11"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV12_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV12"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.CellV12_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV12"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Error_CellNo_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Error/Error_CellNo"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Error_CellNo_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Error/Error_CellNo"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Error_Event_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Error/Error_Event"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Error_Event_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Error/Error_Event"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+
+
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Error_Indication_P3" 
+				Visible = "True" 
+				Label="b_useConstant" 
+				Path="Batterymodel_HiL/Inports Error/Error_Indication"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.Error_Indication_P4" 
+				Visible = "True" 
+				Label="constValue" 
+				Path="Batterymodel_HiL/Inports Error/Error_Indication"
+				DataType="real64" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<CalibrationVariable Name="Batterymodel_HiL_P.SoC_Kalman__Gain" 
+				Visible = "True" 
+				Label="Gain" 
+				Path="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman_%"
+				DataType="real32" 
+				StructureType="Scalar" 
+				Dimension="1" />
+
+			<!-- constant Parameters -->
+			<!-- exported global Parameters -->
+			<!-- imported extern Parameters -->
+		</CalibrationVariables>
+
+		<MeasureVariables>
+			<!-- rtB signals following -->
+								<MeasureVariable Name="Batterymodel_HiL_B.FromWs"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inputs/Charge Profile/virtuel drive cycle/FromWs"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.ChargeCurrentA"
+				Visible = "True"
+				Label ="ChargeCurrent[A]"
+				Path="Batterymodel_HiL/Inputs/Charge Profile/Multiport Switch"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.ChargeCurrentA_l"
+				Visible = "True"
+				Label ="ChargeCurrent[A]"
+				Path="Batterymodel_HiL/Inputs/Charge Profile/Product"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Gain1"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Gain1"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.SumofElements"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Sum of Elements"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Divide"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Divide"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Abs"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Abs"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Vektorize"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/Vektorize"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Vektorize_d"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Vektorize"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.UnitDelay"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Unit Delay"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Divide_k"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Divide"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_01"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_01"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_02"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_02"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_03"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_03"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_04"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_04"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_05"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_05"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_06"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_06"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_07"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_07"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_08"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_08"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_09"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_09"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_10"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_10"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_11"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_11"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bala_12"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports_Balance /bala_12"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Product"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Product"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Add"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Add"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Product_d"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Product"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Gain"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Gain"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.UnitDelay1"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Unit Delay1"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Product1"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Product1"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Gain1_g"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Gain1"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.UnitDelay_l"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Unit Delay"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Add_o"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Add"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Product2"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Product2"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.UnitDelay_o"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Unit Delay"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Gain_p"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Gain"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Add1"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret/Add1"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Gain_k"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Gain"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.SumofElements1"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Sum of Elements1"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Q_0"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell/1//Q_0"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.DiscreteTimeIntegrator"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell/Discrete-Time Integrator"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Add_d"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell/Add"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.u11"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/battery/0.01-&gt;1%"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.charge_currentA"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteriestrom/charge_current [A]"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.charge_currentmA"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteriestrom/charge_current [mA]"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bat_mode_system"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteriestrom/bat_mode_system"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.current_system"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteriestrom/current_system"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.current_systemA"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteriestrom/current_system [A]"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.SumofElements_c"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Vergleich SoC/Sum of Elements"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.SoCModel_"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Vergleich SoC/SoC Model_% "
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.SoC_Kalman"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.deltaSoC"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Vergleich SoC/delta SoC"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.sum_bat_voltageV"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteirespannung/sum_bat_voltage [V]"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bat_voltagemV"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteirespannung/bat_voltage [mV]"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.voltage_system"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.voltage_systemmV"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system [mV]"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.voltage_systemV"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Batteirespannung/voltage_system [V]"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT01"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT01"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT02"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT02"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT03"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT03"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT04"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT04"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT05"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT05"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT06"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT06"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT07"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT07"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT08"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT08"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT09"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT09"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT10"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT10"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT11"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT11"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellT12"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cel_Temperatures/CellT12"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV01"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV01"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV02"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV02"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV03"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV03"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV04"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV04"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV05"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV05"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV06"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV06"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV07"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV07"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV08"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV08"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV09"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV09"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV10"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV10"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV11"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV11"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.CellV12"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Cell_Voltage/CellV12"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Error_CellNo"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Error/Error_CellNo"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Error_Event"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Error/Error_Event"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.Error_Indication"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Inports Error/Error_Indication"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.current_out"
+				Visible = "True"
+				Label ="current_out"
+				Path="Batterymodel_HiL/displays/Batteriestrom/current_system [mA]"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.y"
+				Visible = "True"
+				Label ="y"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/MATLAB Function"
+    				DataType="real64"  
+	
+				StructureType="Array"
+				Dimension="12" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.bat_modus"
+				Visible = "True"
+				Label ="bat_modus"
+				Path="Batterymodel_HiL/Outports/Embedded MATLAB Function"
+    				DataType="real64"  
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.DataTypeConversion"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Vergleich SoC/Data Type Conversion"
+    				DataType="real32"
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.SoC_Kalman_"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman_%"
+    				DataType="real32"
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.DataTypeConversion_f"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Data Type Conversion"
+    				DataType="uint16"
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+								<MeasureVariable Name="Batterymodel_HiL_B.DataTypeConversion1"
+				Visible = "True"
+				Label ="Out"
+				Path="Batterymodel_HiL/Outports/Data Type Conversion1"
+    				DataType="uint16"
+	
+				StructureType="Scalar"
+				Dimension="1" />
+
+			<!-- constant rtC signals following -->
+			<!-- exported global and imported extern signals following -->
+			<!-- structure block outputs following -->
+		
+			<MeasureVariable Name="Batterymodel_HiL_B.ChargeCurrentA_l"
+				Visible = "True"
+				Label ="charge_current [A]"
+				Path="Batterymodel_HiL/Inputs"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.ChargeCurrentA_l"
+				Visible = "True"
+				Label ="Current [A]"
+				Path="Batterymodel_HiL/Inputs/Charge Profile"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.u11"
+				Visible = "True"
+				Label ="SoC [%]"
+				Path="Batterymodel_HiL/battery"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add1"
+				Visible = "True"
+				Label ="Terminal Voltage [V]"
+				Path="Batterymodel_HiL/battery"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add1"
+				Visible = "True"
+				Label ="U_cells"
+				Path="Batterymodel_HiL/battery/Batteriemodell"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add"
+				Visible = "True"
+				Label ="I_cells"
+				Path="Batterymodel_HiL/battery/Batteriemodell"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add1"
+				Visible = "True"
+				Label ="U_cells"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add"
+				Visible = "True"
+				Label ="I_cells"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add1"
+				Visible = "True"
+				Label ="u_cells"
+				Path="Batterymodel_HiL/battery/Batteriemodell/battery_electrical_values/Subsystem_diskret"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+			<MeasureVariable Name="Batterymodel_HiL_B.Add_d"
+				Visible = "True"
+				Label ="SoC_Cell"
+				Path="Batterymodel_HiL/battery/SoC_Cells_Modell"
+				DataType="real64"
+				StructureType="Array"
+				Dimension="12" />
+
+		</MeasureVariables>
+
+		<Inports>
+			<Inport ID="Batterymodel_HiL_Inport_6126770687954aa5a70afb59f2aa9d34" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_01" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_695989ac0da944f0be1c98924295fab7" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_02" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_946cb1c84fce453ba9b400c149710358" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_03" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_1118bb50198b4ae693ed4687be47bea8" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_04" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_2c5e56cbca574c8b8273d4d76894f539" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_05" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_5a2c054392d04eb39ccb8cbdbfecf1fb" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_06" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_188ae718e49c4e0dbc49a5cd8e0f35af" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_07" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_8c9c4457072c4282be1e7847c25220aa" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_08" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_14363d19c36e42168c1b403d55425331" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_09" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_d03f4c1d33db4315ad156ff49e7184b9" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_10" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_266265ff7b2f44ac8220a9480fe1df3d" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_11" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_0f9973d46f7d4ff4a0ee9ff964ead501" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports_Balance /bala_12" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_cbc74688ca1a40d89030d05db9f2b746" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/displays/Batteriestrom/bat_mode_system" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_ae811898dbd649e1ac99b1a2b2724afb" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/displays/Batteriestrom/current_system" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_fdadb9c4865a4c179bc171b8939a2139" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/displays/Vergleich SoC/SoC_Kalman" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_7144f1c02211475b98f173c76f3cb89e" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/displays/Batteirespannung/voltage_system" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_976a3735ee5541328a41c9f82471a2ee" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT01" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_f5f8caef45174e7380e3c4a8fe4cb757" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT02" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_a343931cb6834a59a9aeefb7a9b36044" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT03" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_3054af4cfc024ebbb72155eba4a47508" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT04" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_44f08e9fb15044538506afc7ffbe6d27" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT05" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_79d35aea949846dfa9d2557c64a91b2f" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT06" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_ab97d1ed503949b081408b8a18369fa2" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT07" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_b25bb4ba734e4d6ab0ffa1670d1b599b" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT08" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_47f90dee885a41c786df767beaa429cb" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT09" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_d8a432276c3f499bbd322a2b88d901c9" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT10" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_01b71de1fefc4006ae33108f491154bd" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT11" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_1aa81392a06543e28f7f115ca11f0e21" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cel_Temperatures/CellT12" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_9f6a1b34aa6b477ca54b826eed14b6f5" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV01" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_605629666db743b9b94e5009f2cf2abc" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV02" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_e8de47bb14a644cfa0bcc3dd4039efe2" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV03" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_9af8b79728884e05ba8da73c37d34ec8" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV04" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_dda68b3d7b7a4491b651efc3b9e5dd52" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV05" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_ab2d6f365c0e49369ca0c3885b39adcc" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV06" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_0ee6a729fe4f429485190cc1ed0243a7" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV07" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_2bd5bb092a164b689900b6026787b392" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV08" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_afface7cf99645a0b61bd18f6b6e9044" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV09" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_03d24b9d95f2420bbd7d85e6d9aa22a3" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV10" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_9165a05cd22c411f9b7472144e5ff8c0" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV11" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_0537325e5c8045ae83bb616b0feb5df6" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Cell_Voltage/CellV12" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_ed52b6c96a7b42b98372ec744c0fdb9d" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Error/Error_CellNo" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_937f454ae9c54de59b73d96e8011375e" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Error/Error_Event" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+			<Inport ID="Batterymodel_HiL_Inport_3fb57075b1184ce49f3616e85012bc84" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inports Error/Error_Indication" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" /> 
+			</Inport>
+		</Inports>
+
+		<Outports>
+			<Outport ID="Batterymodel_HiL_Outport_1ec134f7f6be4844bcf6588eae2bd279" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_01" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_e934439adb7f4525bc4696d3377f0720" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_02" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_788f35ea1f6a4722bda603f6c6239181" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_03" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_f5f570c92f794b98968ad36d5d75546b" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_04" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_056c85024ebb40d68e5fe458d95b2bc4" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_05" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_44b1983a22e4461a9d75e60d233e5ba6" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_06" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_a6c7e50e4d664fe19ccdebbbcdf797f2" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_07" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_2743a9a446a648b7bfdfe23bcbf4fa22" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_08" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_592bd8adcb6744019cadee1ed411b7a4" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_09" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_424c74e30cbe4f7cb2c505e82fca4f6e" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_10" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_063e4e37e4774b7784f8f3f9eb7d8c69" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_11" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_bae6af9f6c5445aca6138b5c9321d505" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zelltemperaturen/Temp_12" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_2292d362d7de4d718ce81dc766f7120d" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_01" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_ecc00f425c9e4277870ae36abca1afd6" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_02" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_0a9a9183894945539cf19593f12489db" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_03" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_7318ac6ebc5240239f29ce290844899c" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_04" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_77a5a00c8c7f41a39501c14aa0fdbb90" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_05" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_832bf1c9bc1448de873929ed42036fea" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_06" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_f09425878ac34f87bc2763d25b89183b" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_07" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_e4b2e806ed3c4162a3e69194141d9e63" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_08" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_03a2c34504ce45f989ca0fda864543e3" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_09" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_cf39ca3eb9e34f49a63a2b448cdf80d1" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_10" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_e90304c6c8ab41d3bd6e01af2a0cfe07" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_11" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_e9cf76bb77d84008b43099e08985965a" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellstr&#246;me/Curr_12" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_54e24052440345229ff6bc616aecbe55" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/bat_modus" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_488d865ae47b4048b2aa03bef812b5c4" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/current [mA]" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_63e30c28632d4ec99550fc802c3c62e1" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_01" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_446ce2602d3b4e1881378e07ef73b01d" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_02" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_ceeee4bbd54947a4ae5657cda7eccf48" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_03" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_ae56536c014e4335aa010fbb6a849fda" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_04" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_0864124e9b404c27be6ab600cdc6337f" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_05" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_2197db0b81ca4969a25926e73f1b5bc5" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_06" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_758dc213d8a341e69760ad164e0630ca" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_07" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_eae8e275063e4acfade5c35004781555" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_08" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_2ddcadef8a5f436290478a04bc7c1055" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_09" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_540821b06db447c5bcb1bea73d46478e" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_10" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_25bc52cc904e413aac7a9fd0d0da0374" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_11" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_b0d833b9157c4029a2c5a806846c3395" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/Outports Zellspannungen/Volt_12" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_afa7a667771a4ec8b929af91988f9c22" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Outports/voltage [mV]" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+			<Outport ID="Batterymodel_HiL_Outport_e9f3213b679d49b5a809192b5ffd1354" Visible="true" SCVisible="true">
+				<Path Name="Batterymodel_HiL/Inputs/Betriebsmodus/Mod_CAN_RS232_Com" />
+				<DataType Name="real64" />
+				<StructureType Name="Scalar" />
+				<Dimension Value="1" />
+				<Type Name="SL" />
+				<Process Name="lcrt_OneStep_Outputs_Batterymodel_HiL" />              
+			</Outport>
+		</Outports>
+
+		<Processes>
+
+
+
+
+			<Process Name ="lcrt_Start_Batterymodel_HiL">
+				<TriggerType Name="Init" />
+			</Process>
+
+			<Process Name ="lcrt_OneStep_Outputs_Batterymodel_HiL">
+				<TriggerType Name="Timer" />
+				<Period Value="0.01" />
+				<Offset Value="0.0" />
+			</Process>
+
+			<Process Name ="lcrt_OneStep_States_Batterymodel_HiL">
+				<TriggerType Name="Timer" />
+				<Period Value="0.01" />
+				<Offset Value="0.0" />
+			</Process>
+
+			<Process Name ="lcrt_Terminate_Batterymodel_HiL">
+				<TriggerType Name="Exit" />
+			</Process>
+
+		</Processes>
+
+	</Interface>
+	<SimulinkModuleSpecificTypes>
+
+		<DataType Name="Parameters_Batterymodel_HiL" definingFile="Batterymodel_HiL_types.h" definingFileDep="Batterymodel_HiL.h" variable="Batterymodel_HiL_P" />
+		<DataType Name="BlockIO_Batterymodel_HiL" definingFile="Batterymodel_HiL.h" variable="Batterymodel_HiL_B" />
+	</SimulinkModuleSpecificTypes>
+
+</Module>
+</Modules>
+

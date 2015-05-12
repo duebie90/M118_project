@@ -1,0 +1,224 @@
+bs-rtpc-connect: LABCAR-RTPC V5.1.1#7677
+bs-rtpc-connect: Telnet connection to 192.168.40.14 established
+bs-rtpc-info: Checking for simulink library on RTPC...
+bs-rtpc-info: Required simulink library found on RTPC
+
+bs-rtpc-start: Starting make on the RTPC...
+bs-rtpc-telnet:labcar_si_make clean all
+make: Entering directory `/home/labcar/codegen'
+make[1]: Entering directory `/home/labcar/codegen'
+make[1]: Entering directory `/home/labcar/codegen'
+make[2]: Entering directory `/home/labcar/codegen/asap'
+make[2]: Entering directory `/home/labcar/codegen/asap'
+make[3]: Entering directory `/home/labcar/codegen/asap/src'
+make[3]: Entering directory `/home/labcar/codegen/asap/src'
+bs-uninstall:
+bs-comp:labcartop.c
+bs-clean:../obj
+bs-comp:mc_module_hardware.c
+make[3]: Leaving directory `/home/labcar/codegen/asap/src'
+make[2]: Leaving directory `/home/labcar/codegen/asap'
+make[2]: Entering directory `/home/labcar/codegen/simodels'
+bs-comp:mc_module_batterymodel_hil.c
+make[3]: Entering directory `/home/labcar/codegen/simodels/global'
+make[4]: Entering directory `/home/labcar/codegen/simodels/global/code'
+make[5]: Entering directory `/home/labcar/codegen/simodels/global/code/src'
+bs-uninstall:
+bs-clean:../obj
+make[5]: Leaving directory `/home/labcar/codegen/simodels/global/code/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/global/code'
+make[4]: Entering directory `/home/labcar/codegen/simodels/global/objects'
+make[5]: Entering directory `/home/labcar/codegen/simodels/global/objects/src'
+bs-uninstall:
+bs-clean:libsimodels_global_objects.a
+bs-comp:mc_module_canmodule.c
+make[5]: Leaving directory `/home/labcar/codegen/simodels/global/objects/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/global/objects'
+make[3]: Leaving directory `/home/labcar/codegen/simodels/global'
+make[3]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil'
+make[4]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/code'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/code/src'
+bs-comp:mc_module_osmonitoring.c
+bs-uninstall:
+bs-clean:../obj
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/code/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/code'
+make[4]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/objects'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/objects/src'
+bs-uninstall:
+bs-clean:libsimodels_batterymodel_hil_objects.a
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/objects/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/objects'
+make[4]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code'
+make[6]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code/src'
+bs-uninstall:
+bs-comp:programid.c
+bs-clean:../obj
+make[6]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code/src'
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects'
+make[6]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects/src'
+bs-uninstall:
+bs-clean:libsimodels_batterymodel_hil_external_objects.a
+make[6]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects/src'
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external'
+make[3]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil'
+make[2]: Leaving directory `/home/labcar/codegen/simodels'
+make[2]: Entering directory `/home/labcar/codegen/os_rtpc'
+bs-uninstall:
+bs-clean:.
+make[2]: Leaving directory `/home/labcar/codegen/os_rtpc'
+make[2]: Entering directory `/home/labcar/codegen/rtio'
+make[3]: Entering directory `/home/labcar/codegen/rtio/src'
+bs-uninstall:
+bs-clean:../obj
+make[3]: Leaving directory `/home/labcar/codegen/rtio/src'
+make[2]: Leaving directory `/home/labcar/codegen/rtio'
+make[2]: Entering directory `/home/labcar/codegen/conn'
+make[3]: Entering directory `/home/labcar/codegen/conn/src'
+bs-uninstall:
+bs-clean:../obj
+make[3]: Leaving directory `/home/labcar/codegen/conn/src'
+make[2]: Leaving directory `/home/labcar/codegen/conn'
+make[2]: Entering directory `/home/labcar/codegen/cmodules'
+make[3]: Entering directory `/home/labcar/codegen/cmodules/can_canmodule'
+make[4]: Entering directory `/home/labcar/codegen/cmodules/can_canmodule/src'
+bs-uninstall:
+bs-clean:../obj
+make[4]: Leaving directory `/home/labcar/codegen/cmodules/can_canmodule/src'
+make[3]: Leaving directory `/home/labcar/codegen/cmodules/can_canmodule'
+make[2]: Leaving directory `/home/labcar/codegen/cmodules'
+make[2]: Entering directory `/home/labcar/codegen/ascetmodels'
+make[2]: Leaving directory `/home/labcar/codegen/ascetmodels'
+make[2]: Entering directory `/home/labcar/codegen/misc'
+make[3]: Entering directory `/home/labcar/codegen/misc/code'
+make[4]: Entering directory `/home/labcar/codegen/misc/code/src'
+bs-uninstall:
+bs-clean:../obj
+make[4]: Leaving directory `/home/labcar/codegen/misc/code/src'
+make[3]: Leaving directory `/home/labcar/codegen/misc/code'
+make[3]: Entering directory `/home/labcar/codegen/misc/objects'
+make[4]: Entering directory `/home/labcar/codegen/misc/objects/src'
+bs-uninstall:
+bs-clean:libmisc_objects.a
+make[4]: Leaving directory `/home/labcar/codegen/misc/objects/src'
+make[3]: Leaving directory `/home/labcar/codegen/misc/objects'
+make[2]: Leaving directory `/home/labcar/codegen/misc'
+make[1]: Leaving directory `/home/labcar/codegen'
+make[1]: Entering directory `/home/labcar/codegen'
+bs-clean:RTPC.bin
+make[1]: Leaving directory `/home/labcar/codegen'
+bs-build-lib:
+bs-install:libasap.a
+make[3]: Leaving directory `/home/labcar/codegen/asap/src'
+make[2]: Leaving directory `/home/labcar/codegen/asap'
+make[2]: Entering directory `/home/labcar/codegen/simodels'
+make[3]: Entering directory `/home/labcar/codegen/simodels/global'
+make[4]: Entering directory `/home/labcar/codegen/simodels/global/code'
+make[5]: Entering directory `/home/labcar/codegen/simodels/global/code/src'
+bs-comp:modcomm.c
+bs-comp:lcoutport.c
+bs-comp:lcinport.c
+bs-build-lib:
+bs-install:libsimodels_global_code.a
+make[5]: Leaving directory `/home/labcar/codegen/simodels/global/code/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/global/code'
+make[4]: Entering directory `/home/labcar/codegen/simodels/global/objects'
+make[5]: Entering directory `/home/labcar/codegen/simodels/global/objects/src'
+bs-build-lib:
+bs-install:libsimodels_global_objects.a
+make[5]: Leaving directory `/home/labcar/codegen/simodels/global/objects/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/global/objects'
+make[3]: Leaving directory `/home/labcar/codegen/simodels/global'
+make[3]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil'
+make[4]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/code'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/code/src'
+bs-comp:batterymodel_hil.c
+bs-comp:rt_nonfinite.c
+bs-comp:rtgetinf.c
+bs-comp:rtgetnan.c
+bs-comp:batterymodel_hil_data.c
+bs-comp:batterymodel_hil_main.c
+bs-comp:rt_sim.c
+bs-build-lib:
+bs-install:libsimodels_batterymodel_hil_code.a
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/code/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/code'
+make[4]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/objects'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/objects/src'
+bs-build-lib:
+bs-install:libsimodels_batterymodel_hil_objects.a
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/objects/src'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/objects'
+make[4]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code'
+make[6]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code/src'
+bs-build-lib:
+bs-install:libsimodels_batterymodel_hil_external_code.a
+make[6]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code/src'
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/code'
+make[5]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects'
+make[6]: Entering directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects/src'
+bs-build-lib:
+bs-install:libsimodels_batterymodel_hil_external_objects.a
+make[6]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects/src'
+make[5]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external/objects'
+make[4]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil/external'
+make[3]: Leaving directory `/home/labcar/codegen/simodels/batterymodel_hil'
+make[2]: Leaving directory `/home/labcar/codegen/simodels'
+make[2]: Entering directory `/home/labcar/codegen/os_rtpc'
+bs-comp:rtpc_os_config.c
+bs-build-lib:
+bs-install:librtpc_os_config.a
+make[2]: Leaving directory `/home/labcar/codegen/os_rtpc'
+make[2]: Entering directory `/home/labcar/codegen/rtio'
+make[3]: Entering directory `/home/labcar/codegen/rtio/src'
+bs-comp:hwcident.c
+bs-comp:es113x_ext.c
+bs-comp:es113x_rt.c
+bs-build-lib:
+bs-install:librtio.a
+make[3]: Leaving directory `/home/labcar/codegen/rtio/src'
+make[2]: Leaving directory `/home/labcar/codegen/rtio'
+make[2]: Entering directory `/home/labcar/codegen/conn'
+make[3]: Entering directory `/home/labcar/codegen/conn/src'
+bs-comp:connect.c
+bs-build-lib:
+bs-install:libconn.a
+make[3]: Leaving directory `/home/labcar/codegen/conn/src'
+make[2]: Leaving directory `/home/labcar/codegen/conn'
+make[2]: Entering directory `/home/labcar/codegen/cmodules'
+make[3]: Entering directory `/home/labcar/codegen/cmodules/can_canmodule'
+make[4]: Entering directory `/home/labcar/codegen/cmodules/can_canmodule/src'
+bs-comp:cancode.c
+bs-build-lib:
+bs-install:libcanmodule.a
+make[4]: Leaving directory `/home/labcar/codegen/cmodules/can_canmodule/src'
+make[3]: Leaving directory `/home/labcar/codegen/cmodules/can_canmodule'
+make[2]: Leaving directory `/home/labcar/codegen/cmodules'
+make[2]: Entering directory `/home/labcar/codegen/ascetmodels'
+make[2]: Leaving directory `/home/labcar/codegen/ascetmodels'
+make[2]: Entering directory `/home/labcar/codegen/misc'
+make[3]: Entering directory `/home/labcar/codegen/misc/code'
+make[4]: Entering directory `/home/labcar/codegen/misc/code/src'
+bs-build-lib:
+bs-install:libmisc_code.a
+make[4]: Leaving directory `/home/labcar/codegen/misc/code/src'
+make[3]: Leaving directory `/home/labcar/codegen/misc/code'
+make[3]: Entering directory `/home/labcar/codegen/misc/objects'
+make[4]: Entering directory `/home/labcar/codegen/misc/objects/src'
+bs-build-lib:
+bs-install:libmisc_objects.a
+make[4]: Leaving directory `/home/labcar/codegen/misc/objects/src'
+make[3]: Leaving directory `/home/labcar/codegen/misc/objects'
+make[2]: Leaving directory `/home/labcar/codegen/misc'
+make[1]: Leaving directory `/home/labcar/codegen'
+make[1]: Entering directory `/home/labcar/codegen'
+bs-build:RTPC.bin
+bs-rec:RTPC.out
+make[1]: Leaving directory `/home/labcar/codegen'
+make: Leaving directory `/home/labcar/codegen'
+labcar@rtpc:~/codegen$ 
+bs-hex: RTPC.hex has already been created on the target...

@@ -1,0 +1,734 @@
+<HTML>
+<HEAD>
+<TITLE>RTW Report - rt_matrx.c </TITLE>
+<STYLE> .LN { font-style: italic; color: #888888 } </STYLE>
+<STYLE> .CT { font-style: italic; color: #117755 } </STYLE>
+<STYLE> .PP { font-style: bold;   color: #992211 } </STYLE>
+<STYLE> .KW { font-style: bold;   color: #112266 } </STYLE>
+<STYLE> .DT { font-style: bold;   color: #112266 } </STYLE>
+</HEAD>
+<BODY BGCOLOR="#eeeeee" TEXT="#1122aa" ONLOAD="if (top) { if (top.rtwFileOnLoad) top.rtwFileOnLoad(window);} ">
+<P>
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="6" WIDTH="100%" HEIGHT="100%"><TR><TD WIDTH="100%" VALIGN="top" BGCOLOR="#ffffff">
+<H4>File: <A HREF="file:///C:\Program Files\MATLAB\R2011b\rtw\c\src\rt_matrx.c" TARGET="rtwreport_document_frame">C:\Program Files\MATLAB\R2011b\rtw\c\src\rt_matrx.c</A></H4>
+<PRE id="RTWcode">
+<SPAN><A CLASS="LN" NAME="1">    1   </A><SPAN CLASS="CT">/* File    : rt_matrx.c</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="2">    2   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="3">    3   </A><SPAN CLASS="CT"> *      Implements stand alone matrix access and creation routines.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="4">    4   </A><SPAN CLASS="CT"> *	There are two types of MATLAB objects which can be "passed" to</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="5">    5   </A><SPAN CLASS="CT"> *	the generated code, a 2D real matrix and a string. Strings are</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="6">    6   </A><SPAN CLASS="CT"> *	passed as 2D real matrices. The first two elements of an S-function</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="7">    7   </A><SPAN CLASS="CT"> *	parameters are the row and column (m and n) dimensions respectively.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="8">    8   </A><SPAN CLASS="CT"> *	These are followed by the matrix data.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="9">    9   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="10">   10   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="11">   11   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="12">   12   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="13">   13   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="14">   14   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="15">   15   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="16">   16   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="17">   17   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="18">   18   </A><SPAN CLASS="CT">/*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="19">   19   </A><SPAN CLASS="CT"> * Copyright 1994-2010 The MathWorks, Inc.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="20">   20   </A><SPAN CLASS="CT"> * $Revision: 1.1.6.7 $</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="21">   21   </A><SPAN CLASS="CT"> * $Date: 2010/09/13 14:17:56 $ </SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="22">   22   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="23">   23   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="24">   24   </A><SPAN CLASS="CT">/*==========*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="25">   25   </A><SPAN CLASS="CT"> * Includes *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="26">   26   </A><SPAN CLASS="CT"> *==========*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="27">   27   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="28">   28   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> <SPAN CLASS="PP">defined</SPAN>(MATLAB_MEX_FILE)
+</SPAN><SPAN><A CLASS="LN" NAME="29">   29   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">error</SPAN> &quot;rt_matrix cannot be used within a mex file. It is for codegen only.&quot;
+</SPAN><SPAN><A CLASS="LN" NAME="30">   30   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="31">   31   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="32">   32   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;stdlib.h&gt;</FONT>    <SPAN CLASS="CT">/* needed for malloc, calloc, free, realloc */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="33">   33   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;string.h&gt;</FONT>    <SPAN CLASS="CT">/* needed for strlen                        */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="34">   34   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;rtwtypes.h&quot;</FONT>  <SPAN CLASS="CT">/* needed for real_T                        */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="35">   35   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&quot;rt_mxclassid.h&quot;</FONT> <SPAN CLASS="CT">/* needed for mxClassID                     */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="36">   36   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="37">   37   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="38">   38   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;stddef.h&gt;</FONT> <SPAN CLASS="CT">/* needed for size_t and NULL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="39">   39   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">include</SPAN> <FONT COLOR="#992211">&lt;float.h&gt;</FONT>  <SPAN CLASS="CT">/* needed for definition of eps */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="40">   40   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="41">   41   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="42">   42   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="43">   43   </A><SPAN CLASS="CT">/*==========*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="44">   44   </A><SPAN CLASS="CT"> * Typedefs *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="45">   45   </A><SPAN CLASS="CT"> *==========*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="46">   46   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="47">   47   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifndef</SPAN> rt_typedefs_h
+</SPAN><SPAN><A CLASS="LN" NAME="48">   48   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> rt_typedefs_h
+</SPAN><SPAN><A CLASS="LN" NAME="49">   49   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="50">   50   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> !<SPAN CLASS="PP">defined</SPAN>(TYPEDEF_MX_ARRAY)
+</SPAN><SPAN><A CLASS="LN" NAME="51">   51   </A><FONT COLOR="#992211">#</FONT> <SPAN CLASS="PP">define</SPAN> TYPEDEF_MX_ARRAY
+</SPAN><SPAN><A CLASS="LN" NAME="52">   52   </A>  <SPAN CLASS="KW">typedef</SPAN> real_T <A NAME="type_mxArray">mxArray</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="53">   53   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="54">   54   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="55">   55   </A><SPAN CLASS="KW">typedef</SPAN> real_T <A NAME="type_mxChar">mxChar</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="56">   56   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="57">   57   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">if</SPAN> !<SPAN CLASS="PP">defined</SPAN>(TMW_NAME_LENGTH_MAX)
+</SPAN><SPAN><A CLASS="LN" NAME="58">   58   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> TMW_NAME_LENGTH_MAX 64
+</SPAN><SPAN><A CLASS="LN" NAME="59">   59   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="60">   60   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxMAXNAM  TMW_NAME_LENGTH_MAX	<SPAN CLASS="CT">/* maximum name length */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="61">   61   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="62">   62   </A><SPAN CLASS="KW">typedef</SPAN> <SPAN CLASS="KW">enum</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="63">   63   </A>    mxREAL,
+</SPAN><SPAN><A CLASS="LN" NAME="64">   64   </A>    mxCOMPLEX
+</SPAN><SPAN><A CLASS="LN" NAME="65">   65   </A><B>}</B> <A NAME="type_mxComplexity">mxComplexity</A>;
+</SPAN><SPAN><A CLASS="LN" NAME="66">   66   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="67">   67   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN> <SPAN CLASS="CT">/* rt_typedefs_h */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="68">   68   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="69">   69   </A><SPAN CLASS="CT">/*==================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="70">   70   </A><SPAN CLASS="CT"> * Extern variables *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="71">   71   </A><SPAN CLASS="CT"> *==================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="72">   72   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="73">   73   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="74">   74   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="75">   75   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="76">   76   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="77">   77   </A><SPAN CLASS="DT">extern</SPAN> real_T <A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtInf</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="78">   78   </A><SPAN CLASS="DT">extern</SPAN> real_T <A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtMinusInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtMinusInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtMinusInf</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="79">   79   </A><SPAN CLASS="DT">extern</SPAN> real_T <A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtNaN" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtNaN');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtNaN</FONT></A>;
+</SPAN><SPAN><A CLASS="LN" NAME="80">   80   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="81">   81   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="82">   82   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="83">   83   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="84">   84   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="85">   85   </A><SPAN CLASS="CT">/*=======================================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="86">   86   </A><SPAN CLASS="CT"> * Defines for mx Routines and constants *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="87">   87   </A><SPAN CLASS="CT"> *=======================================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="88">   88   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="89">   89   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="90">   90   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCalloc(n,size) \
+</SPAN><SPAN><A CLASS="LN" NAME="91">   91   </A>        calloc(n,size)
+</SPAN><SPAN><A CLASS="LN" NAME="92">   92   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="93">   93   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateCharArray(ndim, dims) \
+</SPAN><SPAN><A CLASS="LN" NAME="94">   94   </A>        mxCreateNumericArray(ndim, dims, mxCHAR_CLASS);
+</SPAN><SPAN><A CLASS="LN" NAME="95">   95   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="96">   96   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxDestroyArray(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="97">   97   </A>        <SPAN CLASS="PP">if</SPAN> (pa) free(pa)
+</SPAN><SPAN><A CLASS="LN" NAME="98">   98   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="99">   99   </A><SPAN CLASS="CT">/* NOTE: You cannot mxFree(mxGetPr(pa)) !!! */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="100">  100   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxFree(ptr) \
+</SPAN><SPAN><A CLASS="LN" NAME="101">  101   </A>        <SPAN CLASS="PP">if</SPAN>(ptr)free(ptr)
+</SPAN><SPAN><A CLASS="LN" NAME="102">  102   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="103">  103   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetClassID(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="104">  104   </A>        mxDOUBLE_CLASS
+</SPAN><SPAN><A CLASS="LN" NAME="105">  105   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="106">  106   </A><SPAN CLASS="CT">/* NOTE: mxGetClassName(pa) returns "double" even on a character array */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="107">  107   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetClassName(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="108">  108   </A>        <FONT COLOR="#1122ff">&quot;double&quot;</FONT>
+</SPAN><SPAN><A CLASS="LN" NAME="109">  109   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="110">  110   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetData(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="111">  111   </A>        ((void *)(&amp;((pa)[2])))
+</SPAN><SPAN><A CLASS="LN" NAME="112">  112   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="113">  113   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetElementSize(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="114">  114   </A>        (sizeof(real_T))
+</SPAN><SPAN><A CLASS="LN" NAME="115">  115   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="116">  116   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetInf() \
+</SPAN><SPAN><A CLASS="LN" NAME="117">  117   </A>        <A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtInf</FONT></A>
+</SPAN><SPAN><A CLASS="LN" NAME="118">  118   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="119">  119   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetM(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="120">  120   </A>        ((size_t) ((pa)[0]))
+</SPAN><SPAN><A CLASS="LN" NAME="121">  121   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetN(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="122">  122   </A>        ((size_t) ((pa)[1]))
+</SPAN><SPAN><A CLASS="LN" NAME="123">  123   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="124">  124   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetNaN() \
+</SPAN><SPAN><A CLASS="LN" NAME="125">  125   </A>        <A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtNaN" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtNaN');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtNaN</FONT></A>
+</SPAN><SPAN><A CLASS="LN" NAME="126">  126   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="127">  127   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetNumberOfDimensions(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="128">  128   </A>        (2)
+</SPAN><SPAN><A CLASS="LN" NAME="129">  129   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetNumberOfElements(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="130">  130   </A>        (mxGetM(pa)*mxGetN(pa))
+</SPAN><SPAN><A CLASS="LN" NAME="131">  131   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="132">  132   </A><SPAN CLASS="CT">/* NOTE: mxGetPr() of an empty matrix does NOT return NULL */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="133">  133   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetPr(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="134">  134   </A>        ( &amp;((pa)[2]) )
+</SPAN><SPAN><A CLASS="LN" NAME="135">  135   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="136">  136   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetScalar(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="137">  137   </A>        ((pa)[2])
+</SPAN><SPAN><A CLASS="LN" NAME="138">  138   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="139">  139   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsComplex(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="140">  140   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="141">  141   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="142">  142   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsDouble(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="143">  143   </A>        true
+</SPAN><SPAN><A CLASS="LN" NAME="144">  144   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="145">  145   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsEmpty(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="146">  146   </A>        (mxGetM(pa)==0 || mxGetN(pa)==0)
+</SPAN><SPAN><A CLASS="LN" NAME="147">  147   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="148">  148   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsFinite(r) \
+</SPAN><SPAN><A CLASS="LN" NAME="149">  149   </A>        ((r)&gt;<A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtMinusInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtMinusInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtMinusInf</FONT></A> &amp;&amp; (r)&lt;<A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtInf</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="150">  150   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="151">  151   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsInf(r) \
+</SPAN><SPAN><A CLASS="LN" NAME="152">  152   </A>        ((r)==<A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtInf</FONT></A> || (r)==<A HREF="..\..\slprj\lcrt\_sharedutils\html\rt_nonfinite_c.html#var_rtMinusInf" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rtMinusInf');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rtMinusInf</FONT></A>)
+</SPAN><SPAN><A CLASS="LN" NAME="153">  153   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="154">  154   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsInt16(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="155">  155   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="156">  156   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="157">  157   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsInt32(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="158">  158   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="159">  159   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="160">  160   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsInt8(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="161">  161   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="162">  162   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="163">  163   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsLogical(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="164">  164   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="165">  165   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="166">  166   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsNumeric(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="167">  167   </A>        true
+</SPAN><SPAN><A CLASS="LN" NAME="168">  168   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="169">  169   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsSingle(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="170">  170   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="171">  171   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="172">  172   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsSparse(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="173">  173   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="174">  174   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="175">  175   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsStruct(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="176">  176   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="177">  177   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="178">  178   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsUint16(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="179">  179   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="180">  180   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="181">  181   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsUint32(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="182">  182   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="183">  183   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="184">  184   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsUint8(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="185">  185   </A>        false
+</SPAN><SPAN><A CLASS="LN" NAME="186">  186   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="187">  187   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxMalloc(n) \
+</SPAN><SPAN><A CLASS="LN" NAME="188">  188   </A>        malloc(n)
+</SPAN><SPAN><A CLASS="LN" NAME="189">  189   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="190">  190   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxRealloc(p,n) \
+</SPAN><SPAN><A CLASS="LN" NAME="191">  191   </A>        realloc(p,n)
+</SPAN><SPAN><A CLASS="LN" NAME="192">  192   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="193">  193   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="194">  194   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="195">  195   </A><SPAN CLASS="CT">/*==============*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="196">  196   </A><SPAN CLASS="CT"> * Local macros *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="197">  197   </A><SPAN CLASS="CT"> *==============*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="198">  198   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> _mxSetM(pa,m) \
+</SPAN><SPAN><A CLASS="LN" NAME="199">  199   </A>        (pa)[0] = ((int)(m))
+</SPAN><SPAN><A CLASS="LN" NAME="200">  200   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="201">  201   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> _mxSetN(pa,n) \
+</SPAN><SPAN><A CLASS="LN" NAME="202">  202   </A>        (pa)[1] = ((int)(n))
+</SPAN><SPAN><A CLASS="LN" NAME="203">  203   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="204">  204   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="205">  205   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="206">  206   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="207">  207   </A><SPAN CLASS="CT">/*==========================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="208">  208   </A><SPAN CLASS="CT"> * Visible/extern functions *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="209">  209   </A><SPAN CLASS="CT"> *=========================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="210">  210   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="211">  211   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="212">  212   </A><SPAN CLASS="CT">/* Function: mxCreateCharMatrixFromStrings ====================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="213">  213   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="214">  214   </A><SPAN CLASS="CT"> *	Create a string array initialized to the strings in str.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="215">  215   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="216">  216   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="217">  217   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="218">  218   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="219">  219   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="220">  220   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="221">  221   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="222">  222   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="223">  223   </A>PUBLIC <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *<A NAME="fcn_rt_mxCreateCharMatrixFromStrings">rt_mxCreateCharMatrixFromStrings</A>(int_T m, <SPAN CLASS="DT">const</SPAN> char_T **str)
+</SPAN><SPAN><A CLASS="LN" NAME="224">  224   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="225">  225   </A>    int_T nchars;
+</SPAN><SPAN><A CLASS="LN" NAME="226">  226   </A>    int_T i, n;
+</SPAN><SPAN><A CLASS="LN" NAME="227">  227   </A>    <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pa;
+</SPAN><SPAN><A CLASS="LN" NAME="228">  228   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="229">  229   </A>    n = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="230">  230   </A>    <SPAN CLASS="KW">for</SPAN> (i = 0; i &lt; m; ++i) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="231">  231   </A>	nchars = (int_T)strlen(str[i]);
+</SPAN><SPAN><A CLASS="LN" NAME="232">  232   </A>	<SPAN CLASS="KW">if</SPAN> (nchars &gt; n) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="233">  233   </A>	    n = nchars;
+</SPAN><SPAN><A CLASS="LN" NAME="234">  234   </A>	<B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="235">  235   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="236">  236   </A>    <SPAN CLASS="CT">/*LINTED E_PASS_INT_TO_SMALL_INT*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="237">  237   </A>    pa = (<A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *)malloc((m*n+2)*<SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="238">  238   </A>    <SPAN CLASS="KW">if</SPAN>(pa!=NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="239">  239   </A>	<A HREF="rt_matrx_c.html#type_mxChar" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxChar');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxChar</FONT></A> *chars;
+</SPAN><SPAN><A CLASS="LN" NAME="240">  240   </A>	int_T  j;
+</SPAN><SPAN><A CLASS="LN" NAME="241">  241   </A>	_mxSetM(pa, m);
+</SPAN><SPAN><A CLASS="LN" NAME="242">  242   </A>	_mxSetN(pa, n);
+</SPAN><SPAN><A CLASS="LN" NAME="243">  243   </A>	chars = mxGetPr(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="244">  244   </A>	<SPAN CLASS="KW">for</SPAN> (j = 0; j &lt; m; ++j) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="245">  245   </A>	    <SPAN CLASS="DT">const</SPAN> char_T *src  = str[j];
+</SPAN><SPAN><A CLASS="LN" NAME="246">  246   </A>	    <A HREF="rt_matrx_c.html#type_mxChar" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxChar');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxChar</FONT></A> *dest = chars + j;
+</SPAN><SPAN><A CLASS="LN" NAME="247">  247   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="248">  248   </A>	    nchars = (int_T)strlen(src);
+</SPAN><SPAN><A CLASS="LN" NAME="249">  249   </A>	    i = nchars;
+</SPAN><SPAN><A CLASS="LN" NAME="250">  250   </A>	    <SPAN CLASS="KW">while</SPAN> (i--) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="251">  251   </A>		*dest = *src++;
+</SPAN><SPAN><A CLASS="LN" NAME="252">  252   </A>		 dest += m;
+</SPAN><SPAN><A CLASS="LN" NAME="253">  253   </A>	    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="254">  254   </A>	    i = n - nchars;
+</SPAN><SPAN><A CLASS="LN" NAME="255">  255   </A>	    <SPAN CLASS="KW">while</SPAN> (i--) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="256">  256   </A>		*dest = 0.0;
+</SPAN><SPAN><A CLASS="LN" NAME="257">  257   </A>		dest += m;
+</SPAN><SPAN><A CLASS="LN" NAME="258">  258   </A>	    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="259">  259   </A>	<B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="260">  260   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="261">  261   </A>    <SPAN CLASS="KW">return</SPAN> pa;
+</SPAN><SPAN><A CLASS="LN" NAME="262">  262   </A><B>}</B> <SPAN CLASS="CT">/* end mxCreateCharMatrixFromStrings */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="263">  263   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="264">  264   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="265">  265   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="266">  266   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="267">  267   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="268">  268   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="269">  269   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="270">  270   </A><SPAN CLASS="CT">/* Function: mxCreateString ===================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="271">  271   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="272">  272   </A><SPAN CLASS="CT"> *	Create a 1-by-n string array initialized to null terminated string</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="273">  273   </A><SPAN CLASS="CT"> *	where n is the length of the string.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="274">  274   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="275">  275   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="276">  276   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="277">  277   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="278">  278   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="279">  279   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="280">  280   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="281">  281   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="282">  282   </A>PUBLIC <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *<A NAME="fcn_rt_mxCreateString">rt_mxCreateString</A>(<SPAN CLASS="DT">const</SPAN> <SPAN CLASS="DT">char</SPAN> *str)
+</SPAN><SPAN><A CLASS="LN" NAME="283">  283   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="284">  284   </A>    int_T   len = (int_T)strlen(str);
+</SPAN><SPAN><A CLASS="LN" NAME="285">  285   </A>    <SPAN CLASS="CT">/*LINTED E_PASS_INT_TO_SMALL_INT*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="286">  286   </A>    <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pa = (<A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *)malloc((len+2)*<SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="287">  287   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="288">  288   </A>    <SPAN CLASS="KW">if</SPAN>(pa!=NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="289">  289   </A>	real_T *pr;
+</SPAN><SPAN><A CLASS="LN" NAME="290">  290   </A>	<SPAN CLASS="DT">const</SPAN> <SPAN CLASS="DT">unsigned</SPAN> <SPAN CLASS="DT">char</SPAN> *ustr_ptr = (<SPAN CLASS="DT">const</SPAN> <SPAN CLASS="DT">unsigned</SPAN> <SPAN CLASS="DT">char</SPAN> *) str;
+</SPAN><SPAN><A CLASS="LN" NAME="291">  291   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="292">  292   </A>	_mxSetM(pa, 1);
+</SPAN><SPAN><A CLASS="LN" NAME="293">  293   </A>	_mxSetN(pa, len);
+</SPAN><SPAN><A CLASS="LN" NAME="294">  294   </A>	pr = mxGetPr(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="295">  295   </A>	<SPAN CLASS="KW">while</SPAN> (len--) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="296">  296   </A>            *pr++ = (real_T)*ustr_ptr++;
+</SPAN><SPAN><A CLASS="LN" NAME="297">  297   </A>        <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="298">  298   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="299">  299   </A>    <SPAN CLASS="KW">return</SPAN>(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="300">  300   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="301">  301   </A><B>}</B> <SPAN CLASS="CT">/* end mxCreateString */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="302">  302   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="303">  303   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="304">  304   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="305">  305   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="306">  306   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="307">  307   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="308">  308   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="309">  309   </A><SPAN CLASS="CT">/* Function: mxCreateDoubleMatrix =============================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="310">  310   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="311">  311   </A><SPAN CLASS="CT"> *	Create a two-dimensional array to hold real_T data,</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="312">  312   </A><SPAN CLASS="CT"> *	initialize each data element to 0.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="313">  313   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="314">  314   </A><SPAN CLASS="CT">/*LINTLIBRARY*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="315">  315   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="316">  316   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="317">  317   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="318">  318   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="319">  319   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="320">  320   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="321">  321   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="322">  322   </A>PUBLIC <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *<A NAME="fcn_rt_mxCreateDoubleMatrix">rt_mxCreateDoubleMatrix</A>(<SPAN CLASS="DT">int</SPAN> m, <SPAN CLASS="DT">int</SPAN> n, <A HREF="rt_matrx_c.html#type_mxComplexity" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxComplexity');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxComplexity</FONT></A> flag)
+</SPAN><SPAN><A CLASS="LN" NAME="323">  323   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="324">  324   </A>    <SPAN CLASS="KW">if</SPAN> (flag == mxREAL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="325">  325   </A>        <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pa = (<A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *)calloc(m*n+2, <SPAN CLASS="KW">sizeof</SPAN>(real_T));
+</SPAN><SPAN><A CLASS="LN" NAME="326">  326   </A>        <SPAN CLASS="KW">if</SPAN>(pa!=NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="327">  327   </A>            _mxSetM(pa, m);
+</SPAN><SPAN><A CLASS="LN" NAME="328">  328   </A>            _mxSetN(pa, n);
+</SPAN><SPAN><A CLASS="LN" NAME="329">  329   </A>        <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="330">  330   </A>        <SPAN CLASS="KW">return</SPAN>(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="331">  331   </A>    <B>}</B> <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="332">  332   </A>        <SPAN CLASS="KW">return</SPAN>(NULL);
+</SPAN><SPAN><A CLASS="LN" NAME="333">  333   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="334">  334   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="335">  335   </A><B>}</B> <SPAN CLASS="CT">/* end mxCreateDoubleMatrix */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="336">  336   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="337">  337   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="338">  338   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="339">  339   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="340">  340   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="341">  341   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="342">  342   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="343">  343   </A><SPAN CLASS="CT">/* Function: mxCreateNumericArray =============================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="344">  344   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="345">  345   </A><SPAN CLASS="CT"> *	Create a numeric array and initialize all its data elements to 0.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="346">  346   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="347">  347   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="348">  348   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="349">  349   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="350">  350   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="351">  351   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="352">  352   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="353">  353   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="354">  354   </A>PUBLIC <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *<A NAME="fcn_rt_mxCreateNumericArray">rt_mxCreateNumericArray</A>(int_T ndims, <SPAN CLASS="DT">const</SPAN> int_T *dims, 
+</SPAN><SPAN><A CLASS="LN" NAME="355">  355   </A>                                        mxClassID classid, <A HREF="rt_matrx_c.html#type_mxComplexity" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxComplexity');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxComplexity</FONT></A> flag)
+</SPAN><SPAN><A CLASS="LN" NAME="356">  356   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="357">  357   </A>    <SPAN CLASS="KW">if</SPAN> (ndims == 2 &amp;&amp; classid==mxDOUBLE_CLASS) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="358">  358   </A>        <SPAN CLASS="KW">return</SPAN>(<A HREF="rt_matrx_c.html#fcn_rt_mxCreateDoubleMatrix" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxCreateDoubleMatrix');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxCreateDoubleMatrix</FONT></A>(dims[0], dims[1], flag));
+</SPAN><SPAN><A CLASS="LN" NAME="359">  359   </A>    <B>}</B> <SPAN CLASS="KW">else</SPAN> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="360">  360   </A>        <SPAN CLASS="KW">return</SPAN>(NULL);
+</SPAN><SPAN><A CLASS="LN" NAME="361">  361   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="362">  362   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="363">  363   </A><B>}</B> <SPAN CLASS="CT">/* end mxCreateNumericArray */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="364">  364   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="365">  365   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="366">  366   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="367">  367   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="368">  368   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="369">  369   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="370">  370   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="371">  371   </A><SPAN CLASS="CT">/* Function: mxDuplicateArray =================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="372">  372   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="373">  373   </A><SPAN CLASS="CT"> *	Make a deep copy of an array, return a pointer to the copy.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="374">  374   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="375">  375   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="376">  376   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="377">  377   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="378">  378   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="379">  379   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="380">  380   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="381">  381   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="382">  382   </A>PUBLIC <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *<A NAME="fcn_rt_mxDuplicateArray">rt_mxDuplicateArray</A>(<SPAN CLASS="DT">const</SPAN> <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pa)
+</SPAN><SPAN><A CLASS="LN" NAME="383">  383   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="384">  384   </A>    <SPAN CLASS="CT">/*LINTED E_ASSIGN_INT_TO_SMALL_INT*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="385">  385   </A>    size_t   nbytes = (mxGetNumberOfElements(pa)+2)*mxGetElementSize(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="386">  386   </A>    <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pcopy = (<A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *)malloc(nbytes);
+</SPAN><SPAN><A CLASS="LN" NAME="387">  387   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="388">  388   </A>    <SPAN CLASS="KW">if</SPAN> (pcopy!=NULL) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="389">  389   </A>	(<SPAN CLASS="DT">void</SPAN>)memcpy(pcopy, pa, nbytes);
+</SPAN><SPAN><A CLASS="LN" NAME="390">  390   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="391">  391   </A>    <SPAN CLASS="KW">return</SPAN>(pcopy);
+</SPAN><SPAN><A CLASS="LN" NAME="392">  392   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="393">  393   </A><B>}</B> <SPAN CLASS="CT">/* end mxDuplicateArray */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="394">  394   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="395">  395   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="396">  396   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="397">  397   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="398">  398   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="399">  399   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="400">  400   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="401">  401   </A><SPAN CLASS="CT">/* Function: mxGetDimensions ==================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="402">  402   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="403">  403   </A><SPAN CLASS="CT"> *	Get pointer to dimension array</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="404">  404   </A><SPAN CLASS="CT"> * 	NOTE: This routine is not reentrant.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="405">  405   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="406">  406   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="407">  407   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="408">  408   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="409">  409   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="410">  410   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="411">  411   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="412">  412   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="413">  413   </A>PUBLIC <SPAN CLASS="DT">const</SPAN> int_T *<A NAME="fcn_rt_mxGetDimensions">rt_mxGetDimensions</A>(<SPAN CLASS="DT">const</SPAN> <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pa)
+</SPAN><SPAN><A CLASS="LN" NAME="414">  414   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="415">  415   </A>    <SPAN CLASS="DT">static</SPAN> int_T dims[2];
+</SPAN><SPAN><A CLASS="LN" NAME="416">  416   </A>    dims[0] = (int_T)mxGetM(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="417">  417   </A>    dims[1] = (int_T)mxGetN(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="418">  418   </A>    <SPAN CLASS="KW">return</SPAN> dims;
+</SPAN><SPAN><A CLASS="LN" NAME="419">  419   </A><B>}</B> <SPAN CLASS="CT">/* end mxGetDimensions */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="420">  420   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="421">  421   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="422">  422   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="423">  423   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="424">  424   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="425">  425   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="426">  426   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="427">  427   </A><SPAN CLASS="CT">/* Function: mxGetEps =========================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="428">  428   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="429">  429   </A><SPAN CLASS="CT"> *	Return eps, the difference between 1.0 and the least value</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="430">  430   </A><SPAN CLASS="CT"> *	greater than 1.0 that is representable as a real_T.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="431">  431   </A><SPAN CLASS="CT"> *	NOTE: Assumes real_T is either double or float.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="432">  432   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="433">  433   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="434">  434   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="435">  435   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="436">  436   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="437">  437   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="438">  438   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="439">  439   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="440">  440   </A>PUBLIC real_T <A NAME="fcn_rt_mxGetEps">rt_mxGetEps</A>(<SPAN CLASS="DT">void</SPAN>)
+</SPAN><SPAN><A CLASS="LN" NAME="441">  441   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="442">  442   </A>    <SPAN CLASS="KW">return</SPAN> (<SPAN CLASS="KW">sizeof</SPAN>(<SPAN CLASS="DT">double</SPAN>)==<SPAN CLASS="KW">sizeof</SPAN>(real_T)) ? DBL_EPSILON : FLT_EPSILON;
+</SPAN><SPAN><A CLASS="LN" NAME="443">  443   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="444">  444   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="445">  445   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="446">  446   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="447">  447   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="448">  448   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="449">  449   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="450">  450   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="451">  451   </A><SPAN CLASS="CT">/* Function: mxGetString ======================================================</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="452">  452   </A><SPAN CLASS="CT"> * Abstract:</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="453">  453   </A><SPAN CLASS="CT"> *	Converts a string array to a C-style string.</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="454">  454   </A><SPAN CLASS="CT"> */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="455">  455   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="456">  456   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="457">  457   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="458">  458   </A><SPAN CLASS="DT">extern</SPAN> <FONT COLOR="#1122ff">&quot;C&quot;</FONT> <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="459">  459   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="460">  460   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="461">  461   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="462">  462   </A>PUBLIC int_T <A NAME="fcn_rt_mxGetString">rt_mxGetString</A>(<SPAN CLASS="DT">const</SPAN> <A HREF="rt_matrx_c.html#type_mxArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_mxArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">mxArray</FONT></A> *pa, char_T *buf, int_T buflen)
+</SPAN><SPAN><A CLASS="LN" NAME="463">  463   </A><B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="464">  464   </A>    int_T        nchars;
+</SPAN><SPAN><A CLASS="LN" NAME="465">  465   </A>    <SPAN CLASS="DT">const</SPAN> real_T *pr;
+</SPAN><SPAN><A CLASS="LN" NAME="466">  466   </A>    char_T       *pc;
+</SPAN><SPAN><A CLASS="LN" NAME="467">  467   </A>    int_T        truncate = 0;
+</SPAN><SPAN><A CLASS="LN" NAME="468">  468   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="469">  469   </A>    nchars = (int_T)mxGetNumberOfElements(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="470">  470   </A>    <SPAN CLASS="KW">if</SPAN> (nchars &gt;= buflen) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="471">  471   </A>	<SPAN CLASS="CT">/* leave room for null byte */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="472">  472   </A>	nchars = buflen - 1;
+</SPAN><SPAN><A CLASS="LN" NAME="473">  473   </A>	truncate = 1;
+</SPAN><SPAN><A CLASS="LN" NAME="474">  474   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="475">  475   </A>    pc = buf;
+</SPAN><SPAN><A CLASS="LN" NAME="476">  476   </A>    pr = mxGetPr(pa);
+</SPAN><SPAN><A CLASS="LN" NAME="477">  477   </A>    <SPAN CLASS="KW">while</SPAN> (nchars--) <B>{</B>
+</SPAN><SPAN><A CLASS="LN" NAME="478">  478   </A>	*pc++ = (<SPAN CLASS="DT">char</SPAN>) (*pr++ + .5);
+</SPAN><SPAN><A CLASS="LN" NAME="479">  479   </A>    <B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="480">  480   </A>    *pc = <FONT COLOR="#1122ff">'\0'</FONT>;
+</SPAN><SPAN><A CLASS="LN" NAME="481">  481   </A>    <SPAN CLASS="KW">return</SPAN> truncate;
+</SPAN><SPAN><A CLASS="LN" NAME="482">  482   </A><B>}</B> <SPAN CLASS="CT">/* end mxGetString */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="483">  483   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="484">  484   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="485">  485   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">ifdef</SPAN> __cplusplus
+</SPAN><SPAN><A CLASS="LN" NAME="486">  486   </A><B>}</B>
+</SPAN><SPAN><A CLASS="LN" NAME="487">  487   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">endif</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="488">  488   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="489">  489   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="490">  490   </A>BEGIN_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="491">  491   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="492">  492   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateCharMatrixFromStrings(m, str) \
+</SPAN><SPAN><A CLASS="LN" NAME="493">  493   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxCreateCharMatrixFromStrings" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxCreateCharMatrixFromStrings');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxCreateCharMatrixFromStrings</FONT></A>(m, str)
+</SPAN><SPAN><A CLASS="LN" NAME="494">  494   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="495">  495   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateString(str) \
+</SPAN><SPAN><A CLASS="LN" NAME="496">  496   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxCreateString" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxCreateString');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxCreateString</FONT></A>(str) 
+</SPAN><SPAN><A CLASS="LN" NAME="497">  497   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="498">  498   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateDoubleMatrix(m, n, flag) \
+</SPAN><SPAN><A CLASS="LN" NAME="499">  499   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxCreateDoubleMatrix" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxCreateDoubleMatrix');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxCreateDoubleMatrix</FONT></A>(m, n, flag)
+</SPAN><SPAN><A CLASS="LN" NAME="500">  500   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="501">  501   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateNumericArray(ndims, dims, classid, flag) \
+</SPAN><SPAN><A CLASS="LN" NAME="502">  502   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxCreateNumericArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxCreateNumericArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxCreateNumericArray</FONT></A>(ndims, dims, classid, flag)
+</SPAN><SPAN><A CLASS="LN" NAME="503">  503   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="504">  504   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxDuplicateArray(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="505">  505   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxDuplicateArray" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxDuplicateArray');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxDuplicateArray</FONT></A>(pa)
+</SPAN><SPAN><A CLASS="LN" NAME="506">  506   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="507">  507   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetDimensions(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="508">  508   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxGetDimensions" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxGetDimensions');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxGetDimensions</FONT></A>(pa)
+</SPAN><SPAN><A CLASS="LN" NAME="509">  509   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="510">  510   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetEps() \
+</SPAN><SPAN><A CLASS="LN" NAME="511">  511   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxGetEps" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxGetEps');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxGetEps</FONT></A>()
+</SPAN><SPAN><A CLASS="LN" NAME="512">  512   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="513">  513   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetString(pa, buf, buflen) \
+</SPAN><SPAN><A CLASS="LN" NAME="514">  514   </A>        <A HREF="rt_matrx_c.html#fcn_rt_mxGetString" ONCLICK="if (top) if (top.docHiliteMe) top.docHiliteMe(window, 'var_rt_mxGetString');" TARGET="rtwreport_document_frame"><FONT COLOR="#1122aa">rt_mxGetString</FONT></A>(pa, buf, buflen)
+</SPAN><SPAN><A CLASS="LN" NAME="515">  515   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="516">  516   </A><SPAN CLASS="CT">/*=========================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="517">  517   </A><SPAN CLASS="CT"> * Unsupported mx Routines *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="518">  518   </A><SPAN CLASS="CT"> *=========================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="519">  519   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="520">  520   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCalcSingleSubscript(pa,nsubs,subs) \
+</SPAN><SPAN><A CLASS="LN" NAME="521">  521   </A>        mxCalcSingleSubscript_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="522">  522   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="523">  523   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateCellArray(ndim,dims) \
+</SPAN><SPAN><A CLASS="LN" NAME="524">  524   </A>        mxCreateCellArray_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="525">  525   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="526">  526   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateCellMatrix(m,n) \
+</SPAN><SPAN><A CLASS="LN" NAME="527">  527   </A>        mxCreateCellMatrix_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="528">  528   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="529">  529   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateSparse(pm,pn,pnzmax,pcmplx_flg) \
+</SPAN><SPAN><A CLASS="LN" NAME="530">  530   </A>        mxCreateSparse_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="531">  531   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="532">  532   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateStructArray(ndim,dims,nfields,fieldnames) \
+</SPAN><SPAN><A CLASS="LN" NAME="533">  533   </A>        mxCreateStructArray_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="534">  534   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="535">  535   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxCreateStructMatrix(m,n,nfields,fieldnames) \
+</SPAN><SPAN><A CLASS="LN" NAME="536">  536   </A>        mxCreateStructMatrix_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="537">  537   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="538">  538   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetCell(pa,i) \
+</SPAN><SPAN><A CLASS="LN" NAME="539">  539   </A>        mxGetCell_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="540">  540   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="541">  541   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetField(pa,i,fieldname) \
+</SPAN><SPAN><A CLASS="LN" NAME="542">  542   </A>        mxGetField_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="543">  543   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="544">  544   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetFieldByNumber(s,i,fieldnum) \
+</SPAN><SPAN><A CLASS="LN" NAME="545">  545   </A>        mxGetFieldByNumber_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="546">  546   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="547">  547   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetFieldNameByNumber(pa,n) \
+</SPAN><SPAN><A CLASS="LN" NAME="548">  548   </A>        mxGetFieldNameByNumber_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="549">  549   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="550">  550   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetFieldNumber(pa,fieldname) \
+</SPAN><SPAN><A CLASS="LN" NAME="551">  551   </A>        mxGetFieldNumber_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="552">  552   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="553">  553   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetImagData(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="554">  554   </A>        mxGetImagData_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="555">  555   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="556">  556   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetIr(ppa) \
+</SPAN><SPAN><A CLASS="LN" NAME="557">  557   </A>        mxGetIr_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="558">  558   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="559">  559   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetJc(ppa) \
+</SPAN><SPAN><A CLASS="LN" NAME="560">  560   </A>        mxGetJc_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="561">  561   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="562">  562   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetNumberOfFields(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="563">  563   </A>        mxGetNumberOfFields_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="564">  564   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="565">  565   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetNzmax(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="566">  566   </A>        mxGetNzmax_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="567">  567   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="568">  568   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxGetPi(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="569">  569   </A>        mxGetPi_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="570">  570   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="571">  571   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsFromGlobalWS(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="572">  572   </A>        mxIsFromGlobalWS_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="573">  573   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="574">  574   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsNaN(r) \
+</SPAN><SPAN><A CLASS="LN" NAME="575">  575   </A>        mxIsNaN_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="576">  576   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="577">  577   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsChar(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="578">  578   </A>        mxIsChar_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="579">  579   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="580">  580   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsClass(pa,class) \
+</SPAN><SPAN><A CLASS="LN" NAME="581">  581   </A>        mxIsClass_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="582">  582   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="583">  583   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxIsCell(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="584">  584   </A>        mxIsCell_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="585">  585   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="586">  586   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetCell(pa,i,value) \
+</SPAN><SPAN><A CLASS="LN" NAME="587">  587   </A>        mxSetCell_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="588">  588   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="589">  589   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetClassName(pa,classname) \
+</SPAN><SPAN><A CLASS="LN" NAME="590">  590   </A>        mxSetClassName_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="591">  591   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="592">  592   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetData(pa,pr) \
+</SPAN><SPAN><A CLASS="LN" NAME="593">  593   </A>        mxSetData_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="594">  594   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="595">  595   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetDimensions(pa, size, ndims) \
+</SPAN><SPAN><A CLASS="LN" NAME="596">  596   </A>        mxSetDimensions_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="597">  597   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="598">  598   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetField(pa,i,fieldname,value) \
+</SPAN><SPAN><A CLASS="LN" NAME="599">  599   </A>        mxSetField_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="600">  600   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="601">  601   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetFieldByNumber(pa, index, fieldnum, value) \
+</SPAN><SPAN><A CLASS="LN" NAME="602">  602   </A>        mxSetFieldByNumber_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="603">  603   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="604">  604   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetFromGlobalWS(pa,global) \
+</SPAN><SPAN><A CLASS="LN" NAME="605">  605   </A>        mxSetFromGlobalWS_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="606">  606   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="607">  607   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetImagData(pa,pv) \
+</SPAN><SPAN><A CLASS="LN" NAME="608">  608   </A>        mxSetImagData_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="609">  609   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="610">  610   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetIr(ppa,ir) \
+</SPAN><SPAN><A CLASS="LN" NAME="611">  611   </A>        mxSetIr_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="612">  612   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="613">  613   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetJc(ppa,jc) \
+</SPAN><SPAN><A CLASS="LN" NAME="614">  614   </A>        mxSetJc_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="615">  615   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="616">  616   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetM(pa, m) \
+</SPAN><SPAN><A CLASS="LN" NAME="617">  617   </A>        mxSetM_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="618">  618   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="619">  619   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetN(pa, m) \
+</SPAN><SPAN><A CLASS="LN" NAME="620">  620   </A>        mxSetN_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="621">  621   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="622">  622   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetPr(pa,pr) \
+</SPAN><SPAN><A CLASS="LN" NAME="623">  623   </A>        mxSetPr_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="624">  624   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="625">  625   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetNzmax(pa,nzmax) \
+</SPAN><SPAN><A CLASS="LN" NAME="626">  626   </A>        mxSetNzmax_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="627">  627   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="628">  628   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mxSetPi(pa,pv) \
+</SPAN><SPAN><A CLASS="LN" NAME="629">  629   </A>        mxSetPi_is_not_supported_in_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="630">  630   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="631">  631   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="632">  632   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="633">  633   </A><SPAN CLASS="CT">/*==========================*</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="634">  634   </A><SPAN CLASS="CT"> * Unsupported mex routines *</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="635">  635   </A><SPAN CLASS="CT"> *==========================*/</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="636">  636   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="637">  637   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexPrintAssertion(test,fname,linenum,message) \
+</SPAN><SPAN><A CLASS="LN" NAME="638">  638   </A>        mexPrintAssertion_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="639">  639   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="640">  640   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexEvalString(str) \
+</SPAN><SPAN><A CLASS="LN" NAME="641">  641   </A>        mexEvalString_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="642">  642   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="643">  643   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexErrMsgTxt(str) \
+</SPAN><SPAN><A CLASS="LN" NAME="644">  644   </A>        mexErrMsgTxt_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="645">  645   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="646">  646   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexWarnMsgTxt(warning_msg) \
+</SPAN><SPAN><A CLASS="LN" NAME="647">  647   </A>        mexWarnMsgTxt_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="648">  648   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="649">  649   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexPrintf \
+</SPAN><SPAN><A CLASS="LN" NAME="650">  650   </A>        mexPrintf_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="651">  651   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="652">  652   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexMakeArrayPersistent(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="653">  653   </A>        mexMakeArrayPersistent_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="654">  654   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="655">  655   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexMakeMemoryPersistent(ptr) \
+</SPAN><SPAN><A CLASS="LN" NAME="656">  656   </A>        mexMakeMemoryPersistent_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="657">  657   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="658">  658   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexLock() \
+</SPAN><SPAN><A CLASS="LN" NAME="659">  659   </A>        mexLock_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="660">  660   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="661">  661   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexUnlock() \
+</SPAN><SPAN><A CLASS="LN" NAME="662">  662   </A>        mexUnlock_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="663">  663   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="664">  664   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexFunctionName() \
+</SPAN><SPAN><A CLASS="LN" NAME="665">  665   </A>        mexFunctionName_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="666">  666   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="667">  667   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexIsLocked() \
+</SPAN><SPAN><A CLASS="LN" NAME="668">  668   </A>        mexIsLocked_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="669">  669   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="670">  670   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexGetFunctionHandle() \
+</SPAN><SPAN><A CLASS="LN" NAME="671">  671   </A>        mexGetFunctionHandle_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="672">  672   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="673">  673   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexCallMATLABFunction() \
+</SPAN><SPAN><A CLASS="LN" NAME="674">  674   </A>        mexCallMATLABFunction_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="675">  675   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="676">  676   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexRegisterFunction() \
+</SPAN><SPAN><A CLASS="LN" NAME="677">  677   </A>        mexRegisterFunction_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="678">  678   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="679">  679   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexSet(handle,property,value) \
+</SPAN><SPAN><A CLASS="LN" NAME="680">  680   </A>        mexSet_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="681">  681   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="682">  682   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexGet(handle,property) \
+</SPAN><SPAN><A CLASS="LN" NAME="683">  683   </A>        mexGet_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="684">  684   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="685">  685   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexCallMATLAB(nlhs,plhs,nrhs,prhs,fcn) \
+</SPAN><SPAN><A CLASS="LN" NAME="686">  686   </A>        mexCallMATLAB_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="687">  687   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="688">  688   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexSetTrapFlag(flag) \
+</SPAN><SPAN><A CLASS="LN" NAME="689">  689   </A>        mexSetTrapFlag_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="690">  690   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="691">  691   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexUnlink(a) \
+</SPAN><SPAN><A CLASS="LN" NAME="692">  692   </A>        mexUnlink_is_not_supported_by_Simulink_Coderw
+</SPAN><SPAN><A CLASS="LN" NAME="693">  693   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="694">  694   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexSubsAssign(plhs,sub,nsubs,prhs) \
+</SPAN><SPAN><A CLASS="LN" NAME="695">  695   </A>        mexSubsAssign_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="696">  696   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="697">  697   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexSubsReference(prhs,subs,nsubs) \
+</SPAN><SPAN><A CLASS="LN" NAME="698">  698   </A>        mexSubsReference_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="699">  699   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="700">  700   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexPrintAssertion(test,fname,linenum,message) \
+</SPAN><SPAN><A CLASS="LN" NAME="701">  701   </A>        mexPrintAssertion_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="702">  702   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="703">  703   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexAddFlops(count) \
+</SPAN><SPAN><A CLASS="LN" NAME="704">  704   </A>        mexAddFlops_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="705">  705   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="706">  706   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexIsGlobal(pa) \
+</SPAN><SPAN><A CLASS="LN" NAME="707">  707   </A>        mexIsGlobal_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="708">  708   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="709">  709   </A><FONT COLOR="#992211">#</FONT><SPAN CLASS="PP">define</SPAN> mexAtExit(fcn) \
+</SPAN><SPAN><A CLASS="LN" NAME="710">  710   </A>        mexAtExit_is_not_supported_by_Simulink_Coder
+</SPAN><SPAN><A CLASS="LN" NAME="711">  711   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="712">  712   </A>END_PUBLIC
+</SPAN><SPAN><A CLASS="LN" NAME="713">  713   </A>
+</SPAN><SPAN><A CLASS="LN" NAME="714">  714   </A><SPAN CLASS="CT">/* [EOF] rt_matrx.c */</SPAN>
+</SPAN><SPAN><A CLASS="LN" NAME="715">  715   </A>
+</SPAN></PRE>
+</TD></TR></TABLE>
+</P>
+</BODY>
+</HTML>

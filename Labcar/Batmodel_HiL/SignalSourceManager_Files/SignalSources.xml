@@ -1,0 +1,14 @@
+<?SCHEMA schemaVersion="1.0"?>
+<SignalSourcesConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Program%20Files/ETAS/Experiment%20Environment3.3/EE/Schemas/EE.Data.SignalSources.xsd" xsi:type="ETAS.EE.Data.SignalSourcesConfigurationType">
+  <SignalSourcesData xsi:type="ETAS.EE.Data.PluginDataListType">
+    <Item xsi:type="ETAS.EE.Data.PluginDataType" id="IDb000344f-d7ae-4d14-a47f-76910250070e" pluginID="ETargetLabCarSignalSourcePlugin" rootFolder="ETargetLabCarSignalSourcePlugin_Files">
+      <Documents xsi:type="ETAS.EE.Data.ExternalDocumentListType">
+        <Item xsi:type="ETAS.EE.Data.ExternalDocumentType" id="ID8b7b3d4b-1b9c-446e-9fa7-fb5b7d884b6a" type="" name="ETargetLabCarConfigurationData" file="ETargetLabCar.xml" />
+      </Documents>
+    </Item>
+  </SignalSourcesData>
+  <SignalSourceDeclarations xsi:type="ETAS.EE.Data.SignalSourceDeclarationListType">
+    <Item xsi:type="ETAS.EE.Data.SignalSourceDeclarationType" id="ID8cc16f04-96bd-43ca-9f55-f54f9149a072" type="Inca" signalSourceId="LCO_INCA" name="INCA" active="true" />
+    <Item xsi:type="ETAS.EE.Data.SignalSourceDeclarationType" id="ID10fdd5bb-a1a7-42bd-9788-730b1f90d77b" type="ETargetLabCar" signalSourceId="LCO_LABCAR" name="LABCAR" active="true" />
+  </SignalSourceDeclarations>
+</SignalSourcesConfiguration>

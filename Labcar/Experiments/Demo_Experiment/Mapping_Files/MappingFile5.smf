@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<file xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.etasgroup.com/downloads/xmlns/labcar_automation/lca_smf_v3.1.xsd" ext=".smf" ver="3.1" typ="SuT Mapping File">
+  <SUTMap TestLabel="ASW_Main_State" ToolLabel="INCA/CCP:1/BSC_st" Hierarchy="INCA/CCP:1" SUTType="GenericSut" ObjectType="" DataType="" Comment="" Max="0" Min="0" Unit="" XUnit="" YUnit="" />
+  <SUTMap TestLabel="ASW_Sub_State" ToolLabel="INCA/CCP:1/BSC_stSub" Hierarchy="INCA/CCP:1" SUTType="GenericSut" ObjectType="" DataType="" Comment="" Max="0" Min="0" Unit="" XUnit="" YUnit="" />
+  <SUTMap TestLabel="NegRlyLo_State" ToolLabel="INCA/CCP:1/AAb_stNegRlyLo_mp" Hierarchy="INCA/CCP:1" SUTType="GenericSut" ObjectType="" DataType="" Comment="" Max="0" Min="0" Unit="" XUnit="" YUnit="" />
+  <SUTMap TestLabel="PosRlyLo_State" ToolLabel="INCA/CCP:1/AAb_stPosRlyLo_mp" Hierarchy="INCA/CCP:1" SUTType="GenericSut" ObjectType="" DataType="" Comment="" Max="0" Min="0" Unit="" XUnit="" YUnit="" />
+  <SUTMap TestLabel="PreRlyLo_State" ToolLabel="INCA/CCP:1/AAb_stPreRlyLo_mp" Hierarchy="INCA/CCP:1" SUTType="GenericSut" ObjectType="" DataType="" Comment="" Max="0" Min="0" Unit="" XUnit="" YUnit="" />
+</file>

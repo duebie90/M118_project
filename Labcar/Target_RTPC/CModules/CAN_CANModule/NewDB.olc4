@@ -1,0 +1,142 @@
+<OLC4_Parametrization>
+  <Inport ID="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V1">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V2">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V3">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_101std_rtpc_bms_volt_1_4_Signal_Cell_V4">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V5">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V6">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V7">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_102std_rtpc_bms_volt_5_8_Signal_Cell_V8">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V10">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V11">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V12">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_103std_rtpc_bms_volt_9_12_Signal_Cell_V9">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T1">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T2">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T3">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_111std_rtpc_bms_temp_1_4_Signal_Cell_T4">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_T5">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_T6">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_T7">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_112std_rtpc_bms_temp_5_8_Signal_Cell_V8">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T10">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T11">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T12">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_113std_rtpc_bms_temp_9_12_Signal_Cell_T9">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Absolute_Amp">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Laden">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Mode">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+  <Inport ID="inport_bo0_co0_131std_rtpc_bms_sammeln_Signal_Total_volt">
+    <Switch Mode="CONST">
+      <Constant Value="0" />
+    </Switch>
+  </Inport>
+</OLC4_Parametrization>

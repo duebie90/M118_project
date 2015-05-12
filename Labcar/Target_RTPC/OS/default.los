@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<OSConfiguration MaxPreempLevels="40" AutoProcAssign="1" OSMonitoring="0">
+	<Task Period="0.1" CoreExclusive="0" MaxActivations="0" Priority="0" Type="Init" Autostart="1" FloatingPointException="0" Name="Init" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="false" Module="" Name="lcrt_Start_Bat_Modell"/>
+			<Process Target="RTPC" Valid="false" Module="" Name="cmod_Init_Cell_Emulator"/>
+			<Process Target="RTPC" Valid="true" Module="Hardware" Name="Es113x_InitCode_Init_HWCF"/>
+			<Process Target="RTPC" Valid="true" Module="CANModule" Name="CAN_Init"/>
+			<Process Target="RTPC" Valid="true" Module="Batterymodel_HiL" Name="lcrt_Start_Batterymodel_HiL"/>
+		</Processes>
+	</Task>
+	<Task Period="0.1" CoreExclusive="0" MaxActivations="1" Priority="0" Type="Exit" Autostart="1" FloatingPointException="0" Name="Exit" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="false" Module="" Name="lcrt_Terminate_Bat_Modell"/>
+			<Process Target="RTPC" Valid="false" Module="" Name="cmod_Exit_Cell_Emulator"/>
+			<Process Target="RTPC" Valid="true" Module="Hardware" Name="Es113x_ExitCode_Exit_HWCL"/>
+			<Process Target="RTPC" Valid="true" Module="CANModule" Name="CAN_Exit"/>
+			<Process Target="RTPC" Valid="true" Module="Batterymodel_HiL" Name="lcrt_Terminate_Batterymodel_HiL"/>
+		</Processes>
+	</Task>
+	<Task Period="0.1" CoreExclusive="0" MaxActivations="1" Priority="1" Type="Timer" Autostart="1" FloatingPointException="0" Name="Acquisition" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes/>
+	</Task>
+	<Task Period="0.1" CoreExclusive="0" MaxActivations="1" Priority="1" Type="Timer" Autostart="1" FloatingPointException="0" Name="Config" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes/>
+	</Task>
+	<Task Period="0.01" CoreExclusive="0" MaxActivations="1" Priority="2" Type="Timer" Autostart="1" FloatingPointException="0" Name="Manager" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes/>
+	</Task>
+	<Task Period="0.1" CoreExclusive="0" MaxActivations="4" Priority="1" Type="Software" Autostart="1" FloatingPointException="0" Name="Analyze" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes/>
+	</Task>
+	<Task Period="0.1" CoreExclusive="0" MaxActivations="4" Priority="1" Type="Software" Autostart="1" FloatingPointException="0" Name="Acknowledge" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes/>
+	</Task>
+	<Task Period="0.01" CoreExclusive="0" MaxActivations="1" Priority="3" Type="Timer" Autostart="1" FloatingPointException="0" Name="TaskDVEModel" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="true" Module="CANModule" Name="CAN_Receive_board0_controller0"/>
+			<Process Target="RTPC" Valid="true" Module="CANModule" Name="CAN_Receive_board0_controller1"/>
+			<Process Target="RTPC" Valid="true" Module="Hardware" Name="Es113x_SyncReceiveCode_TaskDVEModel_HWCF"/>
+			<Process Target="RTPC" Valid="true" Module="Batterymodel_HiL" Name="lcrt_OneStep_Outputs_Batterymodel_HiL"/>
+			<Process Target="RTPC" Valid="true" Module="Hardware" Name="Es113x_SyncSendCode_TaskDVEModel_HWCF"/>
+			<Process Target="RTPC" Valid="true" Module="Batterymodel_HiL" Name="lcrt_OneStep_States_Batterymodel_HiL"/>
+		</Processes>
+	</Task>
+	<Task Period="0.01" CoreExclusive="0" MaxActivations="1" Priority="3" Type="Timer" Autostart="1" FloatingPointException="0" Name="Module_EDAG_Global_cmod_compute_EDAG_Global" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="false" Module="" Name="cmod_compute_EDAG_Global"/>
+		</Processes>
+	</Task>
+	<Task Period="0.5" CoreExclusive="0" MaxActivations="1" Priority="3" Type="Timer" Autostart="1" FloatingPointException="0" Name="Module_CANModule_CAN_Send_board0_controller1" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="true" Module="CANModule" Name="CAN_Send_board0_controller1"/>
+		</Processes>
+	</Task>
+	<Task Period="12" CoreExclusive="0" MaxActivations="1" Priority="3" Type="Timer" Autostart="1" FloatingPointException="0" Name="TaskDVEModel_Bat_Modell" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="false" Module="" Name="lcrt_OneStep_Outputs_Bat_Modell"/>
+			<Process Target="RTPC" Valid="false" Module="" Name="lcrt_OneStep_States_Bat_Modell"/>
+		</Processes>
+	</Task>
+	<Task Period="1" CoreExclusive="0" MaxActivations="1" Priority="3" Type="Timer" Autostart="1" FloatingPointException="0" Name="Module_CANModule_CAN_Send_board0_controller0" CPU-Core="1" Delay="0" State="enabled" Scheduling="Preemptive">
+		<Processes>
+			<Process Target="RTPC" Valid="true" Module="CANModule" Name="CAN_Send_board0_controller0"/>
+		</Processes>
+	</Task>
+</OSConfiguration>

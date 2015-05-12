@@ -1,0 +1,12 @@
+[HiL_Model/Switch_box_control/TipOn]
+HiL_Model\Switch_box_control\TipOn\Value=HiL_Model/Switch_box_control/TipOn/Value
+[HiL_Model/Switch_box_control/T30]
+HiL_Model\Switch_box_control\T30\Value=HiL_Model/Switch_box_control/T30/Value
+[HiL_Model/Switch_box_control/T15]
+HiL_Model\Switch_box_control\T15\Value=HiL_Model/Switch_box_control/T15/Value
+[HiL_Model/Switch_box_control/Reserve]
+HiL_Model\Switch_box_control\Reserve\Value=HiL_Model/Switch_box_control/Reserve/Value
+[HiL_Model/Switch_box_control/Interlock]
+HiL_Model\Switch_box_control\Interlock\Value=HiL_Model/Switch_box_control/Interlock/Value
+[HiL_Model/Switch_box_control/CrashSignal]
+HiL_Model\Switch_box_control\CrashSignal\Value=HiL_Model/Switch_box_control/CrashSignal/Value

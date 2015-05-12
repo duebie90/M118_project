@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="build_log.xsl"?>
+<build>
+	<target name="LCRT_RTW_Build">
+		<message priority="info" text="Beginning LCRT_RTW build of model &apos;Batterymodel_HiL.mdl&apos; (12.05.2015 19:07)"></message>
+		<message priority="verbose" text="Generating code for model in build directory C:\GR3\lab4_V0.8\Target_RTPC\SimulinkModels\Simulink_Batterymodel_HiL\Batterymodel_HiL_LABCAR_rtw\>"></message>
+		<message priority="warning" text="Parameter precision loss occurred for 'Gain'. The parameter's value cannot be represented exactly using the run-time data type. A small quantization error has occurred. You can control this diagnostic on the Diagnostics pane of the Configuration Parameters dialog."></message>
+		<message priority="verbose" text="Starting RTW C-code generation"></message>
+		<message priority="verbose" text="Finish of RTW C-code generation"></message>
+		<message priority="verbose" text="Creating C main file Batterymodel_HiL_main.c"></message>
+		<message priority="verbose" text="Starting LABCAR module description output"></message>
+		<message priority="verbose" text="Creating LABCAR module description file Batterymodel_HiL.lmd"></message>
+		<message priority="verbose" text="LABCAR module description output finished"></message>
+		<message priority="verbose" text="Creating macro file Batterymodel_HiL_lcrtmacros.h"></message>
+		<message priority="verbose" text="Time for make_rtw: 10 seconds"></message>
+		<message priority="verbose" text="Time for code generation: 9 seconds"></message>
+		<message priority="verbose" text="Time for LABCAR module description generation: 3 seconds"></message>
+		<message priority="verbose" text="Overall time: 21 seconds"></message>
+		<message priority="info" text="Successful LCRT_RTW build of model &apos;Batterymodel_HiL.mdl!&apos;"></message>
+	</target>
+</build>

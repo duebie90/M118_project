@@ -1,0 +1,17 @@
+<?SCHEMA schemaVersion="1.0"?>
+<WidgetsUIConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:///C:/Programme/ETAS/Experiment%20Environment3.3/EE/Schemas/EE.Data.WidgetsUI.xsd" xsi:type="ETAS.EE.Data.Instrumentation.WidgetsUIConfigurationType">
+  <signals xsi:type="ETAS.EE.Data.Instrumentation.SignalListType" />
+  <layers xsi:type="ETAS.EE.Data.Instrumentation.LayerListType">
+    <item xsi:type="ETAS.EE.Data.Instrumentation.LayerType" id="ID21bded12-7d75-481d-8545-513becadb740">
+      <properties xsi:type="ETAS.EE.Data.Instrumentation.LayerPropertiesType" name="Layer" showGrid="true" size="3200, 2400" locked="false">
+        <backGround xsi:type="ETAS.EE.Data.Instrumentation.BackGroundPropertiesType" color="AliceBlue" type="Color">
+          <Image xsi:type="ETAS.EE.Data.Instrumentation.BackGroundImageType" fileLocation="" layout="None" offset="0, 0" zoom="100" />
+        </backGround>
+      </properties>
+      <widgetGroups xsi:type="ETAS.EE.Data.Instrumentation.WidgetGroupRefListType" />
+    </item>
+  </layers>
+  <widgetGroups xsi:type="ETAS.EE.Data.Instrumentation.WidgetGroupListType" />
+  <widgets xsi:type="ETAS.EE.Data.Instrumentation.WidgetListType" />
+  <widgetTypes xsi:type="ETAS.EE.Data.Instrumentation.WidgetTypeInfoListType" />
+</WidgetsUIConfiguration>

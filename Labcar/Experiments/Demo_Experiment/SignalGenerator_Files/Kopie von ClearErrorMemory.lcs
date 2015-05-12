@@ -1,0 +1,29 @@
+[MODULE]
+asap2 = "SG1.StimuliGenerator"
+[CHANNEL]
+label = SGChannel0
+[LINEAR_SIGNAL_INTERVAL]
+countMax = 1
+deltaT = 1
+startY = 0
+endY = 0
+[LINEAR_SIGNAL_INTERVAL]
+countMax = 1
+deltaT = 3
+startY = 2
+endY = 2
+[LINEAR_SIGNAL_INTERVAL]
+countMax = 1
+deltaT = 1
+startY = 0
+endY = 0
+[LINEAR_SIGNAL_INTERVAL]
+countMax = 1
+deltaT = 1
+startY = 2
+endY = 2
+[LINEAR_SIGNAL_INTERVAL]
+countMax = 1
+deltaT = 1
+startY = 0
+endY = 0

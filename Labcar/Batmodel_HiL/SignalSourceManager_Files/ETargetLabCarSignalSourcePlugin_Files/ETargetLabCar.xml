@@ -1,0 +1,15 @@
+<?SCHEMA schemaVersion="1.0"?>
+<ETargetLabCarConfigurationData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="C:/Program%20Files/ETAS/Experiment%20Environment3.3/EE/Schemas/EE.Data.SignalSource.ETargetLabCar.xsd" xsi:type="ETAS.EE.Data.ETargetLabCarConfigurationDataType">
+  <ProjectPath xsi:type="ETAS.EE.Data.ETargetLabCarProjectPathType" relativeLCOProjectPath=".\.." />
+  <TargetConfiguration xsi:type="ETAS.EE.Data.ETargetLabCarTargetConfigurationType" targetConfigurationFile=".\Batmodel_HiL.tc" />
+  <DeviceTaskConfigurations xsi:type="ETAS.EE.Data.DeviceTaskConfigurationListType">
+    <DeviceTaskConfiguration xsi:type="ETAS.EE.Data.DeviceTaskConfigurationType" deviceName="RTPC">
+      <AcquisitionTasks xsi:type="ETAS.EE.Data.AcquisitionTasksType" defaultAcquisitionTask="Acquisition">
+        <FurtherAcquisitionTasks xsi:type="ETAS.EE.Data.ETargetLabCarAcquisitionTaskListType" />
+      </AcquisitionTasks>
+    </DeviceTaskConfiguration>
+  </DeviceTaskConfigurations>
+  <InternalMappings xsi:type="ETAS.EE.Data.InternalMappingsListType">
+    <InternalMapping xsi:type="ETAS.EE.Data.InternalMappingType" filePath="" />
+  </InternalMappings>
+</ETargetLabCarConfigurationData>

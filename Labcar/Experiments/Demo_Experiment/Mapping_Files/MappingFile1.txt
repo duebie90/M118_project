@@ -1,0 +1,16 @@
+[HiL_Model/Switch_box_control/TipOn_diag/Compare]
+HiL_Model\Switch_box_control\TipOn_diag\Compare\Out=HiL_Model/Switch_box_control/TipOn_diag/Compare/Out
+[HiL_Model/Switch_box_control/T30_diag/Compare]
+HiL_Model\Switch_box_control\T30_diag\Compare\Out=HiL_Model/Switch_box_control/T30_diag/Compare/Out
+[HiL_Model/Switch_box_control/T15_diag/Compare]
+HiL_Model\Switch_box_control\T15_diag\Compare\Out=HiL_Model/Switch_box_control/T15_diag/Compare/Out
+[HiL_Model/Switch_box_control/Reserve_diag/Compare]
+HiL_Model\Switch_box_control\Reserve_diag\Compare\Out=HiL_Model/Switch_box_control/Reserve_diag/Compare/Out
+[HiL_Model/Switch_box_control/Interlock_diag/Compare]
+HiL_Model\Switch_box_control\Interlock_diag\Compare\Out=HiL_Model/Switch_box_control/Interlock_diag/Compare/Out
+[HiL_Model/Switch_box_control/ErrorFuse/Compare]
+HiL_Model\Switch_box_control\ErrorFuse\Compare\Out=HiL_Model/Switch_box_control/ErrorFuse/Compare/Out
+[HiL_Model/Switch_box_control/CrashSignal_diag/Compare]
+HiL_Model\Switch_box_control\CrashSignal_diag\Compare\Out=HiL_Model/Switch_box_control/CrashSignal_diag/Compare/Out
+[HiL_Model/Switch_box_control/Box_Mode/Compare]
+HiL_Model\Switch_box_control\Box_Mode\Compare\Out=HiL_Model/Switch_box_control/Box_Mode/Compare/Out

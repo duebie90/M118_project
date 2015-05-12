@@ -1,0 +1,112 @@
+VERSION ""
+
+
+BS_:
+
+BU_:
+
+
+BO_ 257 rtpc_bms_volt_1_4: 8 Vector__XXX
+ SG_ Cell_V4 : 48|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V3 : 32|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V2 : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V1 : 0|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+
+BO_ 258 rtpc_bms_volt_5_8: 8 Vector__XXX
+ SG_ Cell_V8 : 48|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V7 : 32|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V6 : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V5 : 0|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+
+BO_ 259 rtpc_bms_volt_9_12: 8 Vector__XXX
+ SG_ Cell_V12 : 48|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V11 : 32|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V10 : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V9 : 0|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+
+BO_ 273 rtpc_bms_temp_1_4: 8 Vector__XXX
+ SG_ Cell_T4 : 48|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T3 : 32|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T2 : 16|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T1 : 0|16@1+ (1,0) [0|65535] "K" Vector__XXX
+
+BO_ 274 rtpc_bms_temp_5_8: 8 Vector__XXX
+ SG_ Cell_V8 : 48|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T7 : 32|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T6 : 16|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T5 : 0|16@1+ (1,0) [0|65535] "K" Vector__XXX
+
+BO_ 275 rtpc_bms_temp_9_12: 8 Vector__XXX
+ SG_ Cell_T12 : 48|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T11 : 32|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T10 : 16|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T9 : 0|16@1+ (1,0) [0|65535] "K" Vector__XXX
+
+BO_ 305 rtpc_bms_sammeln: 8 Vector__XXX
+ SG_ Laden : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Absolute_Amp : 32|16@1+ (1,0) [0|65535] "mA" Vector__XXX
+ SG_ Total_volt : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Mode : 0|16@1+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 513 bms_rtcp_volt_1_4: 8 Vector__XXX
+ SG_ Cell_V4 : 48|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V3 : 32|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V2 : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V1 : 0|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+
+BO_ 514 bms_rctp_volt_5_8: 8 Vector__XXX
+ SG_ Cell_V8 : 48|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V7 : 32|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V6 : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V5 : 0|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+
+BO_ 515 bms_rctp_volt_9_12: 8 Vector__XXX
+ SG_ Cell_V12 : 48|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V11 : 32|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V10 : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ Cell_V9 : 0|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+
+BO_ 529 bms_rctp_temp_1_4: 8 Vector__XXX
+ SG_ Cell_T4 : 48|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T3 : 32|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T2 : 16|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T1 : 0|16@1+ (1,0) [0|65535] "K" Vector__XXX
+
+BO_ 530 bms_rctp_temp_5_8: 8 Vector__XXX
+ SG_ Cell_T8 : 48|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T7 : 32|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T6 : 16|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T5 : 0|16@1+ (1,0) [0|65535] "K" Vector__XXX
+
+BO_ 531 bms_rctp_temp_9_12: 8 Vector__XXX
+ SG_ Cell_T12 : 48|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T11 : 32|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T10 : 16|16@1+ (1,0) [0|65535] "K" Vector__XXX
+ SG_ Cell_T9 : 0|16@1+ (1,0) [0|65535] "K" Vector__XXX
+
+BO_ 561 bms_rtcp_sammeln: 8 Vector__XXX
+ SG_ Laden : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Absolut_Amp : 32|16@1+ (1,0) [0|65535] "mA" Vector__XXX
+ SG_ Total_Volt : 16|16@1+ (1,0) [0|65535] "mV" Vector__XXX
+ SG_ SoC : 0|16@1+ (1,0) [0|65535] "%" Vector__XXX
+
+BO_ 545 bms_rtcp_bal: 8 Vector__XXX
+ SG_ Reserviert_3 : 48|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Reserviert_2 : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Reserviert_1 : 16|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Cell_12 : 11|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_11 : 10|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_10 : 9|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_9 : 8|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_8 : 7|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_7 : 6|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_6 : 5|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_5 : 4|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_4 : 3|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_3 : 2|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_2 : 1|1@1- (1,0) [0|1] "" Vector__XXX
+ SG_ Cell_1 : 0|1@1- (1,0) [0|1] "" Vector__XXX
+
+
+
+

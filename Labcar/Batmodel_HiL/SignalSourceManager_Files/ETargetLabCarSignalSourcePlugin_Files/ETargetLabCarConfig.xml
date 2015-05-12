@@ -1,0 +1,84 @@
+<ETargetLabCarConfig version="2.22">
+  <RTPCUdp AutodetectNetworkAdapter="True" UseNetworkAdapterWithIP="192.168.40.13" UseNetworkAdapterWithDescription="LAN-Verbindung">
+    <RTPCIP value="192.168.40.14" />
+    <ETASDefaultLocalIP value="192.168.40.240" />
+    <Usage UseUdpForParameterFiles="True" UseUdpForGetLiveValue="True" />
+    <Stream UdpStreamInterval="222" />
+  </RTPCUdp>
+  <RTPCLog rtpcLogType="UdpStreaming" RTPCLogLevel="Informational">
+    <SysLog fetchSysLogMessages="True" RTPCSysLogCriticalsToAppLog="True" RTPCSysLogShowFacilityInfo="False" />
+  </RTPCLog>
+  <RTPCCheck value="True" />
+  <WOLRTPC value="True" />
+  <RTPCCPUCoresCheck value="ContinueAndWarn" />
+  <Simulation>
+    <Model InitTaskTimeout="20000" ExitTaskTimeout="20000" DownloadTimeout="30000" />
+  </Simulation>
+  <ETargetAdapterFacade>
+    <BaseTimeout value="1000" />
+  </ETargetAdapterFacade>
+  <DataCapturing>
+    <Polling>
+      <BaseCycle value="200" />
+      <PollStartTimes factor="2" />
+    </Polling>
+    <RingBuffer>
+      <MinimumSize value="256" />
+      <SizeFactor value="0.0625" />
+    </RingBuffer>
+  </DataCapturing>
+  <TargetServerRestrictions>
+    <MaximumNumberOfMeasurementsPerTask value="2045" />
+    <MaximumNumberOfParametersPerTask value="10000" />
+  </TargetServerRestrictions>
+  <Datalogging>
+    <MaximumNumber value="1" />
+    <SupportedTriggerTypes>
+      <Trigger type="StartManualFilter" />
+      <Trigger type="StartTriggerFilter" />
+      <Trigger type="StopManualFilter" />
+      <Trigger type="StopTriggerFilter" />
+    </SupportedTriggerTypes>
+    <SupportedRecordingDataElements>
+      <Type type="MEASUREMENT">
+        <Dimension value="SCALAR" />
+        <Dimension value="ARRAY" />
+        <Dimension value="MATRIX" />
+      </Type>
+      <Type type="CHARACTERISTIC">
+        <Dimension value="SCALAR" />
+        <Dimension value="ARRAY" />
+        <Dimension value="MATRIX" />
+      </Type>
+    </SupportedRecordingDataElements>
+    <TriggerOperators>
+      <Operator name="&lt;" targetServerValue="10" />
+      <Operator name="&lt;=" targetServerValue="11" />
+      <Operator name="&lt;&gt;" targetServerValue="13" />
+      <Operator name="=" targetServerValue="12" />
+      <Operator name="&gt;" targetServerValue="8" />
+      <Operator name="&gt;=" targetServerValue="9" />
+      <Operator name="AND" targetServerValue="16" />
+      <Operator name="Neg. Edge" targetServerValue="15" />
+      <Operator name="OR" targetServerValue="17" />
+      <Operator name="Pos. Edge" targetServerValue="14" />
+    </TriggerOperators>
+    <MaximumRecordingPostTriggerTime value="31536000" />
+  </Datalogging>
+  <CAN>
+    <CANConfigurationFile name="CANConfiguration.xml" />
+    <CANModuleFolder name="CModules" />
+    <Module name="CAN" />
+    <CANTransmitMessages name="SendMessages" />
+    <CANReceiveMessages name="ReceiveMessages" />
+    <BoardPrefix name="Board_" />
+    <ControllerPrefix name="Controller_" />
+    <ModulePrefix name="CAN_" />
+  </CAN>
+  <OLC>
+    <ModuleType name="COlcModule" />
+  </OLC>
+  <FlexRay>
+    <FlexRayModuleName name="FlexRayTool" />
+  </FlexRay>
+</ETargetLabCarConfig>
